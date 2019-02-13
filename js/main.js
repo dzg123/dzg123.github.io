@@ -96,11 +96,13 @@ $(function () {
     
     var options = {
       strings: [ 
-        str + "Who??^1000",
-        str + "It's me ^3000",
-        str +'Haha, make a joke',
+   //     str + "Who??^1000",
+		str + "Hello,my friends^1000",
+        str + "i'm dzg ^3000",
+     //   str +'Haha, make a joke',
+		   str+"Welcome to my blog└(^o^)┘Y(^_^)Y\(^o^)/. ^1000",
         str +data.author,
-        // str+"Welcome to my blog. ^1000",
+      
         // str+"Here you can learn the JavaScript",
         // str+"Here you can learn the Css",
       ],
