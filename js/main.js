@@ -108,7 +108,7 @@ $(function () {
       startDelay:300,
       // loop: true,
     }
-    var typed = new Typed(".description", options);
+    var typed = new Typed(".description .typed", options);
   })
 });
 
