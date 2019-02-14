@@ -116,25 +116,29 @@
 
                         <h2 id="rest成熟模型">REST成熟模型</h2>
 
-                        <hr></li>
+                        <hr>
+                    </li>
 
                     <li><p>Level 0:The Swamp of POX</p>
 
                         <ul>
                             <li>使用http作为传输方式</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>Level 1：Resources</p>
 
                         <ul>
                             <li>引入资源概念。每个资源都有对应的URL</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>Level 2：HTTP Verbs</p>
 
                         <ul>
                             <li>使用http方法进行不同的操作。使用http状态码表示不同的结果</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>Level 3：Hypermedia Controls</p>
 
@@ -143,43 +147,54 @@
 
                                 <h2 id="常用注解">常用注解</h2>
 
-                                <hr></li>
-                        </ul></li>
+                                <hr>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li><p>@RestController</p>
 
                         <ul>
                             <li>标明此Controller提供RestAPI</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>@RequestMapping及其变体</p>
 
                         <ul>
                             <li>映射http请求url到java方法</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>@RequestParam</p>
 
                         <ul>
                             <li>映射请求参数到java方法的参数
+                                <pre>
                                 <code>
                                     @GetMapping("/user/login")
-                                    public ResultDto&lt;Object&gt; login(@RequestParam String username,@RequestParam String password){
+                                    public ResultDto&lt;Object&gt; login(@RequestParam String username,@RequestParam
+                                    String password){
                                     ......
                                     return ResultDto.success();
                                     }
                                 </code></li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>@PageabelDefault</p>
 
                         <ul>
                             <li>指定分页参数默认值（size,page,sort）
+                                <pre>
                                 <code>
                                     @RequestMapping(value = "/user", method = RequestMethod.GET)
-                                    public List&lt;User&gt; query(UserQueryCondition condition, @PageableDefault(page = 0,size = 15,sort = "age,asc") Pageable pageable) {
-                                    log.info(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
-                                    log.info(ReflectionToStringBuilder.toString(pageable, ToStringStyle.MULTI_LINE_STYLE));
+                                    public List&lt;User&gt; query(UserQueryCondition condition, @PageableDefault(page =
+                                    0,size = 15,sort = "age,asc") Pageable pageable) {
+                                    log.info(ReflectionToStringBuilder.toString(condition,
+                                    ToStringStyle.MULTI_LINE_STYLE));
+                                    log.info(ReflectionToStringBuilder.toString(pageable,
+                                    ToStringStyle.MULTI_LINE_STYLE));
                                     ArrayList&lt;User&gt; list = Lists.newArrayList();
                                     list.add(new User());
                                     list.add(new User());
@@ -187,13 +202,15 @@
                                     return list;
                                     }
                                 </code></li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>@PathVariable</p>
 
                         <ul>
                             <li>映射url片段到java方法的参数</li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <li><p>在url声明中使用正则表达式，剔除不规范请求</p>
 
@@ -203,7 +220,8 @@ public User getInfo(@PathVariable("id") String id){
     user.setUsername("dzg");
     return user;
 }
-</code></pre></li>
+</code></pre>
+                    </li>
 
                     <li><p>@JsonView控制json输出内容</p>
 
@@ -212,9 +230,10 @@ public User getInfo(@PathVariable("id") String id){
 
                                 <ol>
                                     <li>使用接口来声明多个视图
+                                        <pre>
                                         <code>
                                             @Data
-                                            public class User  {
+                                            public class User {
                                             public interface UserSimpleView {};
                                             public interface UserDetailView extends UserSimpleView {};
                                             @JsonView(UserSimpleView.class)
@@ -226,7 +245,8 @@ public User getInfo(@PathVariable("id") String id){
 
                                         <ol>
                                             <li>在值对象的get方法上指定视图</li>
-                                        </ol></li>
+                                        </ol>
+                                    </li>
 
                                     <li><p>在Controller方法上指定视图</p>
 
@@ -248,13 +268,17 @@ return user;
                                         <hr>
 
                                         <h3 id="处理创建请求">处理创建请求</h3></li>
-                                </ol></li>
-                        </ul></li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li><p>@RequestBody映射请求体到java方法的参数</p>
 
                         <ul>
-                            <li>@requestBody注解常用来处理content-type不是默认的application/x-www-form-urlcoded编码的内容，比如：application/json或application/xml等。一般情况下来说常用其来处理application/json类型。</li>
+                            <li>
+                                @requestBody注解常用来处理content-type不是默认的application/x-www-form-urlcoded编码的内容，比如：application/json或application/xml等。一般情况下来说常用其来处理application/json类型。
+                            </li>
                             <li>通过@requestBody可以将请求体中的JSON字符串绑定到相应的bean上，当然，也可以将其分别绑定到对应的字符串上。
                                 ```
                                 @Test
@@ -273,12 +297,18 @@ return user;
                                 public User create(@RequestBody User user){
                                 log.info(ReflectionToStringBuilder.toString(user, ToStringStyle.MULTI_LINE_STYLE));
                                 user.setId(1);
-                                return user;</li>
+                                return user;
+                            </li>
                         </ul>
 
                         <p>}
                             ```
-                            - 3、在一些特殊情况，@requestBody也可以用来处理content-type类型为application/x-www-form-urlcoded的内容，只不过这种方式不是很常用，在处理这类请求的时候，@requestBody会将处理结果放到一个MultiValueMap<string,string>中，这种情况一般在特殊情况下才会使用。</string,string></p></li>
+                            -
+                            3、在一些特殊情况，@requestBody也可以用来处理content-type类型为application/x-www-form-urlcoded的内容，只不过这种方式不是很常用，在处理这类请求的时候，@requestBody会将处理结果放到一个MultiValueMap
+                            <string
+                            ,string>中，这种情况一般在特殊情况下才会使用。</string,string>
+                        </p>
+                    </li>
 
                     <li><p>日期类型参数的处理</p></li>
 
@@ -299,55 +329,59 @@ public User create(@Valid @RequestBody User user, BindingResult errors) {
 
                         <h2 id="常用的注解校验">常用的注解校验</h2>
 
-                        <p><img src="https://upload-images.jianshu.io/upload_images/14796878-c3d2121adbf056d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p></li>
+                        <p>
+                            <img src="https://upload-images.jianshu.io/upload_images/14796878-c3d2121adbf056d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+                                 alt="image.png" style="width: 400px;height: 400px"></p></li>
                 </ul>
 
-                <p><img src="https://upload-images.jianshu.io/upload_images/14796878-35a13b446c3989d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+                <p>
+                    <img src="https://upload-images.jianshu.io/upload_images/14796878-35a13b446c3989d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+                         style="width: 400px;height: 400px"    alt="image.png"></p>
 
             </div>
             <!--<div class="content" itemprop="articleBody"><p>编写一个函数来查找字符串数组中的最长公共前缀。</p>-->
-                <!--<p>如果不存在公共前缀，返回空字符串 &ldquo;&ldquo;。</p>-->
-                <!--<h2 id="示例-1">示例 1:</h2>-->
-                <!--<pre><code class="language-text">输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]-->
-<!--输出: &quot;fl&quot;-->
-<!--</code></pre>-->
-                <!--<h2 id="示例-2">示例 2:</h2>-->
-                <!--<pre><code class="language-text">输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]-->
-<!--输出: &quot;&quot;-->
-<!--解释: 输入不存在公共前缀。-->
-<!--</code></pre>-->
-                <!--<p>说明:</p>-->
-                <!--<p>所有输入只包含小写字母 a-z 。</p>-->
-                <!--<h1 id="javascript">Javascript</h1>-->
-                <!--<pre><code class="language-js">/**-->
- <!--* @param {string[]} strs-->
- <!--* @return {string}-->
- <!--*/-->
-<!--var longestCommonPrefix = function(strs) {-->
-    <!--if(strs.length === 0)return &quot;&quot;-->
-    <!--let current  = &quot;&quot;-->
-    <!--let prefix = &quot;&quot;-->
-    <!--let index = 0;-->
-    <!--let isTrue = true;-->
-    <!--while (strs[0][index]) {     //以第一个单词为基准-->
-        <!--current = strs[0][index]; // 以第一个单词为基准-->
-        <!--for(let i = 0; i &lt; strs.length; i++){-->
+            <!--<p>如果不存在公共前缀，返回空字符串 &ldquo;&ldquo;。</p>-->
+            <!--<h2 id="示例-1">示例 1:</h2>-->
+            <!--<pre><code class="language-text">输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]-->
+            <!--输出: &quot;fl&quot;-->
+            <!--</code></pre>-->
+            <!--<h2 id="示例-2">示例 2:</h2>-->
+            <!--<pre><code class="language-text">输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]-->
+            <!--输出: &quot;&quot;-->
+            <!--解释: 输入不存在公共前缀。-->
+            <!--</code></pre>-->
+            <!--<p>说明:</p>-->
+            <!--<p>所有输入只包含小写字母 a-z 。</p>-->
+            <!--<h1 id="javascript">Javascript</h1>-->
+            <!--<pre><code class="language-js">/**-->
+            <!--* @param {string[]} strs-->
+            <!--* @return {string}-->
+            <!--*/-->
+            <!--var longestCommonPrefix = function(strs) {-->
+            <!--if(strs.length === 0)return &quot;&quot;-->
+            <!--let current  = &quot;&quot;-->
+            <!--let prefix = &quot;&quot;-->
+            <!--let index = 0;-->
+            <!--let isTrue = true;-->
+            <!--while (strs[0][index]) {     //以第一个单词为基准-->
+            <!--current = strs[0][index]; // 以第一个单词为基准-->
+            <!--for(let i = 0; i &lt; strs.length; i++){-->
             <!--if((strs[i] || &quot;&quot;)[index] !== current){-->
-                <!--isTrue = false;-->
-                <!--break-->
+            <!--isTrue = false;-->
+            <!--break-->
             <!--}-->
 
-        <!--}-->
-        <!--if(isTrue){-->
+            <!--}-->
+            <!--if(isTrue){-->
             <!--index ++;-->
             <!--prefix = prefix + current;-->
-         <!--}else{-->
-             <!--break-->
-         <!--}-->
-    <!--}-->
-    <!--return prefix-->
-<!--};-->
-<!--</code></pre>-->
+            <!--}else{-->
+            <!--break-->
+            <!--}-->
+            <!--}-->
+            <!--return prefix-->
+            <!--};-->
+            <!--</code></pre>-->
             <!--</div>-->
         </article>
         <script src="/js/av-min.js"></script>
