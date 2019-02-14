@@ -194,13 +194,12 @@ boolean includeStackTrace) {
                                 </li>
 
                             </ul>
-                            <pre><code>
-</code></pre>
+
                         </li>
 
                     </ul>
                 </li>
-                <li><p>    @GetMapping(&quot;/{id}&quot;)
+                <li><p>   <pre><code> @GetMapping(&quot;/{id}&quot;)
                     ​    public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
                     ​        try (InputStream ips = new FileInputStream(new File(folder, id + &quot;.txt&quot;));
                     ​             OutputStream ops = response.getOutputStream();) {
@@ -211,9 +210,9 @@ boolean includeStackTrace) {
                     ​        }catch (IOException e){
                     ​            e.printStackTrace();
                     ​        }
-                    ​    }</p>
-                    <pre><code>
-</code></pre>
+                    ​    }
+                    </code></pre></p>
+
                 </li>
 
             </ul>
