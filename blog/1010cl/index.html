@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="Fan">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="https://alili.tech/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+    <!--<span id="actions"><ul><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-prev").toggle();'-->
+                                                                       <!--onmouseout='$("#i-prev").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-next").toggle();'-->
+                                                                       <!--onmouseout='$("#i-next").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"-->
+                                                                                              <!--aria-hidden="true"-->
+                                                                                              <!--onmouseover='$("#i-top").toggle();'-->
+                                                                                              <!--onmouseout='$("#i-top").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'-->
+                                 <!--onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span-->
+        <!--id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"-->
+                                                                                  <!--style="display:none;">Next post</span> <span-->
+        <!--id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"-->
+                                                                               <!--style="display:none;">Share post</span>-->
+    <!--</span>-->
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">RESTful API错误处理</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-10</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">spring</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <ul>
+                <li><h3>springBoot中默认的错误处理机制</h3>
+                    <ul>
+                        <li>浏览器发出的请求，若发生错误，则重定向为/error,进入BasicErrorController的errorHtml方法处理</li>
+
+                    </ul>
+                    <pre><code>@Controller
+@RequestMapping(&quot;${server.error.path:${error.path:/error}}&quot;)
+public class BasicErrorController extends AbstractErrorController {
+    @RequestMapping(produces = &quot;text/html&quot;)//产生html类型的数据；浏览器发送的请求来到这个方法处理
+    public ModelAndView errorHtml(HttpServletRequest request,
+            HttpServletResponse response) {
+        HttpStatus status = getStatus(request);
+        Map&lt;String, Object&gt; model = Collections.unmodifiableMap(getErrorAttributes(
+                request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));
+        response.setStatus(status.value());
+        //去哪个页面作为错误页面；包含页面地址和页面内容
+        ModelAndView modelAndView = resolveErrorView(request, response, status, model);
+        return (modelAndView == null ? new ModelAndView(&quot;error&quot;, model) : modelAndView);
+    }
+</code></pre>
+                    <ul>
+                        <li>非浏览器发出的请求，若发生错误，进入BasicErrorController的error方法处理</li>
+
+                    </ul>
+                    <pre><code>@RequestMapping
+    @ResponseBody    //产生json数据，其他客户端来到这个方法处理；
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; error(HttpServletRequest request) {
+        Map&lt;String, Object&gt; body = getErrorAttributes(request,
+                isIncludeStackTrace(request, MediaType.ALL));
+        HttpStatus status = getStatus(request);
+        return new ResponseEntity&lt;Map&lt;String, Object&gt;&gt;(body, status);
+    }
+</code></pre>
+                    <h3>自定义异常处理</h3>
+                    <ul>
+                        <li><p>如何定制浏览器请求发生错误时页面</p>
+                            <ol>
+                                <li><p><code>有模板引擎的情况下：error/状态码<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span></code>【将错误页面命名为 错误状态码.html 放在模板引擎文件夹里面的error文件夹下】，发生此状态码的错误就会来到对应的页面；我们可以使用4xx和5xx作为错误页面的文件名来匹配这种类型的所有错误，精确优先（优先寻找精确的状态码.html）；</p>
+                                    <ul>
+                                        <li><p>页面能获取的信息：</p>
+                                            <ul>
+                                                <li>timestamp：时间戳</li>
+                                                <li>status：状态码</li>
+                                                <li>error：错误提示</li>
+                                                <li>exception：异常对象</li>
+                                                <li>message：异常消息</li>
+                                                <li>errors：JSR303数据校验的错误都在这里</li>
+
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li><p>没有模板引擎（模板引擎找不到这个错误页面），静态资源文件夹下找；</p>
+                                </li>
+                                <li><p>以上都没有错误页面，就是默认来到SpringBoot默认的错误提示页面；</p>
+                                </li>
+
+                            </ol>
+                        </li>
+                        <li><p>如何定制请求错误时的json数据</p>
+                            <ol>
+                                <li><p>自定义异常处理&amp;返回定制json数据；</p>
+                                    <pre><code>@ControllerAdvice
+public class MyExceptionHandler {
+@ExceptionHandler(UserNotExistException.class)
+@ResponseBody
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+public Map&lt;String,Object&gt; UserNotExistExceptionHandler(UserNotExistException ex){
+  HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+  result.put(&quot;id&quot;, ex.getId());
+  result.put(&quot;message&quot;, ex.getMessage());
+  return result;
+}
+}
+//没有自适应效果...
+</code></pre>
+                                </li>
+                                <li><p>转发到/error进行自适应响应效果处理</p>
+                                </li>
+
+                            </ol>
+                            <pre><code>  @ExceptionHandler(UserNotExistException.class)
+  public String UserNotExistExceptionHandler(UserNotExistException ex,     HttpServletRequest request) {
+    HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+    result.put(&quot;id&quot;, ex.getId());
+    result.put(&quot;message&quot;, ex.getMessage());
+    //传入我们自己的错误状态码 4xx 5xx，否则就不会进入定制错误页面的解析流程
+    request.setAttribute(&quot;javax.servlet.error.status_code&quot;,500);
+    return &quot;forward:/error&quot;;
+}
+</code></pre>
+                            <ol start='3' >
+                                <li>响应数据中添加定制属性</li>
+
+                            </ol>
+                            <ul>
+                                <li><p>页面上能用的数据，或者是json返回能用的数据都是通过errorAttributes.getErrorAttributes得到
+                                    自定义ErrorAttributes：</p>
+                                    <pre><code>//给容器中加入我们自己定义的ErrorAttributes
+@Component
+public class MyErrorAttributes extends DefaultErrorAttributes {
+@Override
+public Map&lt;String, Object&gt; getErrorAttributes(RequestAttributes requestAttributes,
+boolean includeStackTrace) {
+  Map&lt;String, Object&gt; map = super.getErrorAttributes(requestAttributes,
+  includeStackTrace);
+  map.put(&quot;company&quot;,&quot;dzg&quot;);
+  return map;
+  }
+}
+</code></pre>
+                                </li>
+
+                            </ul>
+                            <pre><code>
+</code></pre>
+                        </li>
+
+                    </ul>
+                </li>
+                <li><p>    @GetMapping(&quot;/{id}&quot;)
+                    ​    public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
+                    ​        try (InputStream ips = new FileInputStream(new File(folder, id + &quot;.txt&quot;));
+                    ​             OutputStream ops = response.getOutputStream();) {
+                    ​            response.setContentType(&quot;application/x-download&quot;);
+                    ​            response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;filename=test.txt&quot;);
+                    ​            IOUtils.copy(ips, ops);
+                    ​            ops.flush();
+                    ​        }catch (IOException e){
+                    ​            e.printStackTrace();
+                    ​        }
+                    ​    }</p>
+                    <pre><code>
+</code></pre>
+                </li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    if (location.host !== 'alili.tech') return;
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>

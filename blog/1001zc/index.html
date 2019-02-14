@@ -66,10 +66,10 @@
     <section id="wrapper" class="home">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <header>
-                <h1 class="posttitle" itemprop="name headline">SpringMVC开发RESTful API</h1>
+                <h1 class="posttitle" itemprop="name headline">基于注解的spring开发之组件注册</h1>
                 <div class="meta">
                     <div class="postdate">
-                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-20</time>
+                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-01</time>
                     </div>
                     <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
                             id="busuanzi_value_page_pv">0</span></span></div>
@@ -78,6 +78,192 @@
                 </div>
             </header>
             <!--markdown-->
+            <ul>
+                <li><h3><strong>@Configuration</strong>注解 这个相当于配置文件，即告诉spring这个一个配置类。</h3>
+                </li>
+                <li><p><strong>@Bean</strong>
+                    给容器注册一个Bean;类型为返回值的类型，id默认是用方法名作为id.</p>
+                </li>
+
+            </ul>
+            <pre><code>@Configuration
+public class MainConfig {
+    @Bean
+    public Person per(){
+        return new Person(&quot;李四&quot;,22 );
+    }
+}
+</code></pre>
+            <p>这个基本就相当于以前采用的xml配置文件如下：</p>
+            <pre><code>&lt;bean id=&quot;per&quot; class=&quot;com.learn.entity.Person&quot;&gt;
+     &lt;property name=&quot;name&quot; value=&quot;李四&quot; /&gt;
+     &lt;property name=&quot;age&quot; value=&quot;22&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+            <hr />
+            <ol start='3' >
+                <li><p><strong>@ComponentScan</strong>
+                    自动包扫描注解
+                    value:指定要扫描的包
+                    excludeFilters=Filter[] 指定扫描的时候按照什么规则排除哪些组件。
+                    includeFilters=Filter[] 指定扫描的时候只需要包含哪些组件。（注意的是包扫描默认的是扫描所有的，也就是use-default-filters=”true”，所以需要设置为false。 这个和配置文件一样） </p>
+                    <ul>
+                        <li>FilterType.ANNOTATION ：按照注解的方式 </li>
+                        <li>FilterType.ASSIGNABLE_TYPE：按照给定的类型 </li>
+                        <li>FilterType.CUSTOM：使用自定义规则。 使用这个需要是TypeFilter的实现类
+                            FilterType.CUSTOM使用 案例如下：</li>
+
+                    </ul>
+                </li>
+
+            </ol>
+            <pre><code>public class MyFilterCustom implements TypeFilter {
+    /**
+     * metadataReader 读取到的当前正在扫描的类的信息
+     * metadataReaderFactory 可以获取到其它任何类的信息
+     */
+    public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
+            throws IOException {
+        //获取当前类注解的信息
+        AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
+        //获取当前正在扫描的类的信息
+        ClassMetadata classMetadata = metadataReader.getClassMetadata();
+        //获取当前类资源（类路径）
+        Resource resource = metadataReader.getResource();
+        String className = classMetadata.getClassName();
+        System.out.println(&quot;当前扫描的类的信息&quot;+className);
+        if(className.contains(&quot;Controller&quot;)){
+            return true;
+        }
+        return false;
+    }
+}
+</code></pre>
+            <pre><code>@Configuration
+@ComponentScans(value={
+        @ComponentScan(value=&quot;com.learn&quot;,
+                includeFilters={
+                        @Filter(type=FilterType.CUSTOM,classes={MyFilterCustom.class})
+                        },useDefaultFilters=false)
+})
+public class MainConfig {
+    @Bean
+    public Person per(){
+        return new Person(&quot;李四&quot;,22 );
+    }
+}
+</code></pre>
+            <ul>
+                <li>FilterType.ASPECTJ：使用ASPECTJ表达式（基本用不到） </li>
+                <li>FilterType.REGEX ：使用正则表达式</li>
+
+            </ul>
+            <pre><code>@Configuration
+@ComponentScan(value=&quot;com.learn&quot;,
+includeFilters={
+        @Filter(type=FilterType.ANNOTATION,
+                classes={Controller.class}
+                )},useDefaultFilters=false)
+public class MainConfig {
+    @Bean
+    public Person per(){
+        return new Person(&quot;李四&quot;,22 );
+    }
+}
+</code></pre>
+            <hr />
+            <ol start='4' >
+                <li>@ComponentScans 这个就是多个scan的几个集合，也就是可以定义多个规则。 如果是jdk1.8以后的，本身也是可以多些几次scan。 不用scans也可以</li>
+
+            </ol>
+            <pre><code>@Configuration
+@ComponentScans(value={
+        @ComponentScan(value=&quot;com.learn&quot;,
+                includeFilters={
+                        @Filter(type=FilterType.ANNOTATION,
+                                classes={Controller.class}
+                                )},useDefaultFilters=false)
+})
+public class MainConfig {
+    @Bean
+    public Person per(){
+        return new Person(&quot;李四&quot;,22 );
+    }
+}
+</code></pre>
+            <hr />
+            <ol start='5' >
+                <li><p>@Scope 作用范围</p>
+                    <ul>
+                        <li>prototype 多实例的 备注：IOC容器启动并不会去调用方法创建对象放在容器中，而是在每次获取的时候才会调用方法创建对象，且每次创建的都是一个新的，即多实例。</li>
+                        <li>singleton 单实例的（默认值） 备注：默认在单实例的情况下，IOC容器启动的时候会调用方法创建对象，放入iOC容器中。 以后每次获取就是从容器中拿，即对象都是一个。</li>
+                        <li>request 同一次请求创建一个实例（web环境中才能用到，且基本不用）</li>
+                        <li>session 同一个session创建一个实例（web环境中才能用到，且基本不用）</li>
+
+                    </ul>
+                </li>
+
+            </ol>
+            <ul>
+                <li>默认单例的情况:</li>
+
+            </ul>
+            <pre><code>@Configuration
+public class MainConfig2 {
+    @Bean
+    public Person person(){
+        return new Person(&quot;张三&quot;, 28);
+    }
+}
+</code></pre>
+            <ul>
+                <li>使用多例的情况:</li>
+
+            </ul>
+            <pre><code>@Configuration
+public class MainConfig2 {
+    @Bean
+    @Scope(&quot;prototype&quot;)  //多例
+    public Person person(){
+        return new Person(&quot;张三&quot;, 28);
+    }
+}
+</code></pre>
+            <ol start='6' >
+                <li><strong>@Lazy</strong> 懒加载，针对单实例的bean
+                    懒加载：容器启动不创建对象。第一次使用（获取bean）创建的对象，并初始化。</li>
+
+            </ol>
+            <pre><code>@Configuration
+public class MainConfig2 {
+    @Bean
+    @Lazy
+    public Person person(){
+        System.out.println(&quot;调用了person方法&quot;);
+        return new Person(&quot;张三&quot;, 28);
+    }
+}
+</code></pre>
+            <ol start='7' >
+                <li><strong>@Conditional</strong> 按照一定的条件进行判断，满足条件给容器中注册bean。</li>
+
+            </ol>
+            <pre><code>@Configuration
+public class MainConfig2 {
+
+    @Bean(&quot;win&quot;)
+    @Conditional(WindowConditional.class)
+    public Person person1(){
+        return new Person(&quot;Windows&quot;, 70);
+    }
+    @Bean(&quot;Lin&quot;)
+    @Conditional(LinuxConditional.class)
+    public Person person2(){
+        return new Person(&quot;Linux&quot;, 80);
+    }
+}
+</code></pre>
+
         </article>
         <script src="/js/av-min.js"></script>
         <script src="/js/Valine.min.js"></script>
