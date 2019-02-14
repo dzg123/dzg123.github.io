@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="Fan">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="https://alili.tech/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+    <!--<span id="actions"><ul><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-prev").toggle();'-->
+                                                                       <!--onmouseout='$("#i-prev").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-next").toggle();'-->
+                                                                       <!--onmouseout='$("#i-next").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"-->
+                                                                                              <!--aria-hidden="true"-->
+                                                                                              <!--onmouseover='$("#i-top").toggle();'-->
+                                                                                              <!--onmouseout='$("#i-top").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'-->
+                                 <!--onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span-->
+        <!--id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"-->
+                                                                                  <!--style="display:none;">Next post</span> <span-->
+        <!--id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"-->
+                                                                               <!--style="display:none;">Share post</span>-->
+    <!--</span>-->
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">SpringSecurity中的Bcrypt加密方法源码解析</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-15</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">spring</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+
+            <!--markdown-->
+            <blockquote><p>spring Security中的BCryptPasswordEncoder类采用SHA-256 +随机盐+密钥对密码进行加密。SHA是一系列的加密算法，有SHA-1、SHA-2、SHA-3三大类，SHA-256是SHA-2下细分出的一种算法，此算法发生哈希碰撞的概率几乎为0，安全性高。</p>
+            </blockquote>
+            <ul>
+                <li><p>BCryptPasswordEncoder类实现了PasswordEncoder接口的encode和matches方法，来进行密码加密和匹配</p>
+                    <ol>
+                        <li><p>加密(encode)：注册用户时，使用SHA-256+随机盐+密钥把用户输入的密码进行hash处理，得到密码的hash值，然后将其存入数据库中。</p>
+                            <ul>
+                                <li>BCryptPasswordEncoder类定义了两个final变量，用来控制encode方法的加密规则。strength是一个取值在-1或者4~31之间的int变量，而继承了java.util.random的SecureRandom类则提供了一种强加密RNG手段(PRNG)，random是一个SecureRandom类的final变量，为后续生成salt起作用。</li>
+
+                            </ul>
+                            <pre><code>  private final int strength;
+  private final SecureRandom random;
+</code></pre>
+                            <ul>
+                                <li>encode方法根据strength值的不同和有无SecureRandom对象使用了三种方式生成salt,但这三种方式本质其实是类似的，底层都是调用BCrypt类的gensalt(this.strength, this.random)方法，只是如果没有传入自定义的strength和SecureRandom对象，BCrypt类会自动帮我们将strength设为10和实例化SecureRandom对象传入方法中:</li>
+
+                            </ul>
+                            <pre><code>public String encode(CharSequence rawPassword) {
+//声明一个“盐”变量
+String salt;
+//生成随机盐
+if (this.strength &gt; 0) {
+    if (this.random != null) {
+        salt = BCrypt.gensalt(this.strength, this.random);
+    } else {
+        salt = BCrypt.gensalt(this.strength);
+    }
+      } else {
+    salt = BCrypt.gensalt();
+          }
+      return BCrypt.hashpw(rawPassword.toString(), salt);
+    }
+</code></pre>
+                            <ul>
+                                <li>只有当strength在<strong>[4,31]</strong>取值时，gensalt方法才会返回“盐”值，此方法通过调用random.nextBytes()和encode_base64()方法编码生成随机盐字符串;nextBytes()方法会调用SecureRandomSpi抽象类的engineNextBytes方法生成一串长度为16随机的byte数组，而encode_base64()方法通过多次借助byte数组和长度为64的char数组base64_code（包含大部分ASCII字符）进行Base64编码，最终生成长度为29的随机盐salt字符串。</li>
+
+                            </ul>
+                        </li>
+
+                    </ol>
+                </li>
+
+            </ul>
+
+            <pre><code class='language-java' lang='java'> public static String gensalt(int log_rounds, SecureRandom random) {
+    if (log_rounds &gt;= 4 &amp;&amp; log_rounds &lt;= 31) {
+    StringBuilder rs = new StringBuilder();
+    byte[] rnd = new byte[16];
+    random.nextBytes(rnd);
+    rs.append(&quot;$2a$&quot;);
+    if (log_rounds &lt; 10) {
+        rs.append(&quot;0&quot;);
+    }
+    rs.append(log_rounds);
+    rs.append(&quot;$&quot;);
+    encode_base64(rnd, rnd.length, rs);
+    return rs.toString();
+} else {
+    throw new IllegalArgumentException(&quot;Bad number of rounds&quot;);
+}
+}
+
+</code></pre>
+            <pre><code class='language-java' lang='java'>static void encode_base64(byte[] d, int len, StringBuilder rs) throws IllegalArgumentException {
+ int off = 0;
+ if (len &gt; 0 &amp;&amp; len &lt;= d.length) {
+     while(off &lt; len) {
+         int c1 = d[off++] &amp; 255;
+         rs.append(base64_code[c1 &gt;&gt; 2 &amp; 63]);
+         c1 = (c1 &amp; 3) &lt;&lt; 4;
+         if (off &gt;= len) {
+             rs.append(base64_code[c1 &amp; 63]);
+             break;
+         }
+         int c2 = d[off++] &amp; 255;
+         c1 |= c2 &gt;&gt; 4 &amp; 15;
+         rs.append(base64_code[c1 &amp; 63]);
+         c1 = (c2 &amp; 15) &lt;&lt; 2;
+         if (off &gt;= len) {
+             rs.append(base64_code[c1 &amp; 63]);
+             break;
+         }
+         c2 = d[off++] &amp; 255;
+         c1 |= c2 &gt;&gt; 6 &amp; 3;
+         rs.append(base64_code[c1 &amp; 63]);
+         rs.append(base64_code[c2 &amp; 63]);
+         }
+     } else {
+     throw new IllegalArgumentException(&quot;Invalid len&quot;);
+     }
+ }
+</code></pre>
+
+            <ol>
+                <li><ul>
+                    <li>将生成的盐值和原始密码传入BCrypt类的<strong>hashpw()</strong>方法进行加密，该方法对传入的盐进行了一系列校验（长度、版本等等），确保是有效salt。同时将原始密码转成passwordb字节数组。一个有效的salt前7位是校验位，包含了盐版本、盐rounds，第8位到30位为<strong>real_salt</strong>，将real_salt传入decode_base64方法进行转码，字符串real_salt被转换成字节数组输出给长度为16的saltb，接着将saltb和passwordb字节数组传入crypt_raw()方法进行SHA-256加密生成伪随机hash值，最后将saltb和hash值分别进行encode_base64方法进行Base64编码(其中saltb字节数组通过编码重新变成realSalt字符串,这也是后续matches方法匹配密码的关键点\color{red}{关键点})，产生的结果拼接成60位的随机密码，前7位同样是校验位，第8位到30位为real_salt。</li>
+
+                </ul>
+                    <pre><code> public static String hashpw(String password, String salt) throws IllegalArgumentException {
+             .....dosomework.....
+     int rounds = Integer.parseInt(salt.substring(off, off + 2));
+      String real_salt = salt.substring(off + 3, off + 25);
+      byte[] passwordb;
+      try {
+       passwordb = (password + (minor &gt;= &#39;a&#39; ? &quot;\u0000&quot; : &quot;&quot;)).getBytes(&quot;UTF-8&quot;);
+   } catch (UnsupportedEncodingException var13) {
+         throw new AssertionError(&quot;UTF-8 is not supported&quot;);
+      }
+       byte[] saltb = decode_base64(real_salt, 16);
+       BCrypt B = new BCrypt();
+       byte[] hashed = B.crypt_raw(passwordb, saltb, rounds);
+       rs.append(&quot;$2&quot;);
+       if (minor &gt;= &#39;a&#39;) {
+        rs.append(minor);
+        }
+       rs.append(&quot;$&quot;);
+       if (rounds &lt; 10) {
+         rs.append(&quot;0&quot;);
+        }
+        rs.append(rounds);
+        rs.append(&quot;$&quot;);
+        encode_base64(saltb, saltb.length, rs);
+        encode_base64(hashed, bf_crypt_ciphertext.length * 4 - 1, rs);
+        return rs.toString();
+   }
+</code></pre>
+                </li>
+                <li><p>密码匹配(matches)：用户登录时，密码匹配阶段并没有进行密码解密（因为密码经过Hash处理，是不可逆的），而是将输入的密码与数据库查出的密码同样传入BCrypt类的<strong>pwhash()</strong>中进行加密，由于算法将加密后密码的第8位到30位作为<strong>real_salt</strong>,第一次执行pwhash方法传入的盐和第二次传入的盐值(数据库密码)是包含关系，两者的前30位是相同的。那么根据相同的real_salt和相同的password生成的加密密码很显然也是相同的。</p>
+                </li>
+
+            </ol>
+            <pre><code> public boolean matches(CharSequence rawPassword, String encodedPassword) {
+      if (encodedPassword != null &amp;&amp; encodedPassword.length() != 0) {
+      if (!this.BCRYPT_PATTERN.matcher(encodedPassword).matches()) {
+        this.logger.warn(&quot;Encoded password does not look like BCrypt&quot;);
+        return false;
+    } else {
+        return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
+        }
+    } else {
+        this.logger.warn(&quot;Empty encoded password&quot;);
+        return false;
+    }
+}
+</code></pre>
+
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    if (location.host !== 'alili.tech') return;
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
