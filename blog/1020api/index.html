@@ -46,42 +46,28 @@
                                                                               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
                                                                               style="display:none;"><i
         class="fa fa-chevron-up fa-lg"></i></a> <span
-        id="menu"><span id="nav"><ul><li><a href="/">Home</a></li><li><a href="/archive/">Archives</a></li><li><a
-        href="/about/">About</a></li><li><a href="http://github.com/Fantasy9527"
-                                            target="_blank">Github</a></li></ul></span><br><span id="actions"><ul><li><a
-        class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"
-                                                                       onmouseover='$("#i-prev").toggle();'
-                                                                       onmouseout='$("#i-prev").toggle();'></i></a></li><li><a
-        class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"
-                                                                       onmouseover='$("#i-next").toggle();'
-                                                                       onmouseout='$("#i-next").toggle();'></i></a></li><li><a
-        class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"
-                                                                                              aria-hidden="true"
-                                                                                              onmouseover='$("#i-top").toggle();'
-                                                                                              onmouseout='$("#i-top").toggle();'></i></a></li><li><a
-        class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'
-                                 onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span
-        id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"
-                                                                                  style="display:none;">Next post</span> <span
-        id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"
-                                                                               style="display:none;">Share post</span></span><br><div
-        id="share" style="display: none">
-</div><div id="toc"><nav id="TableOfContents">
-    <ul>
-        <li>
-            <ul>
-                <li><a href="#示例-1">示例 1:</a>
-                </li>
-                <li><a href="#示例-2">示例 2:</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#javascript">Javascript</a>
-        </li>
-    </ul>
-</nav>
-</div>
+        id="menu"><span id="nav"><ul><li><a href="/">Home</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+    <!--<span id="actions"><ul><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-prev").toggle();'-->
+                                                                       <!--onmouseout='$("#i-prev").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-next").toggle();'-->
+                                                                       <!--onmouseout='$("#i-next").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"-->
+                                                                                              <!--aria-hidden="true"-->
+                                                                                              <!--onmouseover='$("#i-top").toggle();'-->
+                                                                                              <!--onmouseout='$("#i-top").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'-->
+                                 <!--onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span-->
+        <!--id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"-->
+                                                                                  <!--style="display:none;">Next post</span> <span-->
+        <!--id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"-->
+                                                                               <!--style="display:none;">Share post</span>-->
+    <!--</span>-->
+
 </span>
 </div>
 <div class="content index width mx-auto px3 my3">
@@ -118,8 +104,9 @@
 
                         <hr>
                     </li>
-
+                </ul>
                     <li><p>Level 0:The Swamp of POX</p>
+
 
                         <ul>
                             <li>使用http作为传输方式</li>
@@ -169,7 +156,8 @@
                     <li><p>@RequestParam</p>
 
                         <ul>
-                            <li>映射请求参数到java方法的参数
+                            <li>
+                                <p>映射请求参数到java方法的参数</p>
                                 <pre>
                                 <code>
                                     @GetMapping("/user/login")
@@ -178,7 +166,8 @@
                                     ......
                                     return ResultDto.success();
                                     }
-                                </code></li>
+                                </code></pre>
+                            </li>
                         </ul>
                     </li>
 
@@ -201,7 +190,8 @@
                                     list.add(new User());
                                     return list;
                                     }
-                                </code></li>
+                                </code></pre>
+                            </li>
                         </ul>
                     </li>
 
@@ -232,11 +222,11 @@ public User getInfo(@PathVariable("id") String id){
                                     <li>使用接口来声明多个视图
                                         <pre>
                                         <code>
-                                            @Data
-                                            public class User {
-                                            public interface UserSimpleView {};
-                                            public interface UserDetailView extends UserSimpleView {};
-                                            @JsonView(UserSimpleView.class)
+@Data
+public class User {
+public interface UserSimpleView {};
+ public interface UserDetailView extends UserSimpleView {};
+@JsonView(UserSimpleView.class)
                                             private String username;
                                             @JsonView(UserDetailView.class)
                                             private String password;
@@ -246,6 +236,7 @@ public User getInfo(@PathVariable("id") String id){
                                         <ol>
                                             <li>在值对象的get方法上指定视图</li>
                                         </ol>
+                                              </pre>
                                     </li>
 
                                     <li><p>在Controller方法上指定视图</p>
@@ -325,17 +316,15 @@ public User create(@Valid @RequestBody User user, BindingResult errors) {
     return user;
 }
 </code></pre>
-
+<div style="text-align: center;">
                         <h2 id="常用的注解校验">常用的注解校验</h2>
-
                         <p>
                             <img src="https://upload-images.jianshu.io/upload_images/14796878-c3d2121adbf056d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
-                                 alt="image.png" style="width: 420px;height: 240px;margin: 0 auto"></p></li>
-                </ul>
-
+                                 alt="image.png" style="width: 420px;height: 240px;margin: 0 auto"></p>
                 <p>
                     <img src="https://upload-images.jianshu.io/upload_images/14796878-35a13b446c3989d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
                          style="width: 420px;height: 240px;margin: 0 auto"    alt="image.png"></p>
+            </div>
 
             </div>
             <!--<div class="content" itemprop="articleBody"><p>编写一个函数来查找字符串数组中的最长公共前缀。</p>-->
@@ -403,9 +392,9 @@ public User create(@Valid @RequestBody User user, BindingResult errors) {
     <div class="footer-right">
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/blog/">Archives</a></li>
-                <li><a href="/about/">About</a></li>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
                 <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
             </ul>
         </nav>
@@ -455,6 +444,6 @@ public User create(@Valid @RequestBody User user, BindingResult errors) {
                 console.error(e)
             });
     }
-    }</script>
+</script>
 </body>
 </html>
