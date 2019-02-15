@@ -193,7 +193,7 @@ button.addActionListener(new ActionListener() {
             <figure><table>
                 <thead>
                 <tr><th>接口</th><th>参数</th><th>返回类型</th><th>描述</th></tr></thead>
-                <tbody><tr><td>Predicate<T></td><td>T</td><td>boolean</td><td>用于判别一个对象。比如求一个人是否为男性</td></tr><tr><td>Consumer<T></td><td>T</td><td>void</td><td>用于接收一个对象进行处理但没有返回，比如接收一个人并打印他的名字</td></tr><tr><td>Function&lt;T, R&gt;</td><td>T</td><td>R</td><td>转换一个对象为不同类型的对象</td></tr><tr><td>Supplier<T></td><td>None</td><td>T</td><td>提供一个对象</td></tr><tr><td>UnaryOperator<T></td><td>T</td><td>T</td><td>接收对象并返回同类型的对象</td></tr><tr><td>BinaryOperator<T></td><td>(T, T)</td><td>T</td><td>接收两个同类型的对象，并返回一个原类型对象</td></tr></tbody>
+                <tbody><tr><td>Predicate<T></td><td>T</td><td>boolean</td><td>用于判别一个对象。比如求一个人是否为男性</td></tr><tr><td>Consumer< T ></td><td>T</td><td>void</td><td>用于接收一个对象进行处理但没有返回，比如接收一个人并打印他的名字</td></tr><tr><td>Function&lt;T, R&gt;</td><td>T</td><td>R</td><td>转换一个对象为不同类型的对象</td></tr><tr><td>Supplier<T></td><td>None</td><td>T</td><td>提供一个对象</td></tr><tr><td>UnaryOperator<T></td><td>T</td><td>T</td><td>接收对象并返回同类型的对象</td></tr><tr><td>BinaryOperator<T></td><td>(T, T)</td><td>T</td><td>接收两个同类型的对象，并返回一个原类型对象</td></tr></tbody>
             </table></figure>
             <p>其中 <code>Cosumer</code> 与 <code>Supplier</code> 对应，一个是消费者，一个是提供者。</p>
             <p><code>Predicate</code> 用于判断对象是否符合某个条件，经常被用来过滤对象。</p>
