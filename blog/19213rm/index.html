@@ -241,7 +241,7 @@ assertEquals(Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), collect
 </code></pre>
             <h4>3.2.2 map</h4>
             <p>如果有一个函数可以将一种类型的值转换成另外一种类型，<code>map</code> 操作就可以使用该函数，将一个流中的值转换成一个新的流。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160120326-1422995090.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/map.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <pre><code>List&lt;String&gt; collected = Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;hello&quot;)
                                .map(string -&gt; string.toUpperCase())
                                .collect(toList());
@@ -249,10 +249,10 @@ assertEquals(asList(&quot;A&quot;, &quot;B&quot;, &quot;HELLO&quot;), collected)
 
 </code></pre>
             <p><code>map</code> 方法就是接受的一个 <code>Function</code> 的匿名函数类，进行的转换。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160134904-1768291565.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/function.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <h4>3.2.3 filter</h4>
             <p>遍历数据并检查其中的元素时，可尝试使用 <code>Stream</code> 中提供的新方法 <code>filter</code>。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160150935-2057482897.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/filter.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <pre><code>List&lt;String&gt; beginningWithNumbers =
         Stream.of(&quot;a&quot;, &quot;1abc&quot;, &quot;abc1&quot;)
               .filter(value -&gt; isDigit(value.charAt(0)))
@@ -261,10 +261,10 @@ assertEquals(asList(&quot;1abc&quot;), beginningWithNumbers);
 
 </code></pre>
             <p><code>filter</code> 方法就是接受的一个 <code>Predicate</code> 的匿名函数类，判断对象是否符合条件，符合条件的才保留下来。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160211779-1658294349.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/predicate.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <h4>3.2.4 flatMap</h4>
             <p><code>flatMap</code> 方法可用 <code>Stream</code> 替换值，然后将多个 <code>Stream</code> 连接成一个 <code>Stream</code>。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160225482-436563893.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/flatMap.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <pre><code>List&lt;Integer&gt; together = Stream.of(asList(1, 2), asList(3, 4))
                                .flatMap(numbers -&gt; numbers.stream())
                                .collect(toList());
@@ -293,7 +293,7 @@ assertEquals(minInt, 1);
             </ol>
             <h4>3.2.6 reduce</h4>
             <p><code>reduce</code> 操作可以实现从一组值中生成一个值。在上述例子中用到的 <code>count</code>、<code>min</code> 和 <code>max</code> 方法,因为常用而被纳入标准库中。事实上，这些方法都是 <code>reduce</code> 操作。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160243217-1836446247.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/reduce.PNG' alt='img' referrerPolicy='no-referrer' /></p>
             <p>上图展示了 <code>reduce</code> 进行累加的一个过程。具体的代码如下：</p>
             <pre><code>int result = Stream.of(1, 2, 3, 4)
                    .reduce(0, (acc, element) -&gt; acc + element);
@@ -322,7 +322,7 @@ assertEquals(sumSize, 21);
 
 </code></pre>
             <p>这里求的是一个字符串列表中各个字符串长度总和。</p>
-            <p><img src='https://images2015.cnblogs.com/blog/1046505/201610/1046505-20161020160307935-1086007264.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/sum.PNG' alt='img' referrerPolicy='no-referrer'style="width: 400px;height: 400px;" /></p>
             <p>如果你去计算这段代码所花的时间，很可能比不加上 <code>parallel()</code> 方法花的时间更长。这是因为数据并行化会先对数据进行分块，然后对每块数据开辟线程进行运算，这些地方会花费额外的时间。并行化操作只有在 <strong>数据规模比较大</strong> 或者 <strong>数据的处理时间比较长</strong> 的时候才能体现出有事，所以并不是每个地方都需要让数据并行化，应该具体问题具体分析。</p>
             <h3>3.4 其他</h3>
             <h4>3.4.1 收集器</h4>
