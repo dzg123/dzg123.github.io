@@ -86,7 +86,6 @@ $(document).ready(function () {
 
 $(function () {
   if(location.pathname !=='/') return;
-  if(location.href !== 'https://dzg123.github.io/') location.href = "https://dzg123.github.io/";
     var random = Math.floor(Math.random() * 5+1).toString();
   $.get("/data/shanbayToday"+random+".json", function (data) {
     var data = data.data;
@@ -134,6 +133,7 @@ $(function () {
 
 //  toc 里面是a标签问题
 $(function(){
+    if(location.href !== 'https://dzg123.github.io/') location.href = "https://dzg123.github.io/";
   if($("#toc li a")){
     $("#toc a").each(function(index){
       var ele = $(this);
