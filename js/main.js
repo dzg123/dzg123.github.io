@@ -87,8 +87,8 @@ $(document).ready(function () {
 $(function () {
   if(location.pathname !=='/') return;
     console.log(location.pathname);
-    Math.random()
-  $.get("/data/shanbayToday.json", function (data) {
+    var random = Math.floor(Math.random() * 5+1).toString();
+  $.get("/data/shanbayToday"+random+".json", function (data) {
     var data = data.data;
     // var str =  data.content+'\n'
     // + data.translation+"\n---- "
