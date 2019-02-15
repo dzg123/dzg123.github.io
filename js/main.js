@@ -86,6 +86,8 @@ $(document).ready(function () {
 
 $(function () {
   if(location.pathname !=='/') return;
+    console.log(location.pathname);
+    Math.random()
   $.get("/data/shanbayToday.json", function (data) {
     var data = data.data;
     // var str =  data.content+'\n'

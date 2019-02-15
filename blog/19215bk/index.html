@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="Fan">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="https://alili.tech/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+    <!--<span id="actions"><ul><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-prev").toggle();'-->
+                                                                       <!--onmouseout='$("#i-prev").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"-->
+                                                                       <!--onmouseover='$("#i-next").toggle();'-->
+                                                                       <!--onmouseout='$("#i-next").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"-->
+                                                                                              <!--aria-hidden="true"-->
+                                                                                              <!--onmouseover='$("#i-top").toggle();'-->
+                                                                                              <!--onmouseout='$("#i-top").toggle();'></i></a></li><li><a-->
+        <!--class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'-->
+                                 <!--onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span-->
+        <!--id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"-->
+                                                                                  <!--style="display:none;">Next post</span> <span-->
+        <!--id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"-->
+                                                                               <!--style="display:none;">Share post</span>-->
+    <!--</span>-->
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">如何使用hugo秒搭一个博客</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-15</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/hugo">hugo</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <blockquote><p>以往我们搭建blog要么学习一个编程语言+Web开发框架，要么使用现成的blog系统（如WordPress）。其实我们还可以使用Hugo。Hugo是由Go语言实现的静态网站生成器，它不需要数据库，所以页面都是通过MarkDown开发的页面。不用安装编程语言环境，不用安装数据库，只需要几个步骤就可以快速搭建一个blog出来。</p>
+            </blockquote>
+            <p> </p>
+            <ol>
+                <li>安装</li>
+
+            </ol>
+            <p> ---------------------------</p>
+            <p>推荐二进制安装（简单、快速）</p>
+            <p>到 <a href='https://github.com/spf13/hugo/releases'>Hugo Releases</a> 下载对应的操作系统版本的Hugo二进制文件（hugo或者hugo.exe）</p>
+            <p>Hugo Releases：<a href='https://github.com/gohugoio/hugo/releases' target='_blank' class='url'>https://github.com/gohugoio/hugo/releases</a></p>
+            <p>本文以Windows为例，所以下载：<strong>hugo_0.24.1_Windows-64bit.zip</strong></p>
+            <p>下载之后解压得到“hugo.exe”文件。</p>
+            <p>将hugo.exe所在的目录添加到系统环境变量PATH下面，打开cmd，输入“hugo version”。</p>
+            <p><img src='https://images2015.cnblogs.com/blog/311516/201707/311516-20170703141434737-679968384.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p> </p>
+            <ol start='2' >
+                <li>创建站点&amp;文章</li>
+
+            </ol>
+            <p>---------------------------------------</p>
+            <p>想要创建站点，一个命令搞定，切换到你想要创建站点的目录，输入：</p>
+            <pre><code>D:\git&gt;hugo new site blog
+Congratulations! Your new Hugo site is created in D:\git\blog.
+
+Just a few more steps and you&#39;re ready to go:
+
+1. Download a theme into the same-named folder.
+   Choose a theme from https://themes.gohugo.io/, or
+   create your own with the &quot;hugo new theme &lt;THEMENAME&gt;&quot; command.
+2. Perhaps you want to add some content. You can add single files
+   with &quot;hugo new &lt;SECTIONNAME&gt;\&lt;FILENAME&gt;.&lt;FORMAT&gt;&quot;.
+3. Start the built-in live server via &quot;hugo server&quot;.
+
+Visit https://gohugo.io/ for quickstart guide and full documentation.
+</code></pre>
+            <p>一个blog站点就创建好了。新建的站点目录结果如下：</p>
+            <pre><code>blog/
+    archetypes/
+    doc/
+    content/
+    data/
+    layouts/
+    static/
+    config.toml
+</code></pre>
+            <p>当前的站没有任何内容，也没做任何配置。</p>
+            <p>接下来切换到blog站点目录，创建一篇文章：</p>
+            <pre><code>D:\git&gt;cd blog
+D:\git\blog&gt;hugo new about.md
+</code></pre>
+            <p>该文件位于 blog/content/about.md目录下。打开编辑：</p>
+            <pre><code class='language-yml' lang='yml'>+++
+date = &quot;2017-07-03T15:37:11+08:00&quot;
+tags = [&quot;blog&quot;]
+title = &quot;my first blog&quot;
+//注意：写完文章后要把这个属性设为false，否则该文章不会显示在博客上
+draft: true
+
++++
+
+### 这里使用markdown来编写文章
+</code></pre>
+            <p>如果是博客日志，最好将md文件放在content的post目录里。</p>
+            <p> hugo new post/first.md
+                执行完后，会在content/post目录自动生成一个MarkDown格式的first.md文件：</p>
+            <pre><code class='language-yml' lang='yml'>+++
+date = &quot;2015-01-08T08:36:54-07:00&quot;
+draft = true
+title = &quot;first&quot;
+
++++
+</code></pre>
+            <p>+++可以替换为Jekyll一样的---，里面的内容是这篇文章的一些信息。</p>
+            <ol start='3' >
+                <li>安装主题</li>
+
+            </ol>
+            <hr />
+            <p>站点一定要有主题，安装主题应该是最难的一步了，因为不同的主题设置方式也会有所不同。</p>
+            <p>Hugo themes：<a href='https://themes.gohugo.io/' target='_blank' class='url'>https://themes.gohugo.io/</a></p>
+            <p>你可以到上面的网站中挑选你喜欢的主题。然后，根据指引找到github项目地址进行下载。</p>
+            <p>	1. 下载主题：</p>
+            <p>我使用的主题是：<a href='https://github.com/wd/hugo-fabric' target='_blank' class='url'>https://github.com/wd/hugo-fabric</a></p>
+            <p>把主题通过git克隆或直接下载到本地。放到 …/blog/themes/目录下。</p>
+            <p>	2. 使用主题：</p>
+            <p>生成主题资源文件（hugo-fabric为主题名）</p>
+            <pre><code class='language-cmd' lang='cmd'>D:\git\blog&gt;hugo -t hugo-fabric
+Started building sites ...
+Built site for language en:
+of 3 drafts rendered
+future content
+expired content
+regular pages created
+other pages created
+non-page files copied
+paginator pages created
+tags created
+categories created
+total in 35 ms
+</code></pre>
+            <p>将\blog\themes\hugo-fabric\exampleSite\config.toml 替换 \blog\config.toml</p>
+            <p>注：config.toml文件是核心，对网站的配置多数需要修改该文件，而每个主题的配置又不完全一样。</p>
+            <p> </p>
+            <ol start='4' >
+                <li>启动服务器</li>
+
+            </ol>
+            <hr />
+            <pre><code>D:\git\blog&gt;hugo server --theme=hugo-fabric
+WARNING: Site config&#39;s rssURI is deprecated and will be removed in a future release. Set baseName in outputFormats.RSS.
+Started building sites ...
+Built site for language en:
+draft content
+future content
+expired content
+regular pages created
+other pages created
+non-page files copied
+paginator pages created
+tags created
+categories created
+total in 9 ms
+Watching for changes in D:\git\blog\{data,content,layouts,static,themes}
+Serving pages from memory
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+
+</code></pre>
+            <p>打开浏览器访问：<a href='http://localhost:1313/' target='_blank' class='url'>http://localhost:1313/</a>即可搭建完成。</p>
+            <p>如果要自定义博客页面，请参考<a href='http://www.gohugo.org/'>hugo中文文档</a>。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    if (location.host !== 'alili.tech') return;
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
