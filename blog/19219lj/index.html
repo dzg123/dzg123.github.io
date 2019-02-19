@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">详解SpringBoot AOP 拦截器（Aspect注解方式）</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-19</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">springBoot</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>常用用于实现拦截的有：Filter、HandlerInterceptor、MethodInterceptor</p>
+            <p>第一种Filter属于Servlet提供的，后两者是spring提供的，HandlerInterceptor属于Spring MVC项目提供的，用来拦截请求，在MethodInterceptor之前执行。 实现一个HandlerInterceptor可以实现接口HandlerInterceptor，也可以继承HandlerInterceptorAdapter类，两种方法一样。这个不在本文范围，具体使用之前已经写过SpringBoot的（SpringMVC的使用一样，区别只是配置）</p>
+            <p>MethodInterceptor是AOP项目中的拦截器，它拦截的目标是方法，即使不是Controller中的方法。 </p>
+            <p>实现MethodInterceptor拦截器大致也分为两种，一种是实现MethodInterceptor接口，另一种利用Aspect的注解或配置。关于实现MethodInterceptor接口的这种方法，还需要在配置文件中做配置，在SpringMVC中使用还可以，在SpringBoot中使用起来似乎没有那么方便。</p>
+            <p>本文主要还是说Aspect注解方式，个人觉得这种方法才比较灵活，与配置与工程整个代码都没有耦合（你添加一个类，做几个注解就可以用了，无需在其他地方再做什么），更易应用。</p>
+            <ol>
+                <li>首先为你的SpringBoot项目添加maven依赖，让其支持aop（其实就是自动引入aop需要的一些jar）</li>
+
+            </ol>
+            <p>在pom.xml中添加依赖：</p>
+            <pre><code class='language-pom' lang='pom'>&lt;dependency&gt;
+ &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+ &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+            <ol start='2' >
+                <li>然后创建Aspect测试类：</li>
+
+            </ol>
+            <pre><code>@Aspect // FOR AOP
+@Order(-99) // 控制多个Aspect的执行顺序，越小越先执行
+@Component
+public class TestAspect {
+
+ @Before(&quot;@annotation(test)&quot;)// 拦截被TestAnnotation注解的方法；如果你需要拦截指定package指定规则名称的方法，可以使用表达式execution(...)，具体百度一下资料一大堆
+ public void beforeTest(JoinPoint point, TestAnnotation test) throws Throwable {
+  System.out.println(&quot;beforeTest:&quot; + test.name());
+ }
+
+ @After(&quot;@annotation(test)&quot;)
+ public void afterTest(JoinPoint point, TestAnnotation test) {
+  System.out.println(&quot;afterTest:&quot; + test.name());
+ }
+
+}
+</code></pre>
+            <ol start='3' >
+                <li>这样就完成了，然后创建一个Controller验证一下：</li>
+
+            </ol>
+            <pre><code>@RestController
+@RequestMapping(&quot;/test&quot;)
+public class TestController {
+
+ @TestAnnotation(name=&quot;abc&quot;)
+ @RequestMapping(&quot;/show&quot;)
+ public String show() {
+  return &quot;OK&quot;;
+ }
+
+ @RequestMapping(&quot;/show2&quot;)
+ public String show2() {
+  return &quot;OK2&quot;;
+ }
+}
+</code></pre>
+            <p>此时我们访问show请求，就会被拦截，控制台会打印输出。如果请求show2则不会被拦截。</p>
+            <p>注意： </p>
+            <ol>
+                <li>在application.properties中也不需要添加spring.aop.auto=true，因为这个默认就是true，值为true就是启用@EnableAspectJAutoProxy注解了。 </li>
+
+            </ol>
+            <ol start='2' >
+                <li>你不需要手工添加 @EnableAspectJAutoProxy 注解。 </li>
+
+            </ol>
+            <ol start='3' >
+                <li>当你需要使用CGLIB来实现AOP的时候，需要配置spring.aop.proxy-target-class=true，这个默认值是false，不然默认使用的是标准Java的实现。</li>
+
+            </ol>
+            <p>其实aspectj的拦截器会被解析成AOP中的advice，最终被适配成MethodInterceptor，这些都是Spring自动完成的，如果你有兴趣，详细的过程请参考springAOP的实现。</p>
+            <p><strong>关于集中拦截方法的区别总结：</strong> </p>
+            <ul>
+                <li>HandlerInterceptoer拦截的是请求地址，所以针对请求地址做一些验证、预处理等操作比较合适。当你需要统计请求的响应时间时MethodInterceptor将不太容易做到，因为它可能跨越很多方法或者只涉及到已经定义好的方法中一部分代码。 </li>
+
+            </ul>
+            <ul>
+                <li>MethodInterceptor利用的是AOP的实现机制，在本文中只说明了使用方式，关于原理和机制方面介绍的比较少，因为要说清楚这些需要讲出AOP的相当一部分内容。在对一些普通的方法上的拦截HandlerInterceptoer就无能为力了，这时候只能利用AOP的MethodInterceptor。 </li>
+
+            </ul>
+            <ul>
+                <li>Filter是Servlet规范规定的，不属于spring框架，也是用于请求的拦截。但是它适合更粗粒度的拦截，在请求前后做一些编解码处理、日志记录等。</li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
