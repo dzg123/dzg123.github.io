@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">java基础之Set</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-24</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/java">java</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>&nbsp;</p>
+            <p>转：<a href='https://www.jianshu.com/p/b48c47a42916' target='_blank' class='url'>https://www.jianshu.com/p/b48c47a42916</a></p>
+            <p>Set集合：</p>
+            <ul>
+                <li>Set继承于Collection接口，是一个不允许出现重复元素，并且无序的集合，主要有HashSet和TreeSet两大实现类。</li>
+
+            </ul>
+            <ul>
+                <li>在判断重复元素的时候，Set集合会调用hashCode()和equal()方法来实现。</li>
+
+            </ul>
+            <ul>
+                <li>HashSet是哈希表结构，主要利用HashMap的key来存储元素，计算插入元素的hashCode来获取元素在集合中的位置；</li>
+
+            </ul>
+            <ul>
+                <li>TreeSet是红黑树结构，每一个元素都是树中的一个节点，插入的元素都会进行排序；</li>
+
+            </ul>
+            <p>Set集合框架结构：</p>
+            <p>&nbsp;</p>
+            <p><img src='https:////upload-images.jianshu.io/upload_images/5621908-6d6c75cbd1581bb1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/424/format/webp' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <h3>1.1 Set常用方法</h3>
+            <p>与List接口一样，Set接口也提供了集合操作的基本方法。</p>
+            <p>但与List不同的是，Set还提供了equals(Object o)和hashCode()，供其子类重写，以实现对集合中插入重复元素的处理；</p>
+            <pre><code>public interface Set&lt;E&gt; extends Collection&lt;E&gt; {
+
+    A:添加功能
+    boolean add(E e);
+    boolean addAll(Collection&lt;? extends E&gt; c);
+
+    B:删除功能
+    boolean remove(Object o);
+    boolean removeAll(Collection&lt;?&gt; c);
+    void clear();
+
+    C:长度功能
+    int size();
+
+    D:判断功能
+    boolean isEmpty();
+    boolean contains(Object o);
+    boolean containsAll(Collection&lt;?&gt; c);
+    boolean retainAll(Collection&lt;?&gt; c);
+
+    E:获取Set集合的迭代器：
+    Iterator&lt;E&gt; iterator();
+
+    F:把集合转换成数组
+    Object[] toArray();
+    &lt;T&gt; T[] toArray(T[] a);
+
+    //判断元素是否重复，为子类提高重写方法
+    boolean equals(Object o);
+    int hashCode();
+}
+</code></pre>
+            <h3>1.2 HashSet</h3>
+            <p>HashSet实现Set接口，底层由HashMap(后面讲解)来实现，为哈希表结构，新增元素相当于HashMap的key，value默认为一个固定的Object。在我看来，HashSet相当于一个阉割版的HashMap;</p>
+            <p>当有元素插入的时候，会计算元素的hashCode值，将元素插入到哈希表对应的位置中来；</p>
+            <p>它继承于AbstractSet，实现了Set, Cloneable, Serializable接口。</p>
+            <p>(1)HashSet继承AbstractSet类，获得了Set接口大部分的实现，减少了实现此接口所需的工作，实际上是又继承了AbstractCollection类；</p>
+            <p>(2)HashSet实现了Set接口，获取Set接口的方法，可以自定义具体实现，也可以继承AbstractSet类中的实现；</p>
+            <p>(3)HashSet实现Cloneable，得到了clone()方法，可以实现克隆功能；</p>
+            <p>(4)HashSet实现Serializable，表示可以被序列化，通过序列化去传输，典型的应用就是hessian协议。</p>
+            <p>具有如下特点：</p>
+            <ul>
+                <li>不允许出现重复因素；</li>
+                <li>允许插入Null值；</li>
+                <li>元素无序（添加顺序和遍历顺序不一致）；</li>
+                <li>线程不安全，若2个线程同时操作HashSet，必须通过代码实现同步；</li>
+
+            </ul>
+            <h3>1.3 HashSet基本操作</h3>
+            <p>HashSet底层由HashMap实现，插入的元素被当做是HashMap的key，根据hashCode值来确定集合中的位置，由于Set集合中并没有角标的概念，所以并没有像List一样提供get（）方法。当获取HashSet中某个元素时，只能通过遍历集合的方式进行equals()比较来实现；</p>
+            <pre><code>public class HashSetTest {
+    public static void main(String[] agrs){
+        //创建HashSet集合：
+        Set&lt;String&gt; hashSet = new HashSet&lt;String&gt;();
+        System.out.println(&quot;HashSet初始容量大小：&quot;+hashSet.size());
+
+        //元素添加：
+        hashSet.add(&quot;my&quot;);
+        hashSet.add(&quot;name&quot;);
+        hashSet.add(&quot;is&quot;);
+        hashSet.add(&quot;jiaboyan&quot;);
+        hashSet.add(&quot;,&quot;);
+        hashSet.add(&quot;hello&quot;);
+        hashSet.add(&quot;world&quot;);
+        hashSet.add(&quot;!&quot;);
+        System.out.println(&quot;HashSet容量大小：&quot;+hashSet.size());
+
+        //迭代器遍历：
+        Iterator&lt;String&gt; iterator = hashSet.iterator();
+        while (iterator.hasNext()){
+            String str = iterator.next();
+            System.out.println(str);
+        }
+        //增强for循环
+        for(String str:hashSet){
+            if(&quot;jiaboyan&quot;.equals(str)){
+                System.out.println(&quot;你就是我想要的元素:&quot;+str);
+            }
+            System.out.println(str);
+        }
+
+        //元素删除：
+        hashSet.remove(&quot;jiaboyan&quot;);
+        System.out.println(&quot;HashSet元素大小：&quot; + hashSet.size());
+        hashSet.clear();
+        System.out.println(&quot;HashSet元素大小：&quot; + hashSet.size());
+
+        //集合判断：
+        boolean isEmpty = hashSet.isEmpty();
+        System.out.println(&quot;HashSet是否为空：&quot; + isEmpty);
+        boolean isContains = hashSet.contains(&quot;hello&quot;);
+        System.out.println(&quot;HashSet是否为空：&quot; + isContains);
+    }
+}
+</code></pre>
+            <h3>1.4 HashSet元素添加分析</h3>
+            <p>Set集合不允许添加重复元素，那么到底是个怎么情况呢？</p>
+            <p>来看一个简单的例子：</p>
+            <pre><code>public class HashSetTest {
+
+    public static void main(String[] agrs){
+        //hashCode() 和 equals()测试：
+        hashCodeAndEquals();
+    }
+    public static void hashCodeAndEquals(){
+        //第一个 Set集合：
+        Set&lt;String&gt; set1 = new HashSet&lt;String&gt;();
+        String str1 = new String(&quot;jiaboyan&quot;);
+        String str2 = new String(&quot;jiaboyan&quot;);
+        set1.add(str1);
+        set1.add(str2);
+        System.out.println(&quot;长度：&quot;+set1.size()+&quot;,内容为：&quot;+set1);
+
+        //第二个 Set集合：
+        Set&lt;App&gt; set2 = new HashSet&lt;App&gt;();
+        App app1 = new App();
+        app1.setName(&quot;jiaboyan&quot;);
+
+        App app2 = new App();
+        app2.setName(&quot;jiaboyan&quot;);
+
+        set2.add(app1);
+        set2.add(app2);
+        System.out.println(&quot;长度：&quot;+set2.size()+&quot;,内容为：&quot;+set2);
+
+        //第三个 Set集合：
+        Set&lt;App&gt; set3 = new HashSet&lt;App&gt;();
+        App app3 = new App();
+        app3.setName(&quot;jiaboyan&quot;);
+        set3.add(app3);
+        set3.add(app3);
+        System.out.println(&quot;长度：&quot;+set3.size()+&quot;,内容为：&quot;+set3);
+    }
+}
+</code></pre>
+            <p>测试结果：</p>
+            <pre><code>长度：1,内容为：[jiaboyan]
+长度：2,内容为：[com.jiaboyan.collection.App@efb78af, com.jiaboyan.collection.App@5f3306ad]
+长度：1,内容为：[com.jiaboyan.collection.App@1fb030d8]
+</code></pre>
+            <p>可以看到，第一个Set集合中最终只有一个元素；第二个Set集合保留了2个元素；第三个集合也只有1个元素；</p>
+            <p>究竟是什么原因呢？</p>
+            <p>让我们来看看<strong>HashSet</strong>的add(E e)方法：</p>
+            <pre><code>public boolean add(E e) {
+    return map.put(e, PRESENT)==null;
+}
+</code></pre>
+            <p>在底层HashSet调用了<strong>HashMap</strong>的put(K key, V value)方法:</p>
+            <pre><code>public V put(K key, V value) {
+    if (table == EMPTY_TABLE) {
+        inflateTable(threshold);
+    }
+    if (key == null)
+        return putForNullKey(value);
+    int hash = hash(key);
+    int i = indexFor(hash, table.length);
+    for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) {
+        Object k;
+        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) {
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(this);
+            return oldValue;
+        }
+    }
+    modCount++;
+    addEntry(hash, key, value, i);
+    return null;
+}
+</code></pre>
+            <p>通过查看以上的源码，我们可以了解到：实际的逻辑都是在HashMap的put()方法中。</p>
+            <p>int hash = hash(key) 对传入的key计算hash值；</p>
+            <p>int i = indexFor(hash, table.length) 对hash值进行转换，转换成数组的index(HashMap中底层存储使用了Entry&lt;K,V&gt;[]数组)；</p>
+            <p>for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) 判断对应index下是否存在元素；</p>
+            <p>如果存在，则if(e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))判断；</p>
+            <p>如果不存在，则addEntry(hash, key, value, i)直接添加；</p>
+            <p>简单概括如下：</p>
+            <p>在向HashMap中添加元素时，先判断key的hashCode值是否相同，如果相同，则调用equals()、==进行判断，若相同则覆盖原有元素；如果不同，则直接向Map中添加元素；</p>
+            <p>反过来，我们在看下上面的例子：</p>
+            <p>在第一个Set集合中，我们new了两个String对象，赋了相同的值。当传入到HashMap中时，key均为“jiaboyan”，所以hash和i的值都相同。进行if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))判断，由于String对象重写了equals()方法，所以在((k = e.key) == key || key.equals(k))判断时，返回了true，所以第二次的插入并不会增加Set集合的长度；</p>
+            <p>第二个Set集合中，也是new了两个对象，但没有重写equals()方法（底层调用的Object的equals()，也就是==判断），所以会增加2个元素；</p>
+            <p>第三个Set集合中，只new了一个对象，调用的两次add方法都添加的这个新new的对象，所以也只是保留了1个元素；</p>
+            <h3>1.5 TreeSet</h3>
+            <p>从名字上可以看出，此集合的实现和树结构有关。与HashSet集合类似，TreeSet也是基于Map来实现，具体实现<strong>TreeMap</strong>(后面讲解)，其底层结构为<strong>红黑树</strong>（特殊的二叉查找树）；</p>
+            <p>与HashSet不同的是，TreeSet具有排序功能，分为自然排序(123456)和自定义排序两类，默认是自然排序；在程序中，我们可以按照任意顺序将元素插入到集合中，等到遍历时TreeSet会按照一定顺序输出--倒序或者升序；</p>
+            <p>它继承AbstractSet，实现NavigableSet, Cloneable, Serializable接口。</p>
+            <p>（1）与HashSet同理，TreeSet继承AbstractSet类，获得了Set集合基础实现操作；</p>
+            <p>（2）TreeSet实现NavigableSet接口，而NavigableSet又扩展了SortedSet接口。这两个接口主要定义了搜索元素的能力，例如给定某个元素，查找该集合中比给定元素大于、小于、等于的元素集合，或者比给定元素大于、小于、等于的元素个数；简单地说，实现NavigableSet接口使得TreeSet具备了元素搜索功能；</p>
+            <p>（3）TreeSet实现Cloneable接口，意味着它也可以被克隆；</p>
+            <p>（4）TreeSet实现了Serializable接口，可以被序列化，可以使用hessian协议来传输；</p>
+            <p>具有如下特点：</p>
+            <ul>
+                <li>对插入的元素进行排序，是一个有序的集合（主要与HashSet的区别）;</li>
+                <li>底层使用红黑树结构，而不是哈希表结构；</li>
+                <li>允许插入Null值；</li>
+                <li>不允许插入重复元素；</li>
+                <li>线程不安全；</li>
+
+            </ul>
+            <h3>1.6 TreeSet基本操作</h3>
+            <pre><code>public class TreeSetTest {
+    public static void main(String[] agrs){
+        TreeSet&lt;String&gt; treeSet = new TreeSet&lt;String&gt;();
+        System.out.println(&quot;TreeSet初始化容量大小：&quot;+treeSet.size());
+
+        //元素添加：
+        treeSet.add(&quot;my&quot;);
+        treeSet.add(&quot;name&quot;);
+        treeSet.add(&quot;jiaboyan&quot;);
+        treeSet.add(&quot;hello&quot;);
+        treeSet.add(&quot;world&quot;);
+        treeSet.add(&quot;1&quot;);
+        treeSet.add(&quot;2&quot;);
+        treeSet.add(&quot;3&quot;);
+        System.out.println(&quot;TreeSet容量大小：&quot; + treeSet.size());
+        System.out.println(&quot;TreeSet元素顺序为：&quot; + treeSet.toString());
+
+        //增加for循环遍历：
+        for(String str:treeSet){
+            System.out.println(&quot;遍历元素：&quot;+str);
+        }
+
+        //迭代器遍历：升序
+        Iterator&lt;String&gt; iteratorAesc = treeSet.iterator();
+        while(iteratorAesc.hasNext()){
+            String str = iteratorAesc.next();
+            System.out.println(&quot;遍历元素升序：&quot;+str);
+        }
+
+        //迭代器遍历：降序
+        Iterator&lt;String&gt; iteratorDesc = treeSet.descendingIterator();
+        while(iteratorDesc.hasNext()){
+            String str = iteratorDesc.next();
+            System.out.println(&quot;遍历元素降序：&quot;+str);
+        }
+
+        //元素获取:实现NavigableSet接口
+        String firstEle = treeSet.first();//获取TreeSet头节点：
+        System.out.println(&quot;TreeSet头节点为：&quot; + firstEle);
+
+        // 获取指定元素之前的所有元素集合：(不包含指定元素)
+        SortedSet&lt;String&gt; headSet = treeSet.headSet(&quot;jiaboyan&quot;);
+        System.out.println(&quot;jiaboyan节点之前的元素为：&quot;+headSet.toString());
+
+        //获取给定元素之间的集合：（包含头，不包含尾）
+        SortedSet subSet = treeSet.subSet(&quot;1&quot;,&quot;world&quot;);
+        System.out.println(&quot;1--jiaboan之间节点元素为：&quot;+subSet.toString());
+
+        //集合判断：
+        boolean isEmpty = treeSet.isEmpty();
+        System.out.println(&quot;TreeSet是否为空：&quot;+isEmpty);
+        boolean isContain = treeSet.contains(&quot;who&quot;);
+        System.out.println(&quot;TreeSet是否包含who元素：&quot;+isContain);
+
+        //元素删除：
+        boolean jiaboyanRemove = treeSet.remove(&quot;jiaboyan&quot;);
+        System.out.println(&quot;jiaboyan元素是否被删除&quot;+jiaboyanRemove);
+
+        //集合中不存在的元素，删除返回false
+        boolean whoRemove = treeSet.remove(&quot;who&quot;);
+        System.out.println(&quot;who元素是否被删除&quot;+whoRemove);
+
+       //删除并返回第一个元素：如果set集合不存在元素，则返回null
+        String pollFirst = treeSet.pollFirst();
+        System.out.println(&quot;删除的第一个元素：&quot;+pollFirst);
+
+        //删除并返回最后一个元素：如果set集合不存在元素，则返回null
+        String pollLast = treeSet.pollLast();
+        System.out.println(&quot;删除的最后一个元素：&quot;+pollLast);
+
+
+        treeSet.clear();//清空集合:
+    }
+}
+</code></pre>
+            <h3>1.7 TreeSet元素排序</h3>
+            <p>在前面的章节，我们讲到了TreeSet是一个有序集合，可以对集合元素排序，其中分为自然排序和自定义排序，那么这两种方式如何实现呢？</p>
+            <p>首先，我们通过JDK提供的对象来展示，我们使用String、Integer：</p>
+            <pre><code>public class TreeSetTest {
+    public static void main(String[] agrs){
+        naturalSort();
+    }
+
+    //自然排序顺序：升序
+    public static void naturalSort(){
+        TreeSet&lt;String&gt; treeSetString = new TreeSet&lt;String&gt;();
+        treeSetString.add(&quot;a&quot;);
+        treeSetString.add(&quot;z&quot;);
+        treeSetString.add(&quot;d&quot;);
+        treeSetString.add(&quot;b&quot;);
+        System.out.println(&quot;字母顺序：&quot; + treeSetString.toString());
+
+        TreeSet&lt;Integer&gt; treeSetInteger = new TreeSet&lt;Integer&gt;();
+        treeSetInteger.add(1);
+        treeSetInteger.add(24);
+        treeSetInteger.add(23);
+        treeSetInteger.add(6);
+        System.out.println(treeSetInteger.toString());
+        System.out.println(&quot;数字顺序：&quot; + treeSetString.toString());
+    }
+}
+</code></pre>
+            <p>测试结果：</p>
+            <pre><code>字母顺序：[a, b, d, z]
+数字顺序：[1, 6, 23, 24]
+</code></pre>
+            <p>接下来，我们自定义对象，看能否实现：</p>
+            <pre><code>public class App{
+
+    private String name;
+
+    private Integer age;
+
+    public App(){}
+
+    public App(String name,Integer age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public static void main(String[] args ){
+        System.out.println( &quot;Hello World!&quot; );
+    }
+}
+
+public class TreeSetTest {
+    public static void main(String[] agrs){
+        customSort();
+    }
+
+     //自定义排序顺序：升序
+    public static void customSort(){
+        TreeSet&lt;App&gt; treeSet = new TreeSet&lt;App&gt;();
+
+        //排序对象：
+        App app1 = new App(&quot;hello&quot;,10);
+        App app2 = new App(&quot;world&quot;,20);
+        App app3 = new App(&quot;my&quot;,15);
+        App app4 = new App(&quot;name&quot;,25);
+
+        //添加到集合：
+        treeSet.add(app1);
+        treeSet.add(app2);
+        treeSet.add(app3);
+        treeSet.add(app4);
+        System.out.println(&quot;TreeSet集合顺序为：&quot;+treeSet);
+    }
+}
+</code></pre>
+            <p>测试结果：</p>
+            <pre><code>抛出异常：提示App不能转换为Comparable对象：
+Exception in thread &quot;main&quot; java.lang.ClassCastException: com.jiaboyan.collection.App cannot be cast to java.lang.Comparable
+</code></pre>
+            <p>为什么会报错呢？</p>
+            <pre><code>compare(key, key); // type (and possibly null) check
+
+final int compare(Object k1, Object k2) {
+    return comparator==null ? ((Comparable&lt;? super K&gt;)k1).compareTo((K)k2)
+        : comparator.compare((K)k1, (K)k2);
+}
+</code></pre>
+            <p>通过查看源码发现，在TreeSet调用add方法时，会调用到底层TreeMap的put方法，在put方法中会调用到compare(key, key)方法，进行key大小的比较；</p>
+            <p>在比较的时候，会将传入的key进行类型强转，所以当我们自定义的App类进行比较的时候，自然就会抛出异常，因为App类并没有实现Comparable接口；</p>
+            <p>将App实现Comparable接口，在做比较:</p>
+            <pre><code>public class App implements Comparable&lt;App&gt;{
+    private String name;
+    private Integer age;
+    public App(){}
+    public App(String name,Integer age){
+        this.name = name;
+        this.age = age;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Integer getAge() {
+        return age;
+    }
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+    //自定义比较：先比较name的长度，在比较age的大小；
+    public int compareTo(App app) {
+        //比较name的长度：
+        int num = this.name.length() - app.name.length();
+        //如果name长度一样，则比较年龄的大小：
+        return num == 0 ? this.age - app.age : num;
+    }
+    @Override
+    public String toString() {
+        return &quot;App{&quot; +
+                &quot;name=&#39;&quot; + name + &#39;\&#39;&#39; +
+                &quot;, age=&quot; + age +
+                &#39;}&#39;;
+    }
+}
+</code></pre>
+            <p>测试结果如下：</p>
+            <pre><code>TreeSet集合顺序为：[App{name=&#39;my&#39;, age=15}, App{name=&#39;name&#39;, age=25}, App{name=&#39;hello&#39;, age=10}, App{name=&#39;world&#39;, age=20}]
+</code></pre>
+            <p>此外，还有另一种方式，那就是实现Comparetor<t>接口，并重写compare方法；</p>
+            <pre><code>//自定义App类的比较器：
+public class AppComparator implements Comparator&lt;App&gt; {
+
+    //比较方法：先比较年龄，年龄若相同在比较名字长度；
+    public int compare(App app1, App app2) {
+        int num = app1.getAge() - app2.getAge();
+        return num == 0 ? app1.getName().length() - app2.getName().length() : num;
+    }
+}
+</code></pre>
+            <p>此时，App不用在实现Comparerable接口了，单纯的定义一个类即可；</p>
+            <pre><code>public class App{
+
+    private String name;
+
+    private Integer age;
+
+    public App(){}
+
+    public App(String name,Integer age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public static void main(String[] args ){
+        System.out.println( &quot;Hello World!&quot; );
+    }
+}
+
+public class TreeSetTest {
+    public static void main(String[] agrs){
+        customSort();
+    }
+
+    //自定义比较器：升序
+    public static void customComparatorSort(){
+        TreeSet&lt;App&gt; treeSet = new TreeSet&lt;App&gt;(new AppComparator());
+
+        //排序对象：
+        App app1 = new App(&quot;hello&quot;,10);
+        App app2 = new App(&quot;world&quot;,20);
+        App app3 = new App(&quot;my&quot;,15);
+        App app4 = new App(&quot;name&quot;,25);
+
+        //添加到集合：
+        treeSet.add(app1);
+        treeSet.add(app2);
+        treeSet.add(app3);
+        treeSet.add(app4);
+
+        System.out.println(&quot;TreeSet集合顺序为：&quot;+treeSet);
+    }
+}
+</code></pre>
+            <p>测试结果：</p>
+            <pre><code>TreeSet集合顺序为：[App{name=&#39;hello&#39;, age=10}, App{name=&#39;my&#39;, age=15}, App{name=&#39;world&#39;, age=20}, App{name=&#39;name&#39;, age=25}]
+</code></pre>
+            <p>最后，在说下关于compareTo()、compare()方法：</p>
+            <pre><code>结果返回大于0时，方法前面的值大于方法中的值；
+
+结果返回等于0时，方法前面的值等于方法中的值；
+
+结果返回小于0时，方法前面的值小于方法中的值；
+</code></pre>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
