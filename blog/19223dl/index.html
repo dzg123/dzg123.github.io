@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Java 集合深入理解：Queue 队列</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-23</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">数据结构</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h2>什么是队列</h2>
+            <h4>队列是数据结构中比较重要的一种类型，它支持 FIFO，尾部添加、头部删除（先进队列的元素先出队列），跟我们生活中的排队类似。</h4>
+            <h4>队列有两种：</h4>
+            <ul>
+                <li><p>单队列</p>
+                </li>
+                <li><p>循环队列</p>
+                    <h4>单队列就是常见的队列, 每次添加元素时，都是添加到队尾：</h4>
+                    <p>以数组实现的队列为例，初始时队列长度固定为 4，font 和 rear 均为 0：</p>
+                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/queue1.jpg' alt='队列' referrerPolicy='no-referrer' /></p>
+                    <p>每添加一个元素，rear 后移一位。当添加四个元素后， rear 到了索引为 4 的位置：</p>
+                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/queue2.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
+                    <p>这时 a1,a2 出队，front 后移动到 2：</p>
+                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q3.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
+                    <p>这时想要再添加两个元素，但 rear 后移两位后就会越界：</p>
+                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q4.jpg' alt='' referrerPolicy='no-referrer' /></p>
+                    <p>明明有三个空位，却只能再放入一个！这就是单队列的“<strong>假溢出</strong>”情况。</p>
+                    <p>针对这种情况，解决办法就是后面满了，就再从头开始，也就是头尾相接的循环。这就是 “循环队列” 的概念。</p>
+                    <p>循环队列:
+                        循环队列中，
+                        rear = (rear - size) % size</p>
+                    <p>接着上面的例子，当 rear 大于 队列长度时，rear = ( 5 - 5) % 5 = 0 :</p>
+                </li>
+
+            </ul>
+            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q5.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p>这样继续添加时，还可以添加几个元素：</p>
+            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q6.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p>那如何判断队列是否装满元素了呢，单使用 front == rear 无法判断究竟是空的还是满了。</p>
+            <p>两种方法：</p>
+            <p>加个标志 flag ,初始为 false，添加满了置为 true；
+                不以 front = rear 为放满标志，改为 (rear - front) % size = -1。</p>
+            <p>法 2 的公式放满元素时<strong>空余了一个位置</strong>，这个公式是什么意思呢？</p>
+            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q7.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p>接着上面的情况，当 rear 从后面添加元素跑到前面 0 时，再添加一个元素 a6，rear 后移一位到 1，这时 front = 2, (1 - 2) % 5 = -1, 满足放满条件。</p>
+            <h4>因此，当 rear &gt; font 时，队列中元素个数 = rear - font;</h4>
+            <h4>当 rear &lt; font 时，队列中元素分为两部分： size - font 和 rear ,也就是 rear + size - font</h4>
+            <hr />
+            <h2>Java 集合框架中的队列 Queue</h2>
+            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q9.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <h4>Java 集合中的 Queue 继承自 <a href='http://blog.csdn.net/u011240877/article/details/52773577'>Collection 接口</a> ，Deque, LinkedList, PriorityQueue, BlockingQueue 等类都实现了它。</h4>
+            <h4>Queue 用来存放 等待处理元素 的集合，这种场景一般用于缓冲、并发访问。</h4>
+            <h4>除了继承 Collection 接口的一些方法，Queue 还添加了额外的 添加、删除、查询操作。</h4>
+            <p><img src='' alt='' referrerPolicy='no-referrer' /></p>
+            <h4>添加、删除、查询这些个操作都提供了两种形式，其中一种在操作失败时直接抛出异常，而另一种则返回一个特殊的值：</h4>
+            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q11.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <h2>Queue 方法介绍：</h2>
+            <h3>1.add(E), offer(E) 在尾部添加:</h3>
+            <pre><code>boolean add(E e);
+
+boolean offer(E e);
+</code></pre>
+            <p>他们的共同之处是建议实现类禁止添加 null 元素，否则会报空指针 NullPointerException；
+                不同之处在于 add() 方法在添加失败（比如队列已满）时会报 一些运行时错误 错；而 offer() 方法即使在添加失败时也不会奔溃，只会返回 false。</p>
+            <p><strong>注意</strong>
+                Queue 是个接口，它提供的 add, offer 方法初衷是希望子类能够禁止添加元素为 null，这样可以避免在查询时返回 null 究竟是正确还是错误。
+                事实上大多数 Queue 的实现类的确响应了 Queue 接口的规定，比如 ArrayBlockingQueue，PriorityBlockingQueue 等等。
+                但还是有一些实现类没有这样要求，比如 LinkedList。</p>
+            <p>2.remove(), poll() 删除并返回头部：</p>
+            <pre><code>E remove();
+E poll();
+</code></pre>
+            <h4>当队列为空时 remove() 方法会报 NoSuchElementException 错; 而 poll() 不会奔溃，只会返回 null。</h4>
+            <h3>3.element(), peek() 获取但不删除：</h3>
+            <pre><code>E element();
+
+E peek();
+</code></pre>
+            <p>当队列为空时 element() 抛出异常；peek() 不会奔溃，只会返回 null。
+                其他
+                1.虽然 LinkedList 没有禁止添加 null，但是一般情况下 Queue 的实现类都不允许添加 null 元素，为啥呢？因为 poll(), peek() 方法在异常的时候会返回 null，你添加了 null　以后，当获取时不好分辨究竟是否正确返回。
+                2.Queue 一般都是 FIFO 的，但是也有例外，比如优先队列 priority queue（它的顺序是根据自然排序或者自定义 comparator 的）；再比如 LIFO 的队列（跟栈一样，后来进去的先出去）。</p>
+            <h4>不论进入、出去的先后顺序是怎样的，使用 remove()，poll() 方法操作的都是 头部 的元素；而插入的位置则不一定是在队尾了，不同的 queue 会有不同的插入逻辑。</h4>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
