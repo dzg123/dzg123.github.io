@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">LeetCode之两数之和</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-13</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/leetcode">leetcode</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <ul>
+                <li><p>题目</p>
+                    <ul>
+                        <li><p>给定一个整数数组 <code>nums</code> 和一个目标值 <code>target</code>，请你在该数组中找出和为目标值的那 <strong>两个</strong> 整数，并返回他们的数组下标。</p>
+                            <p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
+                            <p><strong>示例:</strong></p>
+                            <pre><code>给定 nums = [2, 7, 11, 15], target = 9
+
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+</code></pre>
+                        </li>
+
+                    </ul>
+                </li>
+                <li><p>一开始给出的答案</p>
+                    <p>&nbsp;</p>
+                    <pre><code>public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] array = new int[2];
+        for (int i = 0; i &lt; nums.length; i++) {
+            int temp = target - nums[i];
+            for (int j = i + 1; j &lt; nums.length; j++) {
+                if (nums[j] == temp) {
+                    array[0] = i;
+                    array[1] = j;
+                    return array;
+                }
+
+            }
+        }
+        return null;
+    }
+}
+</code></pre>
+                </li>
+
+            </ul>
+            <ul>
+                <li><p>小修</p>
+                    <pre><code>public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        for (int i = 0; i &lt; nums.length; i++) {
+            int temp = target - nums[i];
+            for (int j = i + 1; j &lt; nums.length; j++) {
+                if (nums[j] == temp) {
+
+                    return new int[]{i,j};
+                }
+
+            }
+        }
+        return null;
+    }
+}
+</code></pre>
+                </li>
+                <li><p>标准答案</p>
+                    <p>&nbsp;</p>
+                </li>
+
+            </ul>
+            <h4>方法一：暴力法</h4>
+            <p>暴力法很简单。遍历每个元素 x<em>x</em>，并查找是否存在一个值与 target - x<em>t<strong>a</strong>r<strong>g</strong>e**t</em>−<em>x</em> 相等的目标元素。</p>
+            <pre><code>public int[] twoSum(int[] nums, int target) {
+    for (int i = 0; i &lt; nums.length; i++) {
+        for (int j = i + 1; j &lt; nums.length; j++) {
+            if (nums[j] == target - nums[i]) {
+                return new int[] { i, j };
+            }
+        }
+    }
+    throw new IllegalArgumentException(&quot;No two sum solution&quot;);
+}
+</code></pre>
+            <p><strong>复杂度分析：</strong></p>
+            <ul>
+                <li><p>时间复杂度：O(n^2)<em>O</em>(<em>n</em>2)， 对于每个元素，我们试图通过遍历数组的其余部分来寻找它所对应的目标元素，这将耗费 O(n)<em>O</em>(<em>n</em>) 的时间。因此时间复杂度为 O(n^2)<em>O</em>(<em>n</em>2)。</p>
+                </li>
+                <li><p>空间复杂度：O(1)<em>O</em>(1)。 </p>
+                    <p>&nbsp;</p>
+                </li>
+
+            </ul>
+            <hr />
+            <h4>方法二：两遍哈希表</h4>
+            <p>为了对运行时间复杂度进行优化，我们需要一种更有效的方法来检查数组中是否存在目标元素。如果存在，我们需要找出它的索引。保持数组中的每个元素与其索引相互对应的最好方法是什么？哈希表。</p>
+            <p>通过以空间换取速度的方式，我们可以将查找时间从 O(n)<em>O</em>(<em>n</em>) 降低到 O(1)<em>O</em>(1)。哈希表正是为此目的而构建的，它支持以 <em>近似</em> 恒定的时间进行快速查找。我用“近似”来描述，是因为一旦出现冲突，查找用时可能会退化到 O(n)<em>O</em>(<em>n</em>)。但只要你仔细地挑选哈希函数，在哈希表中进行查找的用时应当被摊销为 O(1)<em>O</em>(1)。</p>
+            <p>一个简单的实现使用了两次迭代。在第一次迭代中，我们将每个元素的值和它的索引添加到表中。然后，在第二次迭代中，我们将检查每个元素所对应的目标元素（target - nums[i]<em>t<strong>a</strong>r<strong>g</strong>e**t</em>−<em>n<strong>u</strong>m**s</em>[<em>i</em>]）是否存在于表中。注意，该目标元素不能是 nums[i]<em>n<strong>u</strong>m**s</em>[<em>i</em>] 本身！</p>
+            <p><a href='https://leetcode-cn.com/problems/two-sum/solution/'>标准答案</a></p>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
