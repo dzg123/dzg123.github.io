@@ -69,13 +69,13 @@
                 <li><p>循环队列</p>
                     <h4>单队列就是常见的队列, 每次添加元素时，都是添加到队尾：</h4>
                     <p>以数组实现的队列为例，初始时队列长度固定为 4，font 和 rear 均为 0：</p>
-                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/queue1.jpg' alt='队列' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/queue1.jpg' alt='队列' referrerPolicy='no-referrer' /></p>
                     <p>每添加一个元素，rear 后移一位。当添加四个元素后， rear 到了索引为 4 的位置：</p>
-                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/queue2.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/queue2.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
                     <p>这时 a1,a2 出队，front 后移动到 2：</p>
-                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q3.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/q3.jpg' alt='queue' referrerPolicy='no-referrer' /></p>
                     <p>这时想要再添加两个元素，但 rear 后移两位后就会越界：</p>
-                    <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q4.jpg' alt='' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/q4.jpg' alt='' referrerPolicy='no-referrer' /></p>
                     <p>明明有三个空位，却只能再放入一个！这就是单队列的“<strong>假溢出</strong>”情况。</p>
                     <p>针对这种情况，解决办法就是后面满了，就再从头开始，也就是头尾相接的循环。这就是 “循环队列” 的概念。</p>
                     <p>循环队列:
@@ -85,27 +85,27 @@
                 </li>
 
             </ul>
-            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q5.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/q5.jpg' alt='' referrerPolicy='no-referrer' /></p>
             <p>这样继续添加时，还可以添加几个元素：</p>
-            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q6.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/q6.jpg' alt='' referrerPolicy='no-referrer' /></p>
             <p>那如何判断队列是否装满元素了呢，单使用 front == rear 无法判断究竟是空的还是满了。</p>
             <p>两种方法：</p>
             <p>加个标志 flag ,初始为 false，添加满了置为 true；
                 不以 front = rear 为放满标志，改为 (rear - front) % size = -1。</p>
             <p>法 2 的公式放满元素时<strong>空余了一个位置</strong>，这个公式是什么意思呢？</p>
-            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q7.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/q7.jpg' alt='' referrerPolicy='no-referrer' /></p>
             <p>接着上面的情况，当 rear 从后面添加元素跑到前面 0 时，再添加一个元素 a6，rear 后移一位到 1，这时 front = 2, (1 - 2) % 5 = -1, 满足放满条件。</p>
             <h4>因此，当 rear &gt; font 时，队列中元素个数 = rear - font;</h4>
             <h4>当 rear &lt; font 时，队列中元素分为两部分： size - font 和 rear ,也就是 rear + size - font</h4>
             <hr />
             <h2>Java 集合框架中的队列 Queue</h2>
-            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q9.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/q9.jpg' alt='' referrerPolicy='no-referrer' /></p>
             <h4>Java 集合中的 Queue 继承自 <a href='http://blog.csdn.net/u011240877/article/details/52773577'>Collection 接口</a> ，Deque, LinkedList, PriorityQueue, BlockingQueue 等类都实现了它。</h4>
             <h4>Queue 用来存放 等待处理元素 的集合，这种场景一般用于缓冲、并发访问。</h4>
             <h4>除了继承 Collection 接口的一些方法，Queue 还添加了额外的 添加、删除、查询操作。</h4>
             <p><img src='' alt='' referrerPolicy='no-referrer' /></p>
             <h4>添加、删除、查询这些个操作都提供了两种形式，其中一种在操作失败时直接抛出异常，而另一种则返回一个特殊的值：</h4>
-            <p><img src='file://D:/localrepository/git/shzShine.github.io/blog/19223dl/images/q11.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/q11.jpg' alt='' referrerPolicy='no-referrer' /></p>
             <h2>Queue 方法介绍：</h2>
             <h3>1.add(E), offer(E) 在尾部添加:</h3>
             <pre><code>boolean add(E e);
