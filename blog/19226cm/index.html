@@ -48,18 +48,26 @@
     <section id="wrapper" class="home">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <header>
-                <h1 class="posttitle" itemprop="name headline">SpringMVC开发RESTful API</h1>
+                <h1 class="posttitle" itemprop="name headline">hashmap数组长度保持2的次幂</h1>
                 <div class="meta">
                     <div class="postdate">
-                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-20</time>
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-26</time>
                     </div>
                     <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
                             id="busuanzi_value_page_pv">0</span></span></div>
-                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">spring</a></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/s">数据结构</a></div>
                     <div class="article-tag-box"></div>
                 </div>
             </header>
             <!--markdown-->
+            <p>hashMap的数组长度一定保持2的次幂，比如16的二进制表示为 10000，那么length-1就是15，二进制为01111，同理扩容后的数组长度为32，二进制表示为100000，length-1为31，二进制表示为011111。从下图可以我们也能看到这样会保证低位全为1，而扩容后只有一位差异，也就是多出了最左位的1，这样在通过 h&amp;(length-1)的时候，只要h对应的最左边的那一个差异位为0，就能保证得到的新的数组索引和老数组索引一致(大大减少了之前已经散列良好的老数组的数据位置重新调换)，个人理解。</p>
+            <p>　　<img src='https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161115215812138-679881037.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p> 还有，数组长度保持2的次幂，length-1的低位都为1，会使得获得的数组索引index更加均匀，比如：</p>
+            <p><img src='https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161116001404732-625340289.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>　　我们看到，上面的&amp;运算，高位是不会对结果产生影响的（hash函数采用各种位运算可能也是为了使得低位更加散列），我们只关注低位bit，如果低位全部为1，那么对于h低位部分来说，任何一位的变化都会对结果产生影响，也就是说，要得到index=21这个存储位置，h的低位只有这一种组合。这也是数组长度设计为必须为2的次幂的原因。</p>
+            <p><img src='https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161116001717560-1455096254.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>　　如果不是2的次幂，也就是低位不是全为1此时，要使得index=21，h的低位部分不再具有唯一性了，哈希冲突的几率会变的更大，同时，index对应的这个bit位无论如何不会等于1了，而对应的那些数组位置也就被白白浪费了。</p>
+
         </article>
         <script src="/js/av-min.js"></script>
         <script src="/js/Valine.min.js"></script>
