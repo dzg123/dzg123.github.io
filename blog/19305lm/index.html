@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">面试必问的CAS，你懂了吗？</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-03-06</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/java">java</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>转自：<a href='https://blog.csdn.net/v123411739/article/details/79561458' target='_blank' class='url'>https://blog.csdn.net/v123411739/article/details/79561458</a> </p>
+            <p>概述
+                CAS（Compare-and-Swap），即比较并替换，是一种实现并发算法时常用到的技术，Java并发包中的很多类都使用了CAS技术。CAS也是现在面试经常问的问题，本文将深入的介绍CAS的原理。</p>
+            <p><img src='https://img-blog.csdn.net/20180314222234768' alt='' referrerPolicy='no-referrer' /></p>
+            <p>案例
+                介绍CAS之前，我们先来看一个例子。</p>
+            <p>&nbsp;</p>
+            <p>上面这个例子在volatile关键字详解文中用过，我们知道，运行完这段代码之后，并不会获得期望的结果，而且会发现每次运行程序，输出的结果都不一样，都是一个小于200000的数字。</p>
+            <p>通过分析字节码我们知道，这是因为volatile只能保证可见性，无法保证原子性，而自增操作并不是一个原子操作（如下图所示），在并发的情况下，putstatic指令可能把较小的race值同步回主内存之中，导致我们每次都无法获得想要的结果。那么，应该怎么解决这个问题了？</p>
+            <p><img src='https://img-blog.csdn.net/20180314222334362' alt='' referrerPolicy='no-referrer' /></p>
+            <p><strong>解决方法：</strong></p>
+            <p>首先我们想到的是用synchronized来修饰increase方法。</p>
+            <p><img src='https://img-blog.csdn.net/20180314222339188' alt='' referrerPolicy='no-referrer' /></p>
+            <p>使用synchronized修饰后，increase方法变成了一个原子操作，因此是肯定能得到正确的结果。但是，我们知道，每次自增都进行加锁，性能可能会稍微差了点，有更好的方案吗？</p>
+            <p>&nbsp;</p>
+            <p>答案当然是有的，这个时候我们可以使用Java并发包原子操作类（Atomic开头），例如以下代码。</p>
+            <p><img src='https://img-blog.csdn.net/2018031422234680' alt='' referrerPolicy='no-referrer' /></p>
+            <p>我们将例子中的代码稍做修改：race改成使用AtomicInteger定义，“race++”改成使用“race.getAndIncrement()”，AtomicInteger.getAndIncrement()是原子操作，因此我们可以确保每次都可以获得正确的结果，并且在性能上有不错的提升（针对本例子，在JDK1.8.0_151下运行）。</p>
+            <p>&nbsp;</p>
+            <p>通过方法调用，我们可以发现，getAndIncrement方法调用getAndAddInt方法，最后调用的是compareAndSwapInt方法，即本文的主角CAS，接下来我们开始介绍CAS。</p>
+            <p><img src='https://img-blog.csdn.net/20180314222502733' alt='' referrerPolicy='no-referrer' /></p>
+            <p><img src='https://img-blog.csdn.net/20180314222428674' alt='' referrerPolicy='no-referrer' /></p>
+            <p>getAndAddInt方法解析：拿到内存位置的最新值v，使用CAS尝试修将内存位置的值修改为目标值v+delta，如果修改失败，则获取该内存位置的新值v，然后继续尝试，直至修改成功。</p>
+            <p>&nbsp;</p>
+            <h3><strong>CAS是什么？</strong></h3>
+            <p>CAS是英文单词CompareAndSwap的缩写，中文意思是：比较并替换。CAS需要有3个操作数：内存地址V，旧的预期值A，即将要更新的目标值B。</p>
+            <p>CAS指令执行时，当且仅当内存地址V的值与预期值A相等时，将内存地址V的值修改为B，否则就什么都不做。整个比较并替换的操作是一个原子操作。</p>
+            <p>&nbsp;</p>
+            <p>源码分析
+                上面源码分析时，提到最后调用了compareAndSwapInt方法，接着继续深入探讨该方法，该方法在Unsafe中对应的源码如下。</p>
+            <p><img src='https://img-blog.csdn.net/20180314222522710' alt='' referrerPolicy='no-referrer' /></p>
+            <p>可以看到调用了“Atomic::cmpxchg”方法，“Atomic::cmpxchg”方法在linux_x86和windows_x86的实现如下。</p>
+            <p>linux_x86的实现：</p>
+            <p><img src='https://img-blog.csdn.net/20180314222533843' alt='' referrerPolicy='no-referrer' /></p>
+            <p>windows_x86的实现：</p>
+            <p><img src='https://img-blog.csdn.net/20180314222539318' alt='' referrerPolicy='no-referrer' /></p>
+            <p>Atomic::cmpxchg方法解析：</p>
+            <p>mp是“os::is_MP()”的返回结果，“os::is_MP()”是一个内联函数，用来判断当前系统是否为多处理器。</p>
+            <p>如果当前系统是多处理器，该函数返回1。
+                否则，返回0。
+                LOCK_IF_MP(mp)会根据mp的值来决定是否为cmpxchg指令添加lock前缀。</p>
+            <p>如果通过mp判断当前系统是多处理器（即mp值为1），则为cmpxchg指令添加lock前缀。
+                否则，不加lock前缀。
+                这是一种优化手段，认为单处理器的环境没有必要添加lock前缀，只有在多核情况下才会添加lock前缀，因为lock会导致性能下降。cmpxchg是汇编指令，作用是比较并交换操作数。</p>
+            <p>&nbsp;</p>
+            <p>intel手册对lock前缀的说明如下：
+                确保对内存的读-改-写操作原子执行。在Pentium及Pentium之前的处理器中，带有lock前缀的指令在执行期间会锁住总线，使得其他处理器暂时无法通过总线访问内存。很显然，这会带来昂贵的开销。从Pentium 4，Intel Xeon及P6处理器开始，intel在原有总线锁的基础上做了一个很有意义的优化：如果要访问的内存区域（area of memory）在lock前缀指令执行期间已经在处理器内部的缓存中被锁定（即包含该内存区域的缓存行当前处于独占或以修改状态），并且该内存区域被完全包含在单个缓存行（cache line）中，那么处理器将直接执行该指令。由于在指令执行期间该缓存行会一直被锁定，其它处理器无法读/写该指令要访问的内存区域，因此能保证指令执行的原子性。这个操作过程叫做缓存锁定（cache locking），缓存锁定将大大降低lock前缀指令的执行开销，但是当多处理器之间的竞争程度很高或者指令访问的内存地址未对齐时，仍然会锁住总线。
+                禁止该指令与之前和之后的读和写指令重排序。
+                把写缓冲区中的所有数据刷新到内存中。
+                上面的第1点保证了CAS操作是一个原子操作，第2点和第3点所具有的内存屏障效果，保证了CAS同时具有volatile读和volatile写的内存语义。</p>
+            <p>&nbsp;</p>
+            <h3>CAS的缺点：</h3>
+            <p>CAS虽然很高效的解决了原子操作问题，但是CAS仍然存在三大问题。</p>
+            <p>循环时间长开销很大。
+                只能保证一个共享变量的原子操作。
+                ABA问题。</p>
+            <h3>循环时间长开销很大：</h3>
+            <p>我们可以看到getAndAddInt方法执行时，如果CAS失败，会一直进行尝试。如果CAS长时间一直不成功，可能会给CPU带来很大的开销。</p>
+            <h3>只能保证一个共享变量的原子操作：</h3>
+            <p>当对一个共享变量执行操作时，我们可以使用循环CAS的方式来保证原子操作，但是对多个共享变量操作时，循环CAS就无法保证操作的原子性，这个时候就可以用锁来保证原子性。</p>
+            <p>&nbsp;</p>
+            <h3>什么是ABA问题？ABA问题怎么解决？</h3>
+            <p>如果内存地址V初次读取的值是A，并且在准备赋值的时候检查到它的值仍然为A，那我们就能说它的值没有被其他线程改变过了吗？</p>
+            <p>如果在这段期间它的值曾经被改成了B，后来又被改回为A，那CAS操作就会误认为它从来没有被改变过。这个漏洞称为CAS操作的“ABA”问题。Java并发包为了解决这个问题，提供了一个带有标记的原子引用类“AtomicStampedReference”，它可以通过控制变量值的版本来保证CAS的正确性。因此，在使用CAS前要考虑清楚“ABA”问题是否会影响程序并发的正确性，如果需要解决ABA问题，改用传统的互斥同步可能会比原子类更高效。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
