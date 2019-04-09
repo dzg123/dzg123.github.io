@@ -48,10 +48,10 @@
     <section id="wrapper" class="home">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <header>
-                <h1 class="posttitle" itemprop="name headline">Netty之线程模型和增强Future</h1>
+                <h1 class="posttitle" itemprop="name headline">Netty之handler</h1>
                 <div class="meta">
                     <div class="postdate">
-                        <time datetime="2018-10-20" itemprop="datePublished">2018-10-20</time>
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-04-08</time>
                     </div>
                     <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
                             id="busuanzi_value_page_pv">0</span></span></div>
@@ -60,36 +60,25 @@
                 </div>
             </header>
             <!--markdown-->
+            <h3>Netty处理器重要概念：</h3>
             <ol>
-                <li>一个EventLoopGroup当中会包含一个或者多个EventLoop。</li>
-                <li>一个EventLoop在它的整个生命周期当中都只会与唯一一个Thread进行绑定。</li>
-                <li>所有由EventLoop所处理的各种I/O事件将在它所关联的那个Thread进行处理。</li>
-                <li>一个Channel在它的整个生命周期中只会注册在一个EventLoop上。</li>
-                <li>一个EventLoop在运行过程当中会被分配给一个或者多个Channel。</li>
+                <li>Netty的处理器可以分为两类：入站处理器与出站处理器。</li>
+                <li>入站处理器的顶层：ChannelInboundHandler，出站处理器的顶层：ChannelOutboundHandler。</li>
+                <li>数据处理时常用的各种编解码器本质上都是处理器。</li>
+                <li>编解码器：无论我们向网络写入的数据是什么类型（int、char、String、二进制等），数据在网络中传递时，其都是以字节流的形式呈现的；将数据由本来的形式转换为字节流的操作称为编码（encode）；将数据由字节转换为它原本的格式或是其他格式的操作称为解码（decode）。编解码统一称为codec。</li>
+                <li>编码：本质上是一种出站处理器。因此，编码一定是一种ChannelOutboundHandler。</li>
+                <li>解码：本质上是一种入站处理器。因此，解码一定是一种ChannelInboundHandler。</li>
+                <li>在Netty中，编码器通常以XXXEncoder命名；解码器通常以XXXDecoder命名。</li>
 
             </ol>
-            <p>重要结论：在Netty中，Channel的实现一定是线程安全的；基于此，我们可以存储一个channel的引用，并且在需要向远程端点发送数据时，通过这个引用来调用Channel相应的方法；即便当时有很多线程都在使用它也不会出现多线程问题，因为Netty在底层对于操作当前Channel的线程会进行判断是否为EventLoop中维护的那个线程，如果不是，则会以任务的方式将执行的Channel操作交给EventLoop中的线程去完成；而且消息一定会按照顺序发送出去，因为Netty在底层通过队列的方式来处理任务，FIFO。</p>
-            <p>重要结论：我们再业务开发中，不要将长时间执行的耗时任务放入到EventLoop的执行队列中，因为他将会一直阻塞该线程所对应的所有Channel上的其他执行任务，如果我们需要进行阻塞调用或是耗时的操作（实际开发中很常见），那么我们就需要一个专门的EventExecutor（业务线程池）。</p>
-            <p>通常会有两种实现方式：</p>
+            <p>TCP粘包和拆包。</p>
+            <p>关于Netty编解码器的重要结论：</p>
             <ol>
-                <li>在ChannelHandler的回调方法中，使用自己定义的业务线程池，这样就可以实现异步调用。</li>
-                <li>借助于Netty提供的向ChannelPipeLine添加ChannelHandler时调用的addLast方法来传递的EventExecutor。</li>
+                <li>无论是编码器还是解码器，其所接受的消息类型必须要与待处理的参数类型一致，否则该编码器或解码器并不会被执行。</li>
+                <li>在解码器进行数据解码时，一定要记得判断缓冲（ByteBuf）中的数据是否足够，否则会产生一些问题。</li>
 
             </ol>
-            <p>说明：默认情况下（调用addLast（handler）），ChannelHandler中的回调方法都是由I/O线程所执行，如果调用了ChannelPipeline.addLast(EventExecutorGroup group, ChannelHandler... handlers)方法，那么ChannelHandler中的回调方法就由参数中的group线程组来执行的。</p>
-            <p>JDK所提供的Future只能通过手工方式检查执行结果，而这个操作是会阻塞的；Netty则对ChannelFuture进行了增强，通过ChannelFutureListener以回调的方式来获取执行结果，去除了手工检查阻塞的操作；值得注意的是：ChannelFutureListener的operationComplete方法是由I/O线程执行的，因此要注意的是不要在这里执行耗时操作，否则需要通过另外的线程或者线程池来执行。</p>
             <p>&nbsp;</p>
-            <p>=================</p>
-            <p>在Netty中有两种发送消息的方式，可以直接写到Channel中，也可以写到与ChannelHandler所关联的那个ChannelHandlerContext中，对于前一种方式来说，消息会从ChannelPipeline的末尾开始流动；对于后一种方式来说，消息将从ChannelPipeline中的下一个ChannelHandler开始流动。</p>
-            <p><strong>结论</strong>：</p>
-            <ol>
-                <li><p>ChannelHandlerContext与ChannelHandler之间的关联绑定关系是永远都不会发生改变的，因此对其进行缓存是没有任何问题的。</p>
-                </li>
-                <li><p>对于与Channel的同名方法来说，ChannelHandlerContext的方法会产生更短的事件流，所以我们应该在可能的情况下利用这个特性来提升应用性能。</p>
-                    <p>===============</p>
-                </li>
-
-            </ol>
 
         </article>
         <script src="/js/av-min.js"></script>
