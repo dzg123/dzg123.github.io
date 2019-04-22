@@ -9,12 +9,12 @@
     <meta name="wap-font-scale" content="no">
     <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
     <meta name="sogou_site_verification" content="E8uWFBcf4a">
-    <meta name="author" content="Fan">
+    <meta name="author" content="dzg">
     <meta name="keywords" content="">
     <meta property="og:locale" content="en_US">
     <meta property="og:title" content=" dzg">
     <title>blog | dzg</title>
-    <link rel="shortcut icon" href="https://alili.tech/images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -41,24 +41,6 @@
         id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
         href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
                                             target="_blank">Github</a></li></ul></span><br>
-    <!--<span id="actions"><ul><li><a-->
-        <!--class="icon" href="https://alili.tech/archive/ecriucnvxvo/"><i class="fa fa-chevron-left" aria-hidden="true"-->
-                                                                       <!--onmouseover='$("#i-prev").toggle();'-->
-                                                                       <!--onmouseout='$("#i-prev").toggle();'></i></a></li><li><a-->
-        <!--class="icon" href="https://alili.tech/archive/71qzg0zrtcc/"><i class="fa fa-chevron-right" aria-hidden="true"-->
-                                                                       <!--onmouseover='$("#i-next").toggle();'-->
-                                                                       <!--onmouseout='$("#i-next").toggle();'></i></a></li><li><a-->
-        <!--class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up"-->
-                                                                                              <!--aria-hidden="true"-->
-                                                                                              <!--onmouseover='$("#i-top").toggle();'-->
-                                                                                              <!--onmouseout='$("#i-top").toggle();'></i></a></li><li><a-->
-        <!--class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();'-->
-                                 <!--onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span-->
-        <!--id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info"-->
-                                                                                  <!--style="display:none;">Next post</span> <span-->
-        <!--id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info"-->
-                                                                               <!--style="display:none;">Share post</span>-->
-    <!--</span>-->
 
 </span>
 </div>
@@ -66,10 +48,10 @@
     <section id="wrapper" class="home">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <header>
-                <h1 class="posttitle" itemprop="name headline">Java基础之int和Integer有什么区别</h1>
+                <h1 class="posttitle" itemprop="name headline">模拟一次简单的sql调优</h1>
                 <div class="meta">
                     <div class="postdate">
-                        <time datetime="2018-10-20" itemprop="datePublished">2019-02-14</time>
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-04-18</time>
                     </div>
                     <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
                             id="busuanzi_value_page_pv">0</span></span></div>
@@ -78,22 +60,63 @@
                 </div>
             </header>
             <!--markdown-->
-            <p>转：<a href='https://blog.csdn.net/chenliguan/article/details/53888018' target='_blank' class='url'>https://blog.csdn.net/chenliguan/article/details/53888018</a></p>
-            <p>1 int与Integer的基本使用对比
-                （1）Integer是int的包装类；int是基本数据类型；
-                （2）Integer变量必须实例化后才能使用；int变量不需要；
-                （3）Integer实际是对象的引用，指向此new的Integer对象；int是直接存储数据值 ；
-                （4）Integer的默认值是null；int的默认值是0。</p>
-            <p>2 int与Integer的深入对比
-                （1）由于Integer变量实际上是对一个Integer对象的引用，所以两个通过new生成的Integer变量永远是不相等的（因为new生成的是两个对象，其内存地址不同）。</p>
-            <pre><code>Integer i = new Integer(100);
-Integer j = new Integer(100)
-System.out.print(i == j); //false
-</code></pre>
-            <p>2）Integer变量和int变量比较时，只要两个变量的值是向等的，则结果为true（因为包装类Integer和基本数据类型int比较时，java会自动拆包装为int，然后进行比较，实际上就变为两个int变量的比较）</p>
-            <p>Integer i = new Integer(100);
-                int j = 100；</p>
-            <p>System.out.print(i == j); //true</p>
+            <h3>调优sql步骤</h3>
+            <blockquote><p>准备工作：创建表person_info_large,其字段设计如下：</p>
+                <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934182637.png' alt='1555934182637' referrerPolicy='no-referrer' /></p>
+                <p>向表中灌入200万条数据，用来显示sql调优过程。</p>
+            </blockquote>
+            <ul>
+                <li><p>根据慢日志定位慢查询sql</p>
+                    <ol>
+                        <li><p>show variables like &quot;slow_quer&quot;</p>
+                            <p>mysql默认把慢查询关闭，需要手动开启</p>
+                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555930747881.png' alt='' referrerPolicy='no-referrer' /></p>
+                        </li>
+                        <li><p>SHOW STATUS LIKE &quot;%slow_q%&quot;</p>
+                            <p>通过上述指令可以查询本次连接的慢查询条数</p>
+                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555931008879.png' alt='' referrerPolicy='no-referrer' /></p>
+                        </li>
+                        <li><p>通过set global slow_query_log=on;set global long_query_time=1;指令可以设置慢查询日志开启，并将慢查询时间阈值设为1秒（指令设置只能针对本次连接，重启数据库这些设置都会被重置，除非修改配置文件，例如：windows的my.ini）</p>
+                        </li>
+                        <li><p>执行select name from person_info_large order by name desc;数据库花费了6秒多才将数据查出，超过了1秒的限制，被作为慢查询记录在本地的slow_query_log_file文件中。</p>
+                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935468118.png' alt='1555935468118' referrerPolicy='no-referrer' /></p>
+                        </li>
+
+                    </ol>
+                </li>
+                <li><p>使用explain select name from person_info_large order by name desc；对此条慢sql语句进行分析，其中，type字段值为ALL，表明此sql查询为全表扫描（index、all表示全表扫描），</p>
+                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934722960.png' alt='1555934722960' referrerPolicy='no-referrer' /></p>
+                    <p><strong>type字段含义</strong>：<img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934874205.png' alt='1555934874205' referrerPolicy='no-referrer' />
+                        <strong>extra字段含义</strong>：</p>
+                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935001078.png' alt='1555935001078' referrerPolicy='no-referrer' /></p>
+                </li>
+
+            </ul>
+            <ul>
+                <li><p>修改sql或尽量让sql走索引</p>
+                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935311472.png' alt='1555935311472' referrerPolicy='no-referrer' /></p>
+                </li>
+
+            </ul>
+            <ol>
+                <li><p>标准的name字段并没有设置为索引，用account字段来查询明显会比name字段来得好，可以通过explain select account from person_info_large order by account desc；可以发现此sql查询会走索引，并且速度比不走索引快了2秒多；</p>
+                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555936128153.png' alt='1555936128153' referrerPolicy='no-referrer' /></p>
+                </li>
+
+            </ol>
+            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935433868.png' alt='1555935433868' referrerPolicy='no-referrer' /></p>
+            <ol start='2' >
+                <li>当然也可以给name字段加一个索引，使用alter table person_info_large add index idx_name(name)命令;再执行explain select name from person_info_large order by name desc；最后执行select name from person_info_large order by name desc；查询速度比不走索引快。</li>
+
+            </ol>
+            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555936495690.png' alt='1555936495690' referrerPolicy='no-referrer' /></p>
+            <ol start='3' >
+                <li><p>执行select count(id) from person_info_large;发现并没有走id索引，而是走了account索引；执行select count(id) from person_info_large force index(primary) ;对比后发现使用account索引查询更快；mysql的查询优化器，尽可能使用索引，消除更多数据行。</p>
+                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555938474080.png' alt='1555938474080' referrerPolicy='no-referrer' /></p>
+                </li>
+
+            </ol>
+            <p>&nbsp;</p>
 
         </article>
         <script src="/js/av-min.js"></script>
@@ -145,7 +168,6 @@ System.out.print(i == j); //false
     gtag('config', 'UA-129382678-1');
 })()</script>
 <script>(function () {
-    if (location.host !== 'alili.tech') return;
     var bp = document.createElement('script');
     var curProtocol = window.location.protocol.split(':')[0];
     if (curProtocol === 'https') {
