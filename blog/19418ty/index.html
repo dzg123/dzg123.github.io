@@ -62,7 +62,7 @@
             <!--markdown-->
             <h3>调优sql步骤</h3>
             <blockquote><p>准备工作：创建表person_info_large,其字段设计如下：</p>
-                <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934182637.png' alt='1555934182637' referrerPolicy='no-referrer' /></p>
+                <p><img src='./images/1555934182637.png' alt='1555934182637' referrerPolicy='no-referrer' /></p>
                 <p>向表中灌入200万条数据，用来显示sql调优过程。</p>
             </blockquote>
             <ul>
@@ -70,49 +70,49 @@
                     <ol>
                         <li><p>show variables like &quot;slow_quer&quot;</p>
                             <p>mysql默认把慢查询关闭，需要手动开启</p>
-                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555930747881.png' alt='' referrerPolicy='no-referrer' /></p>
+                            <p><img src='./images/1555930747881.png' alt='' referrerPolicy='no-referrer' /></p>
                         </li>
                         <li><p>SHOW STATUS LIKE &quot;%slow_q%&quot;</p>
                             <p>通过上述指令可以查询本次连接的慢查询条数</p>
-                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555931008879.png' alt='' referrerPolicy='no-referrer' /></p>
+                            <p><img src='./images/1555931008879.png' alt='' referrerPolicy='no-referrer' /></p>
                         </li>
                         <li><p>通过set global slow_query_log=on;set global long_query_time=1;指令可以设置慢查询日志开启，并将慢查询时间阈值设为1秒（指令设置只能针对本次连接，重启数据库这些设置都会被重置，除非修改配置文件，例如：windows的my.ini）</p>
                         </li>
                         <li><p>执行select name from person_info_large order by name desc;数据库花费了6秒多才将数据查出，超过了1秒的限制，被作为慢查询记录在本地的slow_query_log_file文件中。</p>
-                            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935468118.png' alt='1555935468118' referrerPolicy='no-referrer' /></p>
+                            <p><img src='./images/1555935468118.png' alt='1555935468118' referrerPolicy='no-referrer' /></p>
                         </li>
 
                     </ol>
                 </li>
                 <li><p>使用explain select name from person_info_large order by name desc；对此条慢sql语句进行分析，其中，type字段值为ALL，表明此sql查询为全表扫描（index、all表示全表扫描），</p>
-                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934722960.png' alt='1555934722960' referrerPolicy='no-referrer' /></p>
-                    <p><strong>type字段含义</strong>：<img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555934874205.png' alt='1555934874205' referrerPolicy='no-referrer' />
+                    <p><img src='./images/1555934722960.png' alt='1555934722960' referrerPolicy='no-referrer' /></p>
+                    <p><strong>type字段含义</strong>：<img src='./images/1555934874205.png' alt='1555934874205' referrerPolicy='no-referrer' />
                         <strong>extra字段含义</strong>：</p>
-                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935001078.png' alt='1555935001078' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/1555935001078.png' alt='1555935001078' referrerPolicy='no-referrer' /></p>
                 </li>
 
             </ul>
             <ul>
                 <li><p>修改sql或尽量让sql走索引</p>
-                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935311472.png' alt='1555935311472' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/1555935311472.png' alt='1555935311472' referrerPolicy='no-referrer' /></p>
                 </li>
 
             </ul>
             <ol>
                 <li><p>标准的name字段并没有设置为索引，用account字段来查询明显会比name字段来得好，可以通过explain select account from person_info_large order by account desc；可以发现此sql查询会走索引，并且速度比不走索引快了2秒多；</p>
-                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555936128153.png' alt='1555936128153' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/1555936128153.png' alt='1555936128153' referrerPolicy='no-referrer' /></p>
                 </li>
 
             </ol>
-            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555935433868.png' alt='1555935433868' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/1555935433868.png' alt='1555935433868' referrerPolicy='no-referrer' /></p>
             <ol start='2' >
                 <li>当然也可以给name字段加一个索引，使用alter table person_info_large add index idx_name(name)命令;再执行explain select name from person_info_large order by name desc；最后执行select name from person_info_large order by name desc；查询速度比不走索引快。</li>
 
             </ol>
-            <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555936495690.png' alt='1555936495690' referrerPolicy='no-referrer' /></p>
+            <p><img src='./images/1555936495690.png' alt='1555936495690' referrerPolicy='no-referrer' /></p>
             <ol start='3' >
                 <li><p>执行select count(id) from person_info_large;发现并没有走id索引，而是走了account索引；执行select count(id) from person_info_large force index(primary) ;对比后发现使用account索引查询更快；mysql的查询优化器，尽可能使用索引，消除更多数据行。</p>
-                    <p><img src='file://C:/Users/dzg/AppData/Roaming/Typora/typora-user-images/1555938474080.png' alt='1555938474080' referrerPolicy='no-referrer' /></p>
+                    <p><img src='./images/1555938474080.png' alt='1555938474080' referrerPolicy='no-referrer' /></p>
                 </li>
 
             </ol>
