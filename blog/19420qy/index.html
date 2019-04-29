@@ -48,74 +48,60 @@
     <section id="wrapper" class="home">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <header>
-                <h1 class="posttitle" itemprop="name headline">模拟一次简单的sql调优</h1>
+                <h1 class="posttitle" itemprop="name headline">jvm之内存区域</h1>
                 <div class="meta">
                     <div class="postdate">
-                        <time datetime="2018-10-20" itemprop="datePublished">2019-04-18</time>
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-04-20</time>
                     </div>
                     <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
                             id="busuanzi_value_page_pv">0</span></span></div>
-                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">mysql</a></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">jvm</a></div>
                     <div class="article-tag-box"></div>
                 </div>
             </header>
             <!--markdown-->
-            <h3>调优sql步骤</h3>
-            <blockquote><p>准备工作：创建表person_info_large,其字段设计如下：</p>
-                <p><img src='./images/1555934182637.png' alt='1555934182637' referrerPolicy='no-referrer' /></p>
-                <p>向表中灌入200万条数据，用来显示sql调优过程。</p>
-            </blockquote>
+            <h3>jvm内存区域</h3>
+            <p><img src='/images/1556440195328.png' alt='1556440195328' referrerPolicy='no-referrer' /></p>
             <ul>
-                <li><p>根据慢日志定位慢查询sql</p>
-                    <ol>
-                        <li><p>show variables like &quot;slow_quer&quot;</p>
-                            <p>mysql默认把慢查询关闭，需要手动开启</p>
-                            <p><img src='./images/1555930747881.png' alt='' referrerPolicy='no-referrer' /></p>
-                        </li>
-                        <li><p>SHOW STATUS LIKE &quot;%slow_q%&quot;</p>
-                            <p>通过上述指令可以查询本次连接的慢查询条数</p>
-                            <p><img src='./images/1555931008879.png' alt='' referrerPolicy='no-referrer' /></p>
-                        </li>
-                        <li><p>通过set global slow_query_log=on;set global long_query_time=1;指令可以设置慢查询日志开启，并将慢查询时间阈值设为1秒（指令设置只能针对本次连接，重启数据库这些设置都会被重置，除非修改配置文件，例如：windows的my.ini）</p>
-                        </li>
-                        <li><p>执行select name from person_info_large order by name desc;数据库花费了6秒多才将数据查出，超过了1秒的限制，被作为慢查询记录在本地的slow_query_log_file文件中。</p>
-                            <p><img src='./images/1555935468118.png' alt='1555935468118' referrerPolicy='no-referrer' /></p>
-                        </li>
-
-                    </ol>
+                <li><p>JVM 内存区域主要分为线程私有区域【程序计数器、虚拟机栈、本地方法区】、线程共享区 域【JAVA堆、方法区】、直接内存。 线程私有数据区域生命周期与线程相同, 依赖用户线程的启动/结束 而 创建/销毁(在 Hotspot VM 内, 每个线程都与操作系统的本地线程直接映射, 因此这部分内存区域的存/否跟随本地线程的 生/死对应)。 线程共享区域随虚拟机的启动/关闭而创建/销毁。 </p>
                 </li>
-                <li><p>使用explain select name from person_info_large order by name desc；对此条慢sql语句进行分析，其中，type字段值为ALL，表明此sql查询为全表扫描（index、all表示全表扫描），</p>
-                    <p><img src='./images/1555934722960.png' alt='1555934722960' referrerPolicy='no-referrer' /></p>
-                    <p><strong>type字段含义</strong>：
-                        <div>
-                        <img src='./images/1555934874205.png' alt='1555934874205' referrerPolicy='no-referrer' />
-                    </div>
-                        <strong>extra字段含义</strong>：</p>
-                    <p><img src='./images/1555935001078.png' alt='1555935001078' referrerPolicy='no-referrer' /></p>
-                </li>
-
-            </ul>
-            <ul>
-                <li><p>修改sql或尽量让sql走索引</p>
-                    <p><img src='./images/1555935311472.png' alt='1555935311472' referrerPolicy='no-referrer' /></p>
+                <li><p>直接内存并不是JVM运行时数据区的一部分, 但也会被频繁的使用: 在JDK 1.4引入的NIO提 供了基于 Channel 与 Buffer 的 IO 方式, 它可以使用 Native 函数库直接分配堆外内存, 然后使用 DirectByteBuffer 对象作为这块内存的引用进行操作(详见: Java I/O 扩展), 这样就避免了在 Java 堆和Native堆中来回复制数据, 因此在一些场景中可以显著提高性能。</p>
+                    <p><img src='/images/1556439983129.png' alt='1556439983129' referrerPolicy='no-referrer' /></p>
                 </li>
 
             </ul>
             <ol>
-                <li><p>标准的name字段并没有设置为索引，用account字段来查询明显会比name字段来得好，可以通过explain select account from person_info_large order by account desc；可以发现此sql查询会走索引，并且速度比不走索引快了2秒多；</p>
-                    <p><img src='./images/1555936128153.png' alt='1555936128153' referrerPolicy='no-referrer' /></p>
+                <li><p>程序计数器（Program Counter Register）</p>
+                    <ul>
+                        <li>一块较小的内存空间, 是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的 程序计数器，这类内存也称为“线程私有”的内存。 正在执行 java 方法的话，计数器记录的是虚拟机字节码指令的地址（当前指令的地址）。如 果还是Native方法，则为空。 这个内存区域是唯一一个在虚拟机中没有规定任何OutOfMemoryError情况的区域。 </li>
+
+                    </ul>
                 </li>
+                <li><p>虚拟机栈（VM Stack）</p>
+                    <ul>
+                        <li>是描述java方法执行的内存模型，每个方法在执行的同时都会创建一个栈帧（Stack Frame） 用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成 的过程，就对应着一个栈帧在虚拟机栈中入栈到出栈的过程。 </li>
+                        <li>栈帧（ Frame）是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接 (Dynamic Linking)、 方法返回值和异常分派（ Dispatch Exception）。栈帧随着方法调用而创建，随着方法结束而销毁——无论方法是正常完成还是异常完成（抛出了在方法内未被捕获的异 常）都算作方法结束。 </li>
 
-            </ol>
-            <p><img src='./images/1555935433868.png' alt='1555935433868' referrerPolicy='no-referrer' /></p>
-            <ol start='2' >
-                <li>当然也可以给name字段加一个索引，使用alter table person_info_large add index idx_name(name)命令;再执行explain select name from person_info_large order by name desc；最后执行select name from person_info_large order by name desc；查询速度比不走索引快。</li>
+                    </ul>
+                </li>
+                <li><p>本地方法栈（Native Method Stack）</p>
+                    <ul>
+                        <li>本地方法区和Java Stack作用类似, 区别是虚拟机栈为执行Java方法服务, 而本地方法栈则为 Native方法服务, 如果一个VM实现使用C-linkage模型来支持Native调用, 那么该栈将会是一个 C栈，但HotSpot VM直接就把本地方法栈和虚拟机栈合二为一。</li>
 
-            </ol>
-            <p><img src='./images/1555936495690.png' alt='1555936495690' referrerPolicy='no-referrer' /></p>
-            <ol start='3' >
-                <li><p>执行select count(id) from person_info_large;发现并没有走id索引，而是走了account索引；执行select count(id) from person_info_large force index(primary) ;对比后发现使用account索引查询更快；mysql的查询优化器，尽可能使用索引，消除更多数据行。</p>
-                    <p><img src='./images/1555938474080.png' alt='1555938474080' referrerPolicy='no-referrer' /></p>
+                    </ul>
+                </li>
+                <li><p>堆（heap）</p>
+                    <ul>
+                        <li>是被线程共享的一块内存区域，创建的对象和数组都保存在 Java 堆内存中，也是垃圾收集器进行 垃圾收集的最重要的内存区域。由于现代VM采用分代收集算法, 因此Java堆从GC的角度还可以 细分为: 新生代（Eden、From Survivor、To Survivor）和老年代。</li>
+
+                    </ul>
+                </li>
+                <li><p>方法区（Method Area）/永久代（PermGen）</p>
+                    <ul>
+                        <li>即我们常说的永久代(Permanent Generation), 用于存储被 JVM 加载的类信息、常量、静 态变量、即时编译器编译后的代码等数据. HotSpot VM把GC分代收集扩展至方法区, 即使用Java 堆的永久代来实现方法区, 这样HotSpot的垃圾收集器就可以像管理Java堆一样管理这部分内存, 而不必为方法区开发专门的内存管理器(永久带的内存回收的主要目标是针对常量池的回收和类型 的卸载, 因此收益一般很小)。</li>
+                        <li>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class文件中除了有类的版 本、字段、方法、接口等描述等信息外，还有一项信息是常量池 （Constant Pool Table），用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加 载后存放到方法区的运行时常量池中。 Java虚拟机对Class文件的每一部分（自然也包括常量 池）的格式都有严格的规定，每一个字节用于存储哪种数据都必须符合规范上的要求，这样才会 被虚拟机认可、装载和执行。</li>
+
+                    </ul>
                 </li>
 
             </ol>
