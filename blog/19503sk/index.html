@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">由final修饰局部变量引发的思考</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-03</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">jvm</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>我们都知道局部变量存在栈中，准确的说是存在每个栈帧中的局部变量表中。局部变量的生命周期随方法</p>
+            <p>的入/出栈开始或者结束，但一旦对局部变量加上了final修饰符，很多人往往会觉得这个变量变得“不一样”了。</p>
+            <ul>
+                <li><p><strong>误区一</strong>：认为final修饰的局部变量会被存储在常量池中</p>
+                    <p>这是一个很容易让人产生误解的地方，我们都知道常量池中存储的是字面量和符号引用，而final修饰的常量值即是字面量的一种。</p>
+                    <pre><code class='language-java' lang='java'>void test(){
+    final int num = 5;
+    ...
+}
+</code></pre>
+                    <p>&nbsp;</p>
+                </li>
+
+            </ul>
+            <p>有些人可能会误以为num这个变量会被存储在常量池，但实际上5这个字面量才会被存储在常量池中。无论它是否被final修饰，5都会被存储到常量池中。上面这段代码可以理解为将5从常量池中取出赋给num变量。</p>
+            <p><strong>其实final关键字对于变量的存储区域是没有任何影响的。</strong>jvm规范中，类的静态变量存储在方法区，实例变量存储在堆区。也就是说static关键字才对变量的存储区域造成影响。final关键字来修饰变量表明了该变量一旦赋值就无法更改，同时编译器必须保证该变量在使用前被初始化赋值。</p>
+            <ul>
+                <li><p><strong>误区二</strong>：认为final修饰的局部变量在方法结束调用后仍然存在（生命周期变长）</p>
+                    <p>这种误解往往是由于Java中一个经典的例子引发的：使用匿名内部类访问外部变量时，需要使用final修饰。（JDK1.8语法糖，底层会自动加上final，无需开发者再手动添加）</p>
+                    <pre><code class='language-java' lang='java'>  //初始化按钮的监听器
+    public void initListener(Button btn ){
+        final int name = &quot;王大锤&quot;; //必须标记为final
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn.setText(name); //动态改变按钮的文字
+            }
+        });
+    }
+</code></pre>
+                    <p>&nbsp;</p>
+                    <ul>
+                        <li>在方法内实现了一个匿名内部类，该类的存活时间大部分情况下肯定比方法要长，如果直接通过局部变量访问，往往会出现问题，因为两者的生命周期不同。</li>
+                        <li>Java为了解决这个问题，在底层将局部变量的值传入到了匿名内部类中，并且以匿名内部类的成员变量的形式存在，这个值的传递过程是通过匿名内部类的构造器完成的。简单来说，就是对局部变量拷贝了副本。</li>
+                        <li>如果不用final修饰，则原先的局部变量可以发生变化。这里到了问题的核心了，如果局部变量发生变化后，匿名内部类是不知道的（因为他只是拷贝了局部变量的值，并不是直接使用的局部变量）。这里举个栗子：原先局部变量指向的是对象A，在创建匿名内部类后，匿名内部类中的成员变量也指向A对象。但过了一段时间局部变量的值指向另外一个B对象，但此时匿名内部类中还是指向原先的A对象。那么程序再接着运行下去，可能就会导致程序运行的结果与预期不同。</li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p><strong>因此为了保护数据的一致性，Java要求被匿名内部类访问的局部变量必须被final修饰。</strong>但不少人仍会觉得是final这个关键字让这个局部变量值被存储到了常量池，譬如这位老哥：</p>
+            <p><img src='/images/1556806388981.png' alt='1556806388981' referrerPolicy='no-referrer' /></p>
+            <p>题主也解释的很清楚，<strong>final修饰变量的语义只有初始化一次后就不能再被修改值或者引用</strong>（对于被引用的对象来说，仍可以被改变）。对于字符串常量值来说本来就存在常量池中，（在JDK1.8以后，常量池被移至堆中，因此也就是存在堆中了）就好比假设在一个方法中：</p>
+            <pre><code>public void test(){
+        String s1 = &quot;abc&quot;;
+        String s2 = &quot;abc&quot;;
+}
+</code></pre>
+            <p>很明显，上面的s1==s2是成立的，因为他们都指向了常量池中的abc。但是s1和s2是分配在常量池里的吗？当然不是，他们是分配在方法栈的局部变量表中的两个不同变量，只是指向了一个地址而已。</p>
+            <p>而对与成员变量来说，加不加final修饰都不影响成员变量存储在哪，符合下图的字面量和符号引用都会被存储在常量池中，当然如果将一个对象实例赋给局部变量，虽然这个局部变量的符号引用会存储在常量池，但这个常量池项中肯定有指向堆内对象实例的指针。在这个也会产生不理解的地方：</p>
+            <p><img src='/images/1556882827649.png' alt='1556882827649' referrerPolicy='no-referrer' /></p>
+            <ul>
+                <li><p><strong>误区三</strong>：为什么有些基本数据类型的成员变量值会被存储在 常量池中，有些则直接存储在code区</p>
+                    <pre><code class='language-java' lang='java'>public class Main {
+    int a = 1;
+    float b = 1f;
+	float c = 3f;
+    double d = 3d;
+	double e = 1d;
+	long f = 2L;
+    long g = 1L;
+	int h = 32768;
+
+    public static void main(String[] args) {
+        //todo
+    }
+}
+</code></pre>
+                    <p>将下述Main类编译成字节码文件后，使用javap -v Main来反编译字节码文件（编译环境为JDK1.8.0_121）：</p>
+                    <pre><code> Last modified 2019-5-3; size 551 bytes
+  MD5 checksum 98bc696f571bd00b7bfed6ecc3bff180
+  Compiled from &quot;Main.java&quot;
+public class Main
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #17.#38        // java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+   #2 = Fieldref           #16.#39        // Main.a:I
+   #3 = Fieldref           #16.#40        // Main.b:F
+   #4 = Float              3.0f
+   #5 = Fieldref           #16.#41        // Main.c:F
+   #6 = Double             3.0d
+   #8 = Fieldref           #16.#42        // Main.d:D
+   #9 = Fieldref           #16.#43        // Main.e:D
+  #10 = Long               2l
+  #12 = Fieldref           #16.#44        // Main.f:J
+  #13 = Fieldref           #16.#45        // Main.g:J
+  #14 = Integer            32768
+  #15 = Fieldref           #16.#46        // Main.h:I
+  #16 = Class              #47            // Main
+  #17 = Class              #48            // java/lang/Object
+  #18 = Utf8               a
+  #19 = Utf8               I
+  #20 = Utf8               b
+  #21 = Utf8               F
+  #22 = Utf8               c
+  #23 = Utf8               d
+  #24 = Utf8               D
+  #25 = Utf8               e
+  #26 = Utf8               f
+  #27 = Utf8               J
+  #28 = Utf8               g
+  #29 = Utf8               h
+  #30 = Utf8               &lt;init&gt;
+  #31 = Utf8               ()V
+  #32 = Utf8               Code
+  #33 = Utf8               LineNumberTable
+  #34 = Utf8               main
+  #35 = Utf8               ([Ljava/lang/String;)V
+  #36 = Utf8               SourceFile
+  #37 = Utf8               Main.java
+  #38 = NameAndType        #30:#31        // &quot;&lt;init&gt;&quot;:()V
+  #39 = NameAndType        #18:#19        // a:I
+  #40 = NameAndType        #20:#21        // b:F
+  #41 = NameAndType        #22:#21        // c:F
+  #42 = NameAndType        #23:#24        // d:D
+  #43 = NameAndType        #25:#24        // e:D
+  #44 = NameAndType        #26:#27        // f:J
+  #45 = NameAndType        #28:#27        // g:J
+  #46 = NameAndType        #29:#19        // h:I
+  #47 = Utf8               Main
+  #48 = Utf8               java/lang/Object
+{
+//略去字段描述符
+  public Main();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+         4: aload_0
+         5: iconst_1
+         6: putfield      #2                  // Field a:I
+         9: aload_0
+        10: fconst_1
+        11: putfield      #3                  // Field b:F
+        14: aload_0
+        15: ldc           #4                  // float 3.0f
+        17: putfield      #5                  // Field c:F
+        20: aload_0
+        21: ldc2_w        #6                  // double 3.0d
+        24: putfield      #8                  // Field d:D
+        27: aload_0
+        28: dconst_1
+        29: putfield      #9                  // Field e:D
+        32: aload_0
+        33: ldc2_w        #10                 // long 2l
+        36: putfield      #12                 // Field f:J
+        39: aload_0
+        40: lconst_1
+        41: putfield      #13                 // Field g:J
+        44: aload_0
+        45: ldc           #14                 // int 32768
+        47: putfield      #15                 // Field h:I
+        50: return
+		...
+}
+</code></pre>
+                    <p>通过上述反编译出的Code区和常量池代码，可以很清晰地看出有些基本数据类型值被存储到了常量池，而有些则没有，不同的基本数据类型有略微的差别，但很显然这一切都与jvm指令操作有关。总的来说就是一句话，<strong>对于const系列命令和push系列命令操作范围之外的数值类型常量，都放在常量池中。</strong>如果想了解具体jvm指令详细解释，可阅读<a href='https://blog.csdn.net/hudashi/article/details/7062675'>此博客</a>。</p>
+                    <p>&nbsp;</p>
+                </li>
+
+            </ul>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
