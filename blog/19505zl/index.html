@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Linux常见指令</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-05</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Linux</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h4>Shell指令</h4>
+            <ul>
+                <li><ul>
+                    <li><strong>如何查找特定的文件</strong></li>
+                    <li>find ~ -name &quot;target3.java&quot;:精确查找文件</li>
+                    <li>find ~ -name &quot;target*&quot;：模糊查找文件</li>
+                    <li>find ~ -iname &quot;target*&quot;:不区分文件名大小写与查找文件</li>
+                    <li>man find：更多关于find指令的使用说明</li>
+
+                </ul>
+                </li>
+                <li><p><strong>检索文件内容</strong></p>
+                    <ul>
+                        <li><strong>grep</strong></li>
+
+                    </ul>
+                    <blockquote><p>语法：grep [options] pattern file</p>
+                    </blockquote>
+                    <ul>
+                        <li><p>全称：Global Regular Expression Print</p>
+                        </li>
+                        <li><p>作用：查找文件里符合条件的字符串</p>
+                        </li>
+                        <li><p><strong>管道操作符|</strong></p>
+                            <ul>
+                                <li>可将指令连接起来，前一个指令的输出作为后一个指令的输入</li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p><img src='/images/pipeLine.png' alt='1557045952045' referrerPolicy='no-referrer' /></p>
+            <ul>
+                <li><p>使用管道注意的要点</p>
+                    <ul>
+                        <li>只处理一个命令正确输出,不处理错误输出</li>
+                        <li>右边命令必须能够接受标准输入流,否则传递过程中数据会被丢弃</li>
+                        <li>sed,awk,grep,cut,head,top,less,more,wc,join,sort,split等</li>
+
+                    </ul>
+                </li>
+                <li><p>面试常用的方式</p>
+                    <ul>
+                        <li>grep &#39;partial[true]&#39; xxx.info.log</li>
+                        <li>grep -o &#39;engine[[0-9a-z]*]&#39;（正则匹配）</li>
+                        <li>grep -v &#39;grep&#39;(过滤)</li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p><strong>*对文件内容做统计</strong></p>
+            <ul>
+                <li><p>awk（适合对文本列进行处理）</p>
+                    <blockquote><p>语法：awk [options] &#39;cmd&#39; file</p>
+                    </blockquote>
+                    <ul>
+                        <li>一次读取一行文本，按输入分隔符进行切片，切成多个组成部分</li>
+                        <li>将切片直接保存在内建的变量中，$1, $2...($表示行的全部)</li>
+                        <li>支持对单个切片的判断，支持循环判断，默认分隔符为空格</li>
+
+                    </ul>
+                </li>
+                <li><p>面试常用的方式</p>
+                    <ul>
+                        <li>awk &#39;{print $1,$4}&#39; netstat.txt:输出第一列和第四列</li>
+                        <li>awk &#39;$1==&quot;tcp&quot; &amp;&amp; $2==1{print $0}&#39; netstat.txt：输出第一列为tcp值和第四列为1的全部数据</li>
+                        <li>awk &#39;{enginearr[$1]++}END{for(i in enginearr)print i&quot;\t&quot; enginearr[i]}&#39;：统计第一列数据出现次数</li>
+
+                    </ul>
+                </li>
+                <li><p><strong>批量替换文件内容</strong></p>
+                    <ul>
+                        <li><p>sed</p>
+                            <blockquote><p>语法：sed [option] &#39;sed command&#39; filename</p>
+                            </blockquote>
+                            <ul>
+                                <li>全名为stream editor，流编辑器</li>
+                                <li>适合用于对文本的行内容进行处理</li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <ul>
+                        <li><p>面试常用的方式</p>
+                            <ul>
+                                <li>sed -i &#39;s/^Str/String/&#39; replace.java：将Str开头的行改为String</li>
+                                <li>sed -i &#39;s/\.$/\;/&#39; replace.java：将.结尾的行都改成；</li>
+                                <li>sed -i &#39;s/jack/me/g&#39; replace.java：将出现jack的地方都改为me</li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
