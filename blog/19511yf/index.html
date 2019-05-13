@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">ThreadLocal为什么会内存泄漏以及如何预防</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-11</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Java</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h3>实现原理</h3>
+            <p><img src='https:////upload-images.jianshu.io/upload_images/7432604-072ea1eed5e63601.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/715/format/webp' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>ThreadLocal的原理：每个Thread内部维护着一个ThreadLocalMap，它是一个Map。这个映射表的Key是一个弱引用，其实就是ThreadLocal本身，Value是真正存的线程变量Object。</p>
+            <p>也就是说ThreadLocal本身并不真正存储线程的变量值，它只是一个工具，用来维护Thread内部的Map，帮助存和取。注意上图的虚线，它代表一个弱引用类型，而弱引用的生命周期只能存活到下次GC前。</p>
+            <h3>ThreadLocal为什么会内存泄漏</h3>
+            <p>ThreadLocal在ThreadLocalMap中是以一个弱引用身份被Entry中的Key引用的，因此如果ThreadLocal没有外部强引用来引用它，那么ThreadLocal会在下次JVM垃圾收集时被回收。这个时候就会出现Entry中Key已经被回收，出现一个null Key的情况，外部读取ThreadLocalMap中的元素是无法通过null Key来找到Value的。因此如果当前线程的生命周期很长，一直存在，那么其内部的ThreadLocalMap对象也一直生存下来，这些null key就存在一条强引用链的关系一直存在：Thread --&gt; ThreadLocalMap--&gt;Entry--&gt;Value，这条强引用链会导致Entry不会回收，Value也不会回收，但Entry中的Key却已经被回收的情况，造成内存泄漏。</p>
+            <p>但是JVM团队已经考虑到这样的情况，并做了一些措施来保证ThreadLocal尽量不会内存泄漏：在ThreadLocal的get()、set()、remove()方法调用的时候会清除掉线程ThreadLocalMap中所有Entry中Key为null的Value，并将整个Entry设置为null，利于下次内存回收。</p>
+            <p>来看看ThreadLocal的get()方法底层实现</p>
+            <pre><code class='language-java' lang='java'>public T get() {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null) {
+        ThreadLocalMap.Entry e = map.getEntry(this);
+        if (e != null)
+            return (T)e.value;
+    }
+    return setInitialValue();
+}
+</code></pre>
+            <p>在调用map.getEntry(this)时，内部会判断key是否为null，继续看map.getEntry(this)源码</p>
+            <pre><code>private Entry getEntry(ThreadLocal key) {
+    int i = key.threadLocalHashCode &amp; (table.length - 1);
+    Entry e = table[i];
+    if (e != null &amp;&amp; e.get() == key)
+        return e;
+    else
+        return getEntryAfterMiss(key, i, e);
+}
+</code></pre>
+            <p>在getEntry方法中，如果Entry中的key发现是null，会继续调用getEntryAfterMiss(key, i, e)方法，其内部回做回收必要的设置，继续看内部源码：</p>
+            <pre><code>private Entry getEntryAfterMiss(ThreadLocal key, int i, Entry e) {
+    Entry[] tab = table;
+    int len = tab.length;
+
+    while (e != null) {
+        ThreadLocal k = e.get();
+        if (k == key)
+            return e;
+        if (k == null)
+            expungeStaleEntry(i);
+        else
+            i = nextIndex(i, len);
+        e = tab[i];
+    }
+    return null;
+}
+</code></pre>
+            <p>注意k == null这里，继续调用了expungeStaleEntry(i)方法，expunge的意思是擦除，删除的意思，见名知意，在来看expungeStaleEntry方法的内部实现：</p>
+            <pre><code>private int expungeStaleEntry(int staleSlot) {
+    Entry[] tab = table;
+    int len = tab.length;
+
+    // expunge entry at staleSlot（意思是，删除value，设置为null便于下次回收）
+    tab[staleSlot].value = null;
+    tab[staleSlot] = null;
+    size--;
+
+    // Rehash until we encounter null
+    Entry e;
+    int i;
+    for (i = nextIndex(staleSlot, len);
+         (e = tab[i]) != null;
+         i = nextIndex(i, len)) {
+        ThreadLocal k = e.get();
+        if (k == null) {
+            e.value = null;
+            tab[i] = null;
+            size--;
+        } else {
+            int h = k.threadLocalHashCode &amp; (len - 1);
+            if (h != i) {
+                tab[i] = null;
+
+                // Unlike Knuth 6.4 Algorithm R, we must scan until
+                // null because multiple entries could have been stale.
+                while (tab[h] != null)
+                    h = nextIndex(h, len);
+                tab[h] = e;
+            }
+        }
+    }
+    return i;
+}
+</code></pre>
+            <p>注意这里，将当前Entry删除后，会继续循环往下检查是否有key为null的节点，如果有则一并删除，防止内存泄漏。</p>
+            <p>但这样也并不能保证ThreadLocal不会发生内存泄漏，例如：</p>
+            <ul>
+                <li>使用static的ThreadLocal，延长了ThreadLocal的生命周期，可能导致的内存泄漏。</li>
+                <li>分配使用了ThreadLocal又不再调用get()、set()、remove()方法，那么就会导致内存泄漏。</li>
+
+            </ul>
+            <h3>为什么使用弱引用？</h3>
+            <p>从表面上看，发生内存泄漏，是因为Key使用了弱引用类型。但其实是因为整个Entry的key为null后，没有主动清除value导致。很多文章大多分析ThreadLocal使用了弱引用会导致内存泄漏，但为什么使用弱引用而不是强引用？</p>
+            <p>官方文档的说法：</p>
+            <blockquote><p>To help deal with very large and long-lived usages, the hash table entries use WeakReferences for keys.
+                为了处理非常大和生命周期非常长的线程，哈希表使用弱引用作为 key。</p>
+            </blockquote>
+            <p>下面我们分两种情况讨论：</p>
+            <ul>
+                <li>key 使用强引用：引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。</li>
+                <li>key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。
+                    比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。</li>
+
+            </ul>
+            <p>因此，ThreadLocal内存泄漏的根源是：由于ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key的value就会导致内存泄漏，而不是因为弱引用。</p>
+            <h3>总结</h3>
+            <p>综合上面的分析，我们可以理解ThreadLocal内存泄漏的前因后果，那么怎么避免内存泄漏呢？</p>
+            <ul>
+                <li>每次使用完ThreadLocal，都调用它的remove()方法，清除数据。</li>
+
+            </ul>
+            <p>在使用线程池的情况下，没有及时清理ThreadLocal，不仅是内存泄漏的问题，更严重的是可能导致业务逻辑出现问题。所以，使用ThreadLocal就跟加锁完要解锁一样，用完就清理。</p>
+            <p>&nbsp;</p>
+            <p>链接：<a href='https://www.jianshu.com/p/a1cd61fa22da' target='_blank' class='url'>https://www.jianshu.com/p/a1cd61fa22da</a></p>
+            <p>来源：简书</p>
+            <p>简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>

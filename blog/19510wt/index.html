@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">redis常见问题(一)</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-10</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Redis</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <ul>
+                <li><p><strong>主流应用架构</strong></p>
+                    <p><img src='/images/1557059387535.png' alt='1557059387535' referrerPolicy='no-referrer' /></p>
+                </li>
+                <li><p><strong>redis和memcache的区别</strong></p>
+                    <ul>
+                        <li><p>memcache</p>
+                            <ol>
+                                <li>支持简单数据类型</li>
+                                <li>不支持数据持久化存储</li>
+                                <li>不支持主从</li>
+                                <li>不支持分片</li>
+
+                            </ol>
+                        </li>
+                        <li><p>Redis</p>
+                            <ol>
+                                <li>数据类型丰富</li>
+                                <li>支持数据磁盘持久化存储</li>
+                                <li>支持主从</li>
+                                <li>支持分片</li>
+
+                            </ol>
+                        </li>
+
+                    </ul>
+                </li>
+                <li><p><strong>redis为什么这么快？</strong>——10万+QPS（query per second，每秒查询次数）</p>
+                    <ul>
+                        <li>完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高</li>
+                        <li>数据结构简单，对数据操作也简单</li>
+                        <li>采用单线程，单线程也能处理高并发请求，想多核也可以启动多实例</li>
+                        <li>使用多路I/O复用模型，非阻塞IO</li>
+
+                    </ul>
+                </li>
+                <li><p><strong>redis采用的I/O多路复用函数：epoll/kqueue/evport/select?</strong></p>
+                    <ul>
+                        <li>因地制宜</li>
+                        <li>优先选择时间复杂度为O(1)的I/O多路复用函数作为底层实现</li>
+                        <li>以时间复杂度为O(n)的select作为保底</li>
+                        <li>基于react线程模型监听I/O事件</li>
+
+                    </ul>
+                </li>
+                <li><p><strong>redis的数据类型</strong></p>
+                    <ul>
+                        <li>String：最基本的数据类型，二进制安全</li>
+                        <li>Hash：String元素组成的字典，适合用于存储对象</li>
+                        <li>List: 列表，按照String元素插入顺序排序（实现最新消息排行榜）</li>
+                        <li>Set：String元素组成的无序集合，通过哈希表实现，不允许重复</li>
+                        <li>Sorted Set（ZSet）：通过分数来为集合中的成员进行从小到大的排序</li>
+                        <li>用于计数的HyperLogLog，用于支持存储地理位置信息的Geo</li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p><img src='/images/1557059415359.png' alt='1557059415359' referrerPolicy='no-referrer' /></p>
+            <ul>
+                <li><p><strong>从海量Key里查询出某一固定前缀的Key</strong></p>
+                    <ol>
+                        <li><p>KEYS pattern：查找所有符合给定模式pattern的key</p>
+                            <ul>
+                                <li>KEYS指令一次性返回所有匹配的key</li>
+                                <li>健的数量过大会使服务器卡顿</li>
+
+                            </ul>
+                        </li>
+                        <li><p>SCAN cursor [MATCH pattern] [COUNT count]</p>
+                            <ul>
+                                <li>基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程</li>
+                                <li>以0作为游标开始一次新的迭代，直到命令返回游标0完成一次遍历</li>
+                                <li>不保证每次执行都返回某个给定数量的元素，支持模糊查询</li>
+                                <li>一次返回的数量不可控，只能是大概率符合count参数</li>
+
+                            </ul>
+                        </li>
+
+                    </ol>
+                    <ul>
+                        <li><p>模拟海量数据查询，往redis中灌入2千万的数据</p>
+                            <blockquote><p>通过编写Shell脚本来注入数据：</p>
+                                <p>批量生成redis测试数据</p>
+                                <ol>
+                                    <li>Linux Bash下面执行
+                                        for((i=1;i&lt;=20000000;i++)); do echo &quot;set k$i v$i&quot; &gt;&gt; /tmp/redisTest.txt ;done;
+                                        生成2千万条redis批量设置kv的语句(key=kn,value=vn)写入到/tmp目录下的redisTest.txt文件中</li>
+                                    <li>用vim去掉行尾的^M符号，使用方式如下：：
+                                        vim /tmp/redisTest.txt
+                                        :set fileformat=dos #设置文件的格式，通过这句话去掉每行结尾的^M符号
+                                        ::wq #保存退出</li>
+                                    <li>通过redis提供的管道--pipe形式，去跑redis，传入文件的指令批量灌数据，需要花10分钟左右
+                                        cat /tmp/redisTest.txt | 路径/redis-5.0.0/src/redis-cli -h 主机ip -p 端口号 --pipe</li>
+
+                                </ol>
+                            </blockquote>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p><img src='/images/1557063640950.png' alt='1557063640950' referrerPolicy='no-referrer' /></p>
+            <p>            <strong>scan指令每次游标迭代出的结果可能会重复，所以需要代码进行筛选去重（利用set）</strong></p>
+            <ul>
+                <li><strong>redis实现分布式锁</strong></li>
+
+            </ul>
+            <p>分布式锁需要解决的问题：</p>
+            <ol>
+                <li><p>互斥性：任意时刻只能有一个客户节点获得锁</p>
+                </li>
+                <li><p>安全性：只能由获得锁的节点释放锁</p>
+                </li>
+                <li><p>死锁：获得锁的节点由于某些原因突然宕机，其他节点永远都拿不到锁，从而导致死锁</p>
+                </li>
+                <li><p>容错：部分节点宕机，客户节点仍能获得锁和释放锁</p>
+                    <ul>
+                        <li><p><strong>不好的方案</strong>：SETNX key value:如果key不存在，则创建并赋值</p>
+                            <ul>
+                                <li><p>如何解决SETNX长期有效的问题：<strong>EXPIRE key seconds</strong></p>
+                                    <ul>
+                                        <li>设置key的生存时间，当key过期时，会被自动删除</li>
+                                        <li>原子性得不到满足</li>
+
+                                    </ul>
+                                </li>
+
+                            </ul>
+                            <pre><code class='language-java' lang='java'>Jedis jedisPool = new JedisPool(config,&quot;localhost&quot;,6379,2000);
+long status = jedisPool.setnx(key,&quot;1&quot;);
+if(status == 1){
+    jedisPool.expire(key,expire);
+ //执行独占资源逻辑
+    doSomething();
+}
+</code></pre>
+                            <p>上述伪代码是有问题的，因为如果执行到setnx操作后该节点宕机，还没有设置expire时间，将会导致其他节点再也拿不到锁，导致死锁。（不具有原子性）</p>
+                        </li>
+                        <li><p><strong>好的解决方案</strong>：SET key value [EX seconds] [px milliseconds] [NX|XX]</p>
+                        </li>
+
+                    </ul>
+                    <p><img src='/images/1557066641308.png' alt='1557066641308' referrerPolicy='no-referrer' /></p>
+                    <pre><code class='language-java' lang='java'>Jedis jedisPool = new JedisPool(config,&quot;localhost&quot;,6379,2000);
+String result = jedisPool.set(lockKey,requestId,SET_IF_NOT_EXIST,
+                              SET_WITH_EXPIRE_TIME,expireTime);
+if(&quot;OK&quot;.equals(result)){
+     //执行独占资源逻辑
+     doSomething();
+}
+</code></pre>
+                </li>
+
+            </ol>
+            <ul>
+                <li><p><strong>大量Key同时过期，由于清除大量的Key很耗时，会出现短暂的卡顿现象，如何解决</strong>？</p>
+                    <ul>
+                        <li>解决方案：在设置key的过期时间时，给每个key加上一个随机值</li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
