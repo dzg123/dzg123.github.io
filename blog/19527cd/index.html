@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">理解数据库中的undo日志、redo日志、检查点</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-27</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">mysql</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>数据库存放数据的文件，本文称其为<strong>data file</strong>。
+                数据库的内容在内存里是有缓存的，这里命名为db buffer。某次操作，我们取了数据库某表格中的数据，这个数据会在内存中缓存一些时间。对这个数据的修改在开始时候也只是修改在内存中的内容。当db buffer已满或者遇到其他的情况，这些数据会写入data file。</p>
+            <h3>undo，redo</h3>
+            <p>日志在内存里也是有缓存的，这里将其叫做log buffer。磁盘上的日志文件称为log file。log file一般是追加内容，可以认为是顺序写，顺序写的磁盘IO开销要小于随机写。</p>
+            <p>Undo日志记录某数据被修改前的值，可以用来在事务失败时进行rollback；Redo日志记录某数据块被修改后的值，可以用来恢复未写入data file的已成功事务更新的数据。下面的示例来自于杨传辉《大数据分布式存储系统 原理解析与架构实践》，略作改动。</p>
+            <blockquote><p>例如某一事务的事务序号为T1，其对数据X进行修改，设X的原值是5，修改后的值为15，那么Undo日志为<code>&lt;T1, X, 5&gt;</code>，Redo日志为<code>&lt;T1, X, 15&gt;</code>。</p>
+            </blockquote>
+            <p>也有把undo和redo结合起来的做法，叫做Undo/Redo日志，在这个例子中Undo/Redo日志为<code>&lt;T1, X, 5, 15&gt;</code>。</p>
+            <p>当用户生成一个数据库事务时，undo log buffer会记录被修改的数据的原始值，redo会记录被修改的数据的更新后的值。</p>
+            <ul>
+                <li>redo日志应首先持久化在磁盘上，然后事务的操作结果才写入db buffer，（此时，内存中的数据和data file对应的数据不同，我们认为内存中的数据是脏数据），db buffer再选择合适的时机将数据持久化到data file中。这种顺序可以保证在需要故障恢复时恢复最后的修改操作。先持久化日志的策略叫做<code>Write Ahead Log</code>，即预写日志。</li>
+
+            </ul>
+            <ul>
+                <li>在很多系统中，undo日志并非存到日志文件中，而是存放在数据库内部的一个特殊段中。本文中就把这些存储行为都泛化为undo日志存储到undo log file中。</li>
+
+            </ul>
+            <ul>
+                <li>对于某事务T，在log file的记录中必须开始于事务开始标记（比如“start T”），结束于事务结束标记（比如“end T”、”commit T”）。在系统恢复时，如果在log file中某个事务没有事务结束标记，那么需要对这个事务进行undo操作，如果有事务结束标记，则redo。</li>
+
+            </ul>
+            <p>在db buffer中的内容写入磁盘数据库文件之前，应当把log buffer的内容写入磁盘日志文件。</p>
+            <p><strong>有一个问题，redo log buffer和undo log buffer存储的事务数量是多少，是按照什么规则将日志写入log file？</strong></p>
+            <p>如果存储的事务数量都是1个，也就意味着是将日志立即刷入磁盘，那么数据的一致性很好保证。在执行事T时，突然断电，如果未对磁盘上的redo log file发生追加操作，可以把这个事务T看做未成功。如果redo log file被修改，则认为事务是成功了，重启数据库使用redo log恢复数据到db buffer和 data file即可。</p>
+            <p>如果存储多个的话，其实也挺好解释的。就是db buffer写入data file之前，先把日志写入log file。这种方式可以减少磁盘IO，增加吞吐量。不过，这种方式适用于一致性要求不高的场合。因为如果出现断电等系统故障，log buffer、db buffer中的完成的事务会丢失。以转账为例，如果用户的转账事务在这种情况下丢失了，这意味着在系统恢复后用户需要重新转账。</p>
+            <h3>检查点checkpoint</h3>
+            <p>checkpoint是为了定期将db buffer的内容刷新到data file。当遇到内存不足、db buffer已满等情况时，需要将db buffer中的内容/部分内容（特别是脏数据）转储到data file中。在转储时，会记录checkpoint发生的”时刻“。在故障回复时候，只需要redo/undo最近的一次checkpoint之后的操作。</p>
+            <h3>幂等性问题</h3>
+            <p>在日志文件中的操作记录应该具有幂等性。幂等性，就是说同一个操作执行多次和执行一次，结果是一样的。例如，<code>5*1 = 5*1*1*1</code>，所以对5的乘1操作具有幂等性。日志文件在故障恢复中，可能会回放多次（比如第一次回放到一半时系统断电了，不得不再重新回放），如果操作记录不满足幂等性，会造成数据错误。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
