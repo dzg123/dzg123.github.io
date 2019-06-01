@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="redo/undo">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,18 +17,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19527cd/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19529sk/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
-              <folding>
-                <element signature="e#3714#3718#0" expanded="true" />
-                <element signature="e#3726#3730#0" expanded="true" />
-                <element signature="e#3751#3755#0" expanded="true" />
-                <element signature="e#3764#3768#0" expanded="true" />
-                <element signature="e#3880#3884#0" expanded="true" />
-                <element signature="e#3896#3900#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-155">
+              <caret line="72" column="59" lean-forward="true" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
             </state>
           </provider>
         </entry>
@@ -64,6 +56,8 @@
       <find>file://$USER_HOME$/AppData/Roaming/Typora/typora-user-images/</find>
       <find>2019-05-20</find>
       <find>file://$USER_HOME$/AppData/Roaming/Typora/typora-user-images</find>
+      <find>file://D:/notes</find>
+      <find>images</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -93,8 +87,9 @@
         <option value="$PROJECT_DIR$/blog/template.html" />
         <option value="$PROJECT_DIR$/blog/19520sf/index.html" />
         <option value="$PROJECT_DIR$/blog/19525yz/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19527cd/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19529sk/index.html" />
       </list>
     </option>
   </component>
@@ -318,17 +313,17 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19529sk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19601xj" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\images" />
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19529sk" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19527cd" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19525yz" />
-      <recent name="D:\localrepository\git\shzShine.github.io\images" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19520sf" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19519qb" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -425,7 +420,7 @@
       <workItem from="1557674223333" duration="5303000" />
       <workItem from="1558261592843" duration="1425000" />
       <workItem from="1558711738175" duration="3498000" />
-      <workItem from="1559113961337" duration="593000" />
+      <workItem from="1559113961337" duration="2308000" />
     </task>
     <task id="LOCAL-00041" summary="blog">
       <created>1550214999668</created>
@@ -774,7 +769,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93517000" />
+    <option name="totallyTimeSpent" value="95232000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="7" />
@@ -986,13 +981,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19527cd/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
@@ -1005,6 +993,23 @@
             <element signature="e#3880#3884#0" expanded="true" />
             <element signature="e#3896#3900#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/io控制方式.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19529sk/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-155">
+          <caret line="72" column="59" lean-forward="true" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
         </state>
       </provider>
     </entry>
