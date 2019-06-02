@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">什么是SSO单点登录</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-02</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Distributed System</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>转自：Java3y公众号</p>
+            <h2>前言</h2>
+            <p>在我实习之前我就已经在看单点登录的是什么了，但是实习的时候一直在忙其他的事，所以有几个网站就一直躺在我的收藏夹里边：</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXVEtgXQxtfkOtzA6IghY5htglWk7mEn9SYMtX8QUcGWibP74gMK7JRqQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='收藏的一些网站' referrerPolicy='no-referrer' />收藏的一些网站</p>
+            <p>在前阵子有个读者来我这投稿，是使用JWT实现单点登录的（但是文章中并没有介绍什么是单点登录），所以我觉得是时候来整理一下了。</p>
+            <h2>一、什么是单点登录？</h2>
+            <p>单点登录的英文名叫做：Single Sign On（简称<strong>SSO</strong>）。</p>
+            <p>在<strong>初学/以前</strong>的时候，一般我们就<strong>单系统</strong>，所有的功能都在同一个系统上。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXQp3gMbZNcjcbcyKzBaWicf8KXAmCZibmeYkJkdNgJGDfTnA0SibzWy9mg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='所有的功能都在同一个系统上' referrerPolicy='no-referrer' />所有的功能都在同一个系统上</p>
+            <p>后来，我们为了<strong>合理利用资源和降低耦合性</strong>，于是把单系统<strong>拆分</strong>成多个子系统。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXMNhywnI5euej4bQ346icibp7BUnBU6iaNg48S4k0jrFRwAqZCW97nhXdQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='拆分成多个子系统' referrerPolicy='no-referrer' />拆分成多个子系统</p>
+            <p>比如阿里系的<strong>淘宝和天猫</strong>，很明显地我们可以知道这是两个系统，但是你在使用的时候，登录了天猫，淘宝也会自动登录。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXBR0acDZHYcIHZVdLrUjNI3NtFicffXzOVibh3Dibl00skyl4kIrHkTgXg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='登录了天猫，淘宝也登录了' referrerPolicy='no-referrer' />登录了天猫，淘宝也登录了</p>
+            <p>简单来说，单点登录就是<strong>在多个系统中，用户只需一次登录，各个系统即可感知该用户已经登录。</strong></p>
+            <h2>二、回顾单系统登录</h2>
+            <p>在我初学JavaWeb的时候，登录和注册是我做得最多的一个功能了（初学Servlet的时候做过、学SpringMVC的时候做过、跟着做项目的时候做过…），反正我也数不清我做了多少次登录和注册的功能了…这里简单讲述一下我们初学时是怎么做登录功能的。</p>
+            <p>众所周知，HTTP是<strong>无状态</strong>的协议，这意味着<strong>服务器无法确认用户的信息</strong>。于是乎，W3C就提出了：给每一个用户都发一个通行证，无论谁访问的时候都需要携带通行证，这样服务器就可以从通行证上确认用户的信息。通行证就是<strong>Cookie</strong>。</p>
+            <p>如果说Cookie是检查用户身上的”通行证“来确认用户的身份，那么Session就是通过检查服务器上的”客户明细表“来确认用户的身份的。<strong>Session相当于在服务器中建立了一份“客户明细表”</strong>。</p>
+            <p>HTTP协议是无状态的，Session不能依据HTTP连接来判断是否为同一个用户。于是乎：服务器向用户浏览器发送了一个名为JESSIONID的Cookie，它的值是Session的id值。<strong>其实Session是依据Cookie来识别是否是同一个用户</strong>。</p>
+            <p>所以，一般我们单系统实现登录会这样做：</p>
+            <ul>
+                <li><p><strong>登录</strong>：将用户信息保存在Session对象中</p>
+                </li>
+                <ul>
+                    <li>如果在Session对象中能查到，说明已经登录</li>
+                    <li>如果在Session对象中查不到，说明没登录（或者已经退出了登录）</li>
+
+                </ul>
+                <li><p><strong>注销（退出登录）</strong>：从Session中删除用户的信息</p>
+                </li>
+                <li><p><strong>记住我（关闭掉浏览器后，重新打开浏览器还能保持登录状态）</strong>：配合Cookie来用</p>
+                </li>
+
+            </ul>
+            <p>我之前Demo的代码，可以参考一下：</p>
+            <pre><code> /**
+ * 用户登陆
+ */
+@PostMapping(value = &quot;/user/session&quot;, produces = {&quot;application/json;charset=UTF-8&quot;})
+public Result login(String mobileNo, String password, String inputCaptcha, HttpSession session, HttpServletResponse response) {
+
+    //判断验证码是否正确
+    if (WebUtils.validateCaptcha(inputCaptcha, &quot;captcha&quot;, session)) {
+
+        //判断有没有该用户
+        User user = userService.userLogin(mobileNo, password);
+        if (user != null) {
+            /*设置自动登陆，一个星期.  将token保存在数据库中*/
+            String loginToken = WebUtils.md5(new Date().toString() + session.getId());
+            user.setLoginToken(loginToken);
+            User user1 = userService.userUpload(user);
+
+            session.setAttribute(&quot;user&quot;, user1);
+
+            CookieUtil.addCookie(response,&quot;loginToken&quot;,loginToken,604800);
+
+            return ResultUtil.success(user1);
+
+        } else {
+            return ResultUtil.error(ResultEnum.LOGIN_ERROR);
+        }
+    } else {
+        return ResultUtil.error(ResultEnum.CAPTCHA_ERROR);
+    }
+
+}
+
+/**
+ * 用户退出
+ */
+@DeleteMapping(value = &quot;/session&quot;, produces = {&quot;application/json;charset=UTF-8&quot;})
+public Result logout(HttpSession session,HttpServletRequest request,HttpServletResponse response ) {
+
+    //删除session和cookie
+    session.removeAttribute(&quot;user&quot;);
+
+    CookieUtil.clearCookie(request, response, &quot;loginToken&quot;);
+
+    return ResultUtil.success();
+}
+/**
+* @author ozc
+* @version 1.0
+* &lt;p&gt;
+* 拦截器；实现自动登陆功能
+*/
+public class UserInterceptor implements HandlerInterceptor {
+
+
+@Autowired
+private UserService userService;
+
+public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+    User sessionUser = (User) request.getSession().getAttribute(&quot;user&quot;);
+
+    // 已经登陆了，放行
+    if (sessionUser != null) {
+        return true;
+    } else {
+        //得到带过来cookie是否存在
+        String loginToken = CookieUtil.findCookieByName(request, &quot;loginToken&quot;);
+        if (StringUtils.isNotBlank(loginToken)) {
+            //到数据库查询有没有该Cookie
+            User user = userService.findUserByLoginToken(loginToken);
+            if (user != null) {
+                request.getSession().setAttribute(&quot;user&quot;, user);
+                return true;
+            } else {
+                //没有该Cookie与之对应的用户(Cookie不匹配)
+                CookieUtil.clearCookie(request, response, &quot;loginToken&quot;);
+                return false;
+            }
+        } else {
+
+            //没有cookie、也没有登陆。是index请求获取用户信息，可以放行
+            if (request.getRequestURI().contains(&quot;session&quot;)) {
+                return true;
+            }
+
+            //没有cookie凭证
+            response.sendRedirect(&quot;/login.html&quot;);
+            return false;
+        }
+    }
+}
+}
+</code></pre>
+            <p>总结一下上面代码的思路：</p>
+            <ul>
+                <li><p>用户登录时，验证用户的账户和密码</p>
+                </li>
+                <li><p>生成一个Token保存在数据库中，将Token写到Cookie中</p>
+                </li>
+                <li><p>将用户数据保存在Session中</p>
+                </li>
+                <li><p>请求时都会带上Cookie，检查有没有登录，如果已经登录则放行</p>
+                    <p>&nbsp;</p>
+                </li>
+
+            </ul>
+            <h2>三、多系统登录的问题与解决</h2>
+            <h3>3.1 Session不共享问题</h3>
+            <p>单系统登录功能主要是用Session保存用户信息来实现的，但我们清楚的是：多系统即可能有多个Tomcat，而Session是依赖当前系统的Tomcat，所以系统A的Session和系统B的Session是<strong>不共享</strong>的。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbX0wRo0GibdicupqtjEb72FPXEsHRZYsuibsDPl53wAyAYXK109uYiaMAsXA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='系统A的Session和系统B的Session是不共享的' referrerPolicy='no-referrer' />系统A的Session和系统B的Session是不共享的</p>
+            <p>解决系统之间Session不共享问题有一下几种方案：</p>
+            <ul>
+                <li><p>Tomcat集群Session全局复制（集群内每个tomcat的session完全同步）【会影响集群的性能呢，不建议】</p>
+                </li>
+                <li><p>根据请求的IP进行<strong>Hash映射</strong>到对应的机器上（这就相当于请求的IP一直会访问同一个服务器）【如果服务器宕机了，会丢失了一大部分Session的数据，不建议】</p>
+                </li>
+                <li><p>把Session数据放在Redis中（使用Redis模拟Session）【<strong>建议</strong>】</p>
+                </li>
+                <ul>
+                    <li>如果还不了解Redis的同学，建议移步（<a href='https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247484609&idx=1&sn=4c053236699fde3c2db1241ab497487b&scene=21#wechat_redirect'>Redis合集</a>）</li>
+
+                </ul>
+
+            </ul>
+            <p>我们可以将登录功能<strong>单独抽取</strong>出来，做成一个子系统。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXMZwQ0f0esbU0pyWBbZgbz3C45k9666rk4BRUKJtyvFM1VEBXmsfMug/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='抽取出来成为子系统' referrerPolicy='no-referrer' />抽取出来成为子系统</p>
+            <p>SSO（登录系统）的逻辑如下：</p>
+            <pre><code>// 登录功能(SSO单独的服务)
+@Override
+public TaotaoResult login(String username, String password) throws Exception {
+
+    //根据用户名查询用户信息
+    TbUserExample example = new TbUserExample();
+    Criteria criteria = example.createCriteria();
+    criteria.andUsernameEqualTo(username);
+    List&lt;TbUser&gt; list = userMapper.selectByExample(example);
+    if (null == list || list.isEmpty()) {
+        return TaotaoResult.build(400, &quot;用户不存在&quot;);
+    }
+    //核对密码
+    TbUser user = list.get(0);
+    if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
+        return TaotaoResult.build(400, &quot;密码错误&quot;);
+    }
+    //登录成功，把用户信息写入redis
+    //生成一个用户token
+    String token = UUID.randomUUID().toString();
+    jedisCluster.set(USER_TOKEN_KEY + &quot;:&quot; + token, JsonUtils.objectToJson(user));
+    //设置session过期时间
+    jedisCluster.expire(USER_TOKEN_KEY + &quot;:&quot; + token, SESSION_EXPIRE_TIME);
+    return TaotaoResult.ok(token);
+}
+</code></pre>
+            <p>其他子系统登录时，<strong>请求SSO（登录系统）进行登录，将返回的token写到Cookie中</strong>，下次访问时则把Cookie带上：</p>
+            <pre><code>public TaotaoResult login(String username, String password,
+        HttpServletRequest request, HttpServletResponse response) {
+    //请求参数
+    Map&lt;String, String&gt; param = new HashMap&lt;&gt;();
+    param.put(&quot;username&quot;, username);
+    param.put(&quot;password&quot;, password);
+    //登录处理
+    String stringResult = HttpClientUtil.doPost(REGISTER_USER_URL + USER_LOGIN_URL, param);
+    TaotaoResult result = TaotaoResult.format(stringResult);
+    //登录出错
+    if (result.getStatus() != 200) {
+        return result;
+    }
+    //登录成功后把取token信息，并写入cookie
+    String token = (String) result.getData();
+    //写入cookie
+    CookieUtils.setCookie(request, response, &quot;TT_TOKEN&quot;, token);
+    //返回成功
+    return result;
+
+}
+</code></pre>
+            <p>总结：</p>
+            <ul>
+                <li>SSO系统生成一个token，并将用户信息存到Redis中，并设置过期时间</li>
+                <li>其他系统请求SSO系统进行登录，得到SSO返回的token，写到Cookie中</li>
+                <li>每次请求时，Cookie都会带上，拦截器得到token，判断是否已经登录</li>
+
+            </ul>
+            <p>到这里，其实我们会发现其实就两个变化：</p>
+            <ul>
+                <li><strong>将登陆功能抽取为一个系统（SSO），其他系统请求SSO进行登录</strong></li>
+                <li><strong>本来将用户信息存到Session，现在将用户信息存到Redis</strong></li>
+
+            </ul>
+            <h3>3.2 Cookie跨域的问题</h3>
+            <p>上面我们解决了Session不能共享的问题，但其实还有另一个问题。<strong>Cookie是不能跨域的</strong></p>
+            <p>比如说，我们请求<code>&lt;https://www.google.com/&gt;</code>时，浏览器会自动把<code>google.com</code>的Cookie带过去给<code>google</code>的服务器，而不会把<code>&lt;https://www.baidu.com/&gt;</code>的Cookie带过去给<code>google</code>的服务器。</p>
+            <p>这就意味着，<strong>由于域名不同</strong>，用户向系统A登录后，系统A返回给浏览器的Cookie，用户再请求系统B的时候不会将系统A的Cookie带过去。</p>
+            <p>针对Cookie存在跨域问题，有几种解决方案：</p>
+            <ol>
+                <li>服务端将Cookie写到客户端后，客户端对Cookie进行解析，将Token解析出来，此后请求都把这个Token带上就行了</li>
+                <li>多个域名共享Cookie，在写到客户端的时候设置Cookie的domain。</li>
+                <li>将Token保存在SessionStroage中（不依赖Cookie就没有跨域的问题了）</li>
+
+            </ol>
+            <p>到这里，我们已经可以实现单点登录了。</p>
+            <h3>3.3 CAS原理</h3>
+            <p>说到单点登录，就肯定会见到这个名词：CAS （Central Authentication Service），下面说说CAS是怎么搞的。</p>
+            <p><strong>如果已经将登录单独抽取成系统出来</strong>，我们还能这样玩。现在我们有两个系统，分别是<code>www.java3y.com</code>和<code>www.java4y.com</code>，一个SSO<code>www.sso.com</code></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXV06FVogBtibCrvrgNeWsDNFZ3jBW9bxQ6micW4wOYM6g8CGJEQoo3KGQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='现在我们有三个系统' referrerPolicy='no-referrer' />现在我们有三个系统</p>
+            <p>首先，用户想要访问系统A<code>www.java3y.com</code>受限的资源(比如说购物车功能，购物车功能需要登录后才能访问)，系统A<code>www.java3y.com</code>发现用户并没有登录，于是<strong>重定向到sso认证中心，并将自己的地址作为参数</strong>。请求的地址如下：</p>
+            <ul>
+                <li><code>www.sso.com?service=www.java3y.com</code></li>
+
+            </ul>
+            <p>sso认证中心发现用户未登录，将用户引导至登录页面，用户进行输入用户名和密码进行登录，用户与认证中心建立<strong>全局会话（生成一份Token，写到Cookie中，保存在浏览器上）</strong></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXXMLo4M58VodibVqdXdTNSrLHV6nRkgIicjeRjjprKHw96E2Apuv4NqOg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='4步过程' referrerPolicy='no-referrer' />4步过程</p>
+            <p>随后，认证中心<strong>重定向回系统A</strong>，并把Token携带过去给系统A，重定向的地址如下：</p>
+            <ul>
+                <li><code>www.java3y.com?token=xxxxxxx</code></li>
+
+            </ul>
+            <p>接着，系统A去sso认证中心验证这个Token是否正确，如果正确，则系统A和用户建立局部会话（<strong>创建Session</strong>）。到此，系统A和用户已经是登录状态了。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXP479IcubTQLS6az1iaYw26yibY9xH8Y6cEicJkHg9GmhlTNgGg3ZZ6ADg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='第五步和第六步' referrerPolicy='no-referrer' />第五步和第六步</p>
+            <p>此时，用户想要访问系统B<code>www.java4y.com</code>受限的资源(比如说订单功能，订单功能需要登录后才能访问)，系统B<code>www.java4y.com</code>发现用户并没有登录，于是<strong>重定向到sso认证中心，并将自己的地址作为参数</strong>。请求的地址如下：</p>
+            <ul>
+                <li><code>www.sso.com?service=www.java4y.com</code></li>
+
+            </ul>
+            <p>注意，因为之前用户与认证中心<code>www.sso.com</code>已经建立了全局会话（当时已经把Cookie保存到浏览器上了），所以这次系统B<strong>重定向</strong>到认证中心<code>www.sso.com</code>是可以带上Cookie的。</p>
+            <p>认证中心<strong>根据带过来的Cookie</strong>发现已经与用户建立了全局会话了，认证中心<strong>重定向回系统B</strong>，并把Token携带过去给系统B，重定向的地址如下：</p>
+            <ul>
+                <li><code>www.java4y.com?token=xxxxxxx</code></li>
+
+            </ul>
+            <p>接着，系统B去sso认证中心验证这个Token是否正确，如果正确，则系统B和用户建立局部会话（<strong>创建Session</strong>）。到此，系统B和用户已经是登录状态了。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/2BGWl1qPxib1X4icuB3icPa8ibibRK0f3ibbbXIcTW7laczNjxRPff33UGJbVT1AaSsShJib6dC8ZSQUv3Y4Imzicf8tVg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='系统B的流程图' referrerPolicy='no-referrer' />系统B的流程图</p>
+            <p>看到这里，其实SSO认证中心就类似一个<strong>中转站</strong>。</p>
+            <p>参考资料：</p>
+            <ul>
+                <li><a href='https://www.cnblogs.com/EzrealLiu/p/5559255.html' target='_blank' class='url'>https://www.cnblogs.com/EzrealLiu/p/5559255.html</a></li>
+                <li><a href='http://www.cnblogs.com/ywlaker/p/6113927.html' target='_blank' class='url'>http://www.cnblogs.com/ywlaker/p/6113927.html</a></li>
+                <li><a href='https://blog.csdn.net/javaloveiphone/article/details/52439613' target='_blank' class='url'>https://blog.csdn.net/javaloveiphone/article/details/52439613</a></li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
