@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="java泛型">
-      <change afterPath="$PROJECT_DIR$/blog/19602dl/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19603lb/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="SSO" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="97" column="38" lean-forward="true" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
+            <state relative-caret-position="250">
+              <caret line="91" column="38" lean-forward="true" selection-start-line="91" selection-start-column="38" selection-end-line="91" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -326,7 +320,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19603lb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19605gn" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
@@ -435,14 +429,7 @@
       <workItem from="1558711738175" duration="3498000" />
       <workItem from="1559113961337" duration="2308000" />
       <workItem from="1559368285270" duration="1449000" />
-      <workItem from="1559446877816" duration="1700000" />
-    </task>
-    <task id="LOCAL-00042" summary="blog">
-      <created>1550216482842</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1550216482842</updated>
+      <workItem from="1559446877816" duration="2945000" />
     </task>
     <task id="LOCAL-00043" summary="blog">
       <created>1550216803634</created>
@@ -780,11 +767,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559368433877</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="SSO">
+      <created>1559475886094</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1559475886095</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98381000" />
+    <option name="totallyTimeSpent" value="99626000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
@@ -838,7 +832,8 @@
     <MESSAGE value="最左匹配原则" />
     <MESSAGE value="redo/undo" />
     <MESSAGE value="java泛型" />
-    <option name="LAST_COMMIT_MESSAGE" value="java泛型" />
+    <MESSAGE value="SSO" />
+    <option name="LAST_COMMIT_MESSAGE" value="SSO" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1324,8 +1319,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="97" column="38" lean-forward="true" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
+        <state relative-caret-position="250">
+          <caret line="91" column="38" lean-forward="true" selection-start-line="91" selection-start-column="38" selection-end-line="91" selection-end-column="38" />
         </state>
       </provider>
     </entry>
