@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">线性排序介绍</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-06</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">排序算法</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h3>线性排序算法介绍 </h3>
+            <ol>
+                <li>线性排序算法包括<strong>桶排序、计数排序、基数排序</strong>。 </li>
+                <li>线性排序算法的时间复杂度为<strong>O(n)</strong>。 </li>
+                <li>此3种排序算法都不涉及元素之间的比较操作，是非基于比较的排序算法。 </li>
+                <li>对排序数据的要求很苛刻，重点掌握此3种排序算法的适用场景。 </li>
+
+            </ol>
+            <ul>
+                <li><p><strong>桶排序（Bucket sort）</strong></p>
+                    <ol>
+                        <li><p><strong>算法原理：</strong></p>
+                            <ul>
+                                <li>将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行快速排序。</li>
+                                <li>桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。</li>
+
+                            </ul>
+                        </li>
+                        <li><p><strong>使用条件</strong> </p>
+                            <ul>
+                                <li>要排序的数据需要很容易就能划分成m个桶，并且桶与桶之间有着天然的大小顺序。</li>
+                                <li>数据在各个桶之间分布是均匀的。</li>
+
+                            </ul>
+                        </li>
+                        <li><p><strong>适用场景</strong> </p>
+                            <ul>
+                                <li>桶排序比较适合用在外部排序中。</li>
+                                <li>外部排序就是数据存储在外部磁盘且数据量大，但内存有限无法将整个数据全部加载到内存中。</li>
+
+                            </ul>
+                        </li>
+                        <li><p><strong>应用案例</strong> </p>
+                            <ul>
+                                <li>需求描述： 有10GB的订单数据，需按订单金额（假设金额都是正整数）进行排序
+                                    13|线性排序：如何根据年龄给100万用户数据排序？但内存有限，仅几百MB</li>
+                                <li>解决思路： 扫描一遍文件，看订单金额所处数据范围，比如1元-10万元，那么就分100个桶。 第一个桶存储金额1-1000元之内的订单，第二个桶存1001-2000元之内的订单，依次类推。 每个桶对应一个文件，并按照金额范围的大小顺序编号命名（00，01，02，…，99）。 将100个小文件依次放入内存并用快排排序。 所有文件排好序后，只需按照文件编号从小到大依次读取每个小文件并写到大文件中即可。</li>
+                                <li>注意点：若单个文件无法全部载入内存，则针对该文件继续按照前面的思路进行处理即可。 </li>
+
+                            </ul>
+                        </li>
+
+                    </ol>
+                </li>
+                <li><p><strong>计数排序（Counting sort）</strong> </p>
+                    <ol>
+                        <li><p><strong>算法原理</strong></p>
+                            <ul>
+                                <li>计数其实就是桶排序的一种特殊情况。</li>
+                                <li>当要排序的n个数据所处范围并不大时，比如最大值为k，则分成k个桶 </li>
+                                <li>每个桶内的数据值都是相同的，就省掉了桶内排序的时间。 </li>
+
+                            </ul>
+                        </li>
+                        <li><p><strong>案例分析</strong>： 假设只有8个考生分数在0-5分之间，成绩存于数组A[8] = [2，5，3，0，2，3，0，3]。 使用大小为6的数组C[6]表示桶，下标对应分数，即0，1，2，3，4，5。 C[6]存储的是考生人数，只需遍历一边考生分数，就可以得到C[6] = [2，0，2，3，0，1]。 对C[6]数组顺序求和则C[6]=[2，2，4，7，7，8]，c[k]存储的是小于等于分数k的考生个数。 数组R[8] = [0，0，2，2，3，3，3，5]存储考生名次。那么如何得到R[8]的呢？ 从后到前依次扫描数组A，比如扫描到3时，可以从数组C中取出下标为3的值7，也就是说，到目前为止，包括自己在内，分数小于等于3的考生有7个，也就 是说3是数组R的第7个元素（也就是数组R中下标为6的位置）。当3放入数组R后，小于等于3的元素就剩下6个了，相应的C[3]要减1变成6。 以此类推，当扫描到第二个分数为3的考生时，就会把它放入数组R中第6个元素的位置（也就是下标为5的位置）。当扫描完数组A后，数组R内的数据就是 按照分数从小到大排列的了。</p>
+                        </li>
+                        <li><p><strong>使用条件</strong> </p>
+                            <ul>
+                                <li>只能用在数据范围不大的场景中，若数据范围k比要排序的数据n大很多，就不适合用计数排序；</li>
+                                <li>计数排序只能给非负整数排序，其他类型需要在不改变相对大小情况下，转换为非负整数； </li>
+                                <li>比如如果考试成绩精确到小数后一位，就需要将所有分数乘以10，转换为整数。 </li>
+
+                            </ul>
+                        </li>
+
+                    </ol>
+                </li>
+                <li><p><strong>基数排序（Radix sort）</strong></p>
+                    <ol>
+                        <li><p><strong>算法原理</strong>（以排序10万个手机号为例来说明）</p>
+                            <ul>
+                                <li>比较两个手机号码a，b的大小，如果在前面几位中a已经比b大了，那后面几位就不用看了。</li>
+                                <li>借助稳定排序算法的思想，可以先按照最后一位来排序手机号码，然后再按照倒数第二位来重新排序，以此类推，最后按照第一个位重新排序。</li>
+                                <li>经过11次排序后，手机号码就变为有序的了。</li>
+
+                            </ul>
+                        </li>
+
+                    </ol>
+                </li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
