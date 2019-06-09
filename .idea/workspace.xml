@@ -2,92 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="如何创建节约内存的JavaBean和线性排序介绍">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/0/001b1c0b5f2024d54adf95fecf2496fc28fc3c8e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/1/013bee2187fed0a435b7fc999e93d482e1de0258" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/1/019fee0eb13125d721147a043026a9a5ac241758" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/4/04581b3ba0ad86a2beec61911b910ac32470daf9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/9/094aa37ba407428720d4fa3f06e0e9a6f8d6084a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/9/09fb0508c66b12d45efb09cf5d7bb10a38c3b28c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/b/0bf562e758d393da9b276d41d782c378f00342de" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/2/1216b311e5a02e8f3e06f47678b32293f7b03e36" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/2/12bf52c5b60772bbf201ffb05d6bb178c1bf9a28" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/3/13361e268c7988169f8e4fbf098da3d093c34328" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/c/1cfd76df4531fa7157644e71ffa991761ad58f57" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/0/208418513e3e55fc05e6323faf0fe26a656766f0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/1/21f6b92b8b7fbc4e8c104f044e2415149fc48723" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/2/22763cf69a0c6c36347abecc644aa066e78bee23" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/5/25c9cb12bcd174d4474c9cfb611f33cc3f0a0a48" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/b/2b6df636f3d392d22968602f24c5a7bbfd32bb83" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/c/2c5544fb026e4411e00b07d6c18413a4025f4e98" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/c/2cddf3de15f8c8bac7b4114be0d918213514bc83" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/d/2d6933c6848132612abbfb0c54d0e4fe63e7eec6" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/9/39f57c5fdb8808610101b0da7f848880403595c8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/b/3b7739d83ec1872f3800db79c59aabc0b2c1fd36" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/d/3d17f12f9f0d9d31e625d682accb548ffc8fd4a1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/e/3e526dfc27e92f7f2f9ad2f47acddb24e295949a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/1/410cc2c1292e37616e6db37fe06af8aae8a3f764" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/4/447616434202d60d236ba562cb2c348453fe3816" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/6/465ccee837968b8e14cf0062393f569e201b7e8a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/9/496a238a6afa168dbaf6efd37bb459331589579c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/4/54936a790a0519ee6e8c1e9347913253c9268687" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/c/5c13eef945728ddcc6af5b0f6e1b1230b3ce84b6" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/c/5c7395e5819d335153d12c52600f0862b3a164d6" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/c/5cd81be2e810368bcc3a7bab75c3b940455eae42" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/f/5fc84a9166ef1c092a35baa4d6842960adcc241f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/1/610f803635e0dfa1593e79f61553b3bdb14eb391" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/8/681433bee54844831c31fe00400d7d2dab920c11" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/8/68a47f9527186346ed1b5a20d9fcdde11426a889" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/a/6aefe06579c8b5d61f4eac3871b31593f273885d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/b/6ba7d27c35c34d5774ad28624f76df2d1899487e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/c/6ce4bada33dda30d2740520ef550e5fc25137b07" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/e/6e4660842321d1d3b9a00661cdc77071cdbaad3f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/1/71c116c68a6cf1d8bb3f4c4943c20ed9651eab74" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/2/72326e9b48f632641331e650adf16ab9649f3e66" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/8/789447d40e5a15c8473846b9fac41a456a48b18a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/8/78b47eae2433367a7730fc6373c29fef46658a0d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/c/7ca9f732a75b3e36d33e5d610787abdfb78d783a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/d/7d99615c910d9486cba07b85f21036d761e26e16" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/e/7e6282b6e5597231140805f1b49d11cc26d84502" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/2/825dab7ed96e418256c7d45d027417d728d5a19a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/b/8bd98e5b61406a13d837f291cef42231d80d152b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/1/914d5a7fe6e676b810d40430818213e8ce72cdab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/4/9456284a2258aa87df8029649dd9859bd475e4cb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/c/9ca608dd4034c50d777602bebd28853232fc956a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/0/a0e532dadfa6af2f4d785a0c8029344bb88d4b40" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/2/a2fff8af7035ef687a73d837d34b8281bb13937f" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/8/a88839f7988e44b708cb83fb5696ef96db3d93e9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/0/b0fb2601a0a5b98bb07b35d9083c6709485aa178" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/5/b5e9017861b37f51ffbc9d3801f9f9d8aebb14ef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/9/b972d3ea94c66a71f24f1d8b166b8484d021c8c1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/1/c1c383f4ee694de53e8f255a6017ba57eb0f36cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/8/c8f7b40a256cad777b2244039117b9488e5782ad" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/b/cb0d6d85b11427ec07fcba7e24c5871638c99575" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/b/cb97d37b1ac59a429e5ae66661c9f21f9aaefc08" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/b/cbb97e05f6a381a427c2b32479cbef0dcea61837" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/e/ce70e4e9e0d5ae7e0d025a1f429032da93cdf126" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cfe3f3afe681c19dad97b597f62f05af0e3b2737" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/1/d149b07761c0c9b21150624b9384c89ffe659d63" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/2/d2c2e61ac6b2b3c56596df5a987369077377f7cd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/8/d8499d345f78af76969c93e581c75a2b2d46c795" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/8/d87bb31d1d0226faf7d98b360fc74cf77fd1cf3c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/a/dae13fd6f331d1c91ab58b06e81d05cb8958bfb1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/c/dc953f73dced738434a2f0147f8f2d7ebaf626af" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/f/dfc8690a53fcd188ea3547a51af70245702a9f15" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/2/e2c4a3f712f49c393bca5aa5ca66339da2043a35" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/a/eae618a954b3957d916aeb6c762e5a206b38dd88" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/d/ed6745976bf0cee9d5dc10913266fb8fed9d4007" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/2/f20896f090aa733db501b974180120e975c30b49" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/2/f2821b2efd581cbbaadd7c95ea4bef921017d04a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/2/f2af665a77f7a68ada014164ead4cb08492f4ac9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/6/f6013a00b362253c64368d6eebc50ea2131754e2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/7/f799916c1849d5fa519b0f3fc60cfa59a8ac067e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/c/fc50e048b3fefb216e01e70e159a0ae280039cf8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/f/ff5eb8218bf6ef8f0051f770610a812cbf27ce83" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/f/ffb8a8a4a2a18f16f91897910981154125550a98" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19609fa/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -100,16 +17,15 @@
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="229" lean-forward="true" selection-start-line="229" selection-end-line="229" />
+            <state relative-caret-position="231">
+              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -183,10 +99,11 @@
         <option value="$PROJECT_DIR$/blog/19605gn/index.html" />
         <option value="$PROJECT_DIR$/blog/19606js/index.html" />
         <option value="$PROJECT_DIR$/blog/19607an/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19608lj/index.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/blog/19609fa/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
       </list>
     </option>
   </component>
@@ -199,10 +116,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="x" value="922" />
+    <option name="width" value="943" />
+    <option name="height" value="1087" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -385,6 +301,12 @@
             <path>
               <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="about" type="462c0819:PsiDirectoryNode" />
+              <item name="_resume" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="blog" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -416,7 +338,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19608lj" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19609lg" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
@@ -529,14 +451,8 @@
       <workItem from="1559700863381" duration="871000" />
       <workItem from="1559787274521" duration="1121000" />
       <workItem from="1559883612126" duration="703000" />
-      <workItem from="1559969718039" duration="728000" />
-    </task>
-    <task id="LOCAL-00046" summary="blog">
-      <created>1550217984810</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1550217984810</updated>
+      <workItem from="1559969718039" duration="3301000" />
+      <workItem from="1560087838932" duration="252000" />
     </task>
     <task id="LOCAL-00047" summary="blog">
       <created>1550228989593</created>
@@ -874,16 +790,24 @@
       <option name="project" value="LOCAL" />
       <updated>1559970271716</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="如何创建节约内存的JavaBean和线性排序介绍">
+      <created>1559970558670</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1559970558670</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="102822000" />
+    <option name="totallyTimeSpent" value="105874000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12568909" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.062293276" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -897,7 +821,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32952183" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32640332" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32952183" />
       <window_info anchor="bottom" id="Messages" order="9" weight="0.32962137" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
@@ -933,9 +857,9 @@
     <MESSAGE value="java泛型" />
     <MESSAGE value="SSO" />
     <MESSAGE value="内存堆栈与数据结构堆栈" />
-    <MESSAGE value="如何创建节约内存的JavaBean和线性排序介绍" />
     <MESSAGE value="InfoQ_News" />
-    <option name="LAST_COMMIT_MESSAGE" value="InfoQ_News" />
+    <MESSAGE value="如何创建节约内存的JavaBean和线性排序介绍" />
+    <option name="LAST_COMMIT_MESSAGE" value="如何创建节约内存的JavaBean和线性排序介绍" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1442,20 +1366,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="28" column="7" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19608lj/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1477,10 +1387,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="227" column="68" selection-start-line="227" selection-start-column="68" selection-end-line="227" selection-end-column="68" />
+        <state relative-caret-position="3770">
+          <caret line="229" selection-start-line="229" selection-end-line="229" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19609fa/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
+          <folding>
+            <element signature="e#3988#3994#1" expanded="true" />
+            <element signature="e#4786#4792#1" expanded="true" />
+            <element signature="e#4998#5004#1" expanded="true" />
+            <element signature="e#5024#5030#1" expanded="true" />
+            <element signature="e#6616#6622#1" expanded="true" />
+            <element signature="e#7500#7506#1" expanded="true" />
+            <element signature="e#9015#9021#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
         </state>
       </provider>
     </entry>
