@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="分布式事务解决方案">
-      <change afterPath="$PROJECT_DIR$/blog/19615sm/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19615zl/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="服务端高并发分布式架构演进之路">
+      <change afterPath="$PROJECT_DIR$/blog/19616fx/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
@@ -23,9 +22,11 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19615zl/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-741" />
+            <state relative-caret-position="212">
+              <caret line="95" column="55" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -104,6 +105,8 @@
         <option value="$PROJECT_DIR$/blog/19609fa/index.html" />
         <option value="$PROJECT_DIR$/blog/19609lg/index.html" />
         <option value="$PROJECT_DIR$/blog/19615sm/index.html" />
+        <option value="$PROJECT_DIR$/blog/19615zl/index.html" />
+        <option value="$PROJECT_DIR$/blog/19616fx/index.html" />
         <option value="$PROJECT_DIR$/blog/index.html" />
       </list>
     </option>
@@ -327,17 +330,17 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19615zl" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19618fx" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19616fx" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19615zl" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19615sm" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19609lg" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19609fa" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19608lj" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -442,21 +445,9 @@
       <workItem from="1559883612126" duration="703000" />
       <workItem from="1559969718039" duration="3301000" />
       <workItem from="1560087838932" duration="398000" />
-      <workItem from="1560583995794" duration="670000" />
-    </task>
-    <task id="LOCAL-00048" summary="blog">
-      <created>1550229258213</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1550229258213</updated>
-    </task>
-    <task id="LOCAL-00049" summary="blog">
-      <created>1550229519340</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1550229519340</updated>
+      <workItem from="1560583995794" duration="899000" />
+      <workItem from="1560586427346" duration="762000" />
+      <workItem from="1560864426891" duration="651000" />
     </task>
     <task id="LOCAL-00050" summary="blog">
       <created>1550231127275</created>
@@ -787,16 +778,31 @@
       <option name="project" value="LOCAL" />
       <updated>1560088206010</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="服务端高并发分布式架构演进之路">
+      <created>1560584793953</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1560584793955</updated>
+    </task>
+    <task id="LOCAL-00098" summary="服务端高并发分布式架构演进之路">
+      <created>1560584868133</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1560584868133</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106690000" />
+    <option name="totallyTimeSpent" value="108332000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.107497245" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10970232" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -849,7 +855,8 @@
     <MESSAGE value="InfoQ_News" />
     <MESSAGE value="如何创建节约内存的JavaBean和线性排序介绍" />
     <MESSAGE value="分布式事务解决方案" />
-    <option name="LAST_COMMIT_MESSAGE" value="分布式事务解决方案" />
+    <MESSAGE value="服务端高并发分布式架构演进之路" />
+    <option name="LAST_COMMIT_MESSAGE" value="服务端高并发分布式架构演进之路" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1421,16 +1428,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19615zl/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="96" column="8" lean-forward="true" selection-start-line="96" selection-start-column="8" selection-end-line="96" selection-end-column="8" />
+        <state relative-caret-position="566">
+          <caret line="199" column="45" selection-start-line="199" selection-start-column="45" selection-end-line="199" selection-end-column="45" />
+          <folding>
+            <element signature="e#15558#15562#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19615zl/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19616fx/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-741" />
+        <state relative-caret-position="585">
+          <caret line="142" selection-start-line="142" selection-end-line="142" />
+          <folding>
+            <element signature="e#3801#3807#0" expanded="true" />
+            <element signature="e#3831#3837#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="95" column="55" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
+        </state>
       </provider>
     </entry>
   </component>
