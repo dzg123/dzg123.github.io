@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">常见限流算法介绍</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-21</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Concurrent</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h1>前言</h1>
+            <blockquote><p>在一个高并发系统中对流量的把控是非常重要的，当巨大的流量直接请求到我们的服务器上没多久就可能造成接口不可用，不处理的话甚至会造成整个应用不可用。</p>
+            </blockquote>
+            <p>比如最近就有个这样的需求，我作为客户端要向<code>kafka</code>生产数据，而<code>kafka</code>的消费者则再源源不断的消费数据，并将消费的数据全部请求到<code>web服务器</code>，虽说做了负载(有4台<code>web服务器</code>)但业务数据的量也是巨大的，每秒钟可能有上万条数据产生。如果生产者直接生产数据的话极有可能把<code>web服务器</code>拖垮。</p>
+            <p>对此就必须要做限流处理，每秒钟生产一定限额的数据到<code>kafka</code>，这样就能极大程度的保证<code>web</code>的正常运转。</p>
+            <p><strong>其实不管处理何种场景，本质都是降低流量保证应用的高可用。</strong></p>
+            <h1 data-breakpage>常见算法</h1>
+            <p>对于限流常见有两种算法:</p>
+            <ul>
+                <li>漏桶算法</li>
+                <li>令牌桶算法</li>
+
+            </ul>
+            <p>漏桶算法比较简单，就是将流量放入桶中，漏桶同时也按照一定的速率流出，如果流量过快的话就会溢出(<code>漏桶并不会提高流出速率</code>)。溢出的流量则直接丢弃。</p>
+            <p>如下图所示:</p>
+            <p><a href='https://i.loli.net/2017/08/11/598c905caa8cb.png'><img src='https://i.loli.net/2017/08/11/598c905caa8cb.png' alt='漏桶算法，来自网络.png' referrerPolicy='no-referrer' /></a></p>
+            <p>这种做法简单粗暴。</p>
+            <p><code>漏桶算法</code>虽说简单，但却不能应对实际场景，比如突然暴增的流量。</p>
+            <p>这时就需要用到<code>令牌桶算法</code>:</p>
+            <p><code>令牌桶</code>会以一个恒定的速率向固定容量大小桶中放入令牌，当有流量来时则取走一个或多个令牌。当桶中没有令牌则将当前请求丢弃或阻塞。</p>
+            <p><a href='https://i.loli.net/2017/08/11/598c91f2a33af.gif'><img src='https://i.loli.net/2017/08/11/598c91f2a33af.gif' alt='令牌桶算法-来自网络.gif' referrerPolicy='no-referrer' /></a></p>
+            <blockquote><p>相比之下令牌桶可以应对一定的突发流量.</p>
+            </blockquote>
+            <h1 data-breakpage>RateLimiter实现</h1>
+            <p>对于令牌桶的代码实现，可以直接使用<code>Guava</code>包中的<code>RateLimiter</code>。</p>
+            <pre><code class='language-java' lang='java'>@Override
+public BaseResponse&lt;UserResVO&gt; getUserByFeignBatch(@RequestBody UserReqVO userReqVO) {
+    //调用远程服务
+    OrderNoReqVO vo = new OrderNoReqVO() ;
+    vo.setReqNo(userReqVO.getReqNo());
+    RateLimiter limiter = RateLimiter.create(2.0) ;
+    //批量调用
+    for (int i = 0 ;i&lt; 10 ; i++){
+        double acquire = limiter.acquire();
+        logger.debug(&quot;获取令牌成功!,消耗=&quot; + acquire);
+        BaseResponse&lt;OrderNoResVO&gt; orderNo = orderServiceClient.getOrderNo(vo);
+        logger.debug(&quot;远程返回:&quot;+JSON.toJSONString(orderNo));
+    }
+    UserRes userRes = new UserRes() ;
+    userRes.setUserId(123);
+    userRes.setUserName(&quot;张三&quot;);
+    userRes.setReqNo(userReqVO.getReqNo());
+    userRes.setCode(StatusEnum.SUCCESS.getCode());
+    userRes.setMessage(&quot;成功&quot;);
+    return userRes ;
+}
+</code></pre>
+            <p>调用结果如下:</p>
+            <p><a href='https://i.loli.net/2017/08/11/598c960f8983f.jpg'><img src='https://i.loli.net/2017/08/11/598c960f8983f.jpg' alt='1.jpg' referrerPolicy='no-referrer' /></a></p>
+            <p>代码可以看出以每秒向桶中放入两个令牌，请求一次消耗一个令牌。所以每秒钟只能发送两个请求。按照图中的时间来看也确实如此(返回值是获取此令牌所消耗的时间，差不多也是每500ms一个)。</p>
+            <p>使用<code>RateLimiter</code>有几个值得注意的地方:</p>
+            <p>允许<code>先消费，后付款</code>，意思就是它可以来一个请求的时候一次性取走几个或者是剩下所有的令牌甚至多取，但是后面的请求就得为上一次请求买单，它需要等待桶中的令牌补齐之后才能继续获取令牌。</p>
+            <h1 data-breakpage>总结</h1>
+            <p>针对于单个应用的限流 <code>RateLimiter</code> 够用了，如果是分布式环境可以借助 <code>Redis</code> 来完成。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
