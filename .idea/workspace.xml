@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="Java调优">
-      <change afterPath="$PROJECT_DIR$/blog/19620ys/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19621js/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="限流算法介绍">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,8 +22,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/19621js/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="61" column="27" lean-forward="true" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
+            <state relative-caret-position="585">
+              <caret line="116" selection-start-line="116" selection-end-line="116" />
+              <folding>
+                <element signature="e#4876#4880#0" expanded="true" />
+                <element signature="e#4889#4893#0" expanded="true" />
+                <element signature="e#5129#5133#0" expanded="true" />
+                <element signature="e#5210#5216#0" expanded="true" />
+                <element signature="e#5227#5233#0" expanded="true" />
+                <element signature="e#5266#5270#0" expanded="true" />
+                <element signature="e#5282#5286#0" expanded="true" />
+                <element signature="e#5353#5359#0" expanded="true" />
+                <element signature="e#5364#5370#0" expanded="true" />
+                <element signature="e#5496#5502#0" expanded="true" />
+                <element signature="e#5504#5510#0" expanded="true" />
+                <element signature="e#5631#5637#0" expanded="true" />
+                <element signature="e#5639#5645#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -341,11 +353,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19621js" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19620ys" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19618fx" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19616fx" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19615zl" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19615sm" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -455,14 +467,7 @@
       <workItem from="1560864426891" duration="2300000" />
       <workItem from="1560917304052" duration="21000" />
       <workItem from="1561102780987" duration="1078000" />
-      <workItem from="1561108971197" duration="684000" />
-    </task>
-    <task id="LOCAL-00052" summary="blog">
-      <created>1550579983508</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1550579983510</updated>
+      <workItem from="1561108971197" duration="1425000" />
     </task>
     <task id="LOCAL-00053" summary="blog">
       <created>1550899298655</created>
@@ -800,14 +805,21 @@
       <option name="project" value="LOCAL" />
       <updated>1560867976608</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="限流算法介绍">
+      <created>1561117109771</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1561117109773</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111764000" />
+    <option name="totallyTimeSpent" value="112505000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1874" height="1096" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11300992" />
@@ -866,7 +878,8 @@
     <MESSAGE value="分布式事务解决方案" />
     <MESSAGE value="服务端高并发分布式架构演进之路" />
     <MESSAGE value="Java调优" />
-    <option name="LAST_COMMIT_MESSAGE" value="Java调优" />
+    <MESSAGE value="限流算法介绍" />
+    <option name="LAST_COMMIT_MESSAGE" value="限流算法介绍" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1513,15 +1526,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="95" column="57" selection-start-line="95" selection-start-column="50" selection-end-line="95" selection-end-column="57" />
+        <state relative-caret-position="345">
+          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/19621js/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="61" column="27" lean-forward="true" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
+        <state relative-caret-position="585">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <element signature="e#4876#4880#0" expanded="true" />
+            <element signature="e#4889#4893#0" expanded="true" />
+            <element signature="e#5129#5133#0" expanded="true" />
+            <element signature="e#5210#5216#0" expanded="true" />
+            <element signature="e#5227#5233#0" expanded="true" />
+            <element signature="e#5266#5270#0" expanded="true" />
+            <element signature="e#5282#5286#0" expanded="true" />
+            <element signature="e#5353#5359#0" expanded="true" />
+            <element signature="e#5364#5370#0" expanded="true" />
+            <element signature="e#5496#5502#0" expanded="true" />
+            <element signature="e#5504#5510#0" expanded="true" />
+            <element signature="e#5631#5637#0" expanded="true" />
+            <element signature="e#5639#5645#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
