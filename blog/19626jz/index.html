@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Wait/Notify线程通信机制</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-26</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">多线程</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h4>理解此问题先修知识：</h4>
+            <ul>
+                <li><p><strong>synchronized</strong> 的含义：</p>
+                    <ul>
+                        <li>Java中每一个对象都可以成为一个监视器（<strong>Monitor</strong>）, 该Monitor由一个锁（lock）, 一个等待队列（waiting queue ）, 一个入口队列( entry queue).</li>
+                        <li>对于一个对象的方法， 如果没有synchronized关键字， 该方法可以被任意数量的线程，在任意时刻调用。</li>
+                        <li>对于添加了synchronized关键字的方法，任意时刻只能被唯一的一个获得了对象实例锁的线程调用。</li>
+                        <li>synchronized用于实现多线程的同步操作</li>
+
+                    </ul>
+                </li>
+                <li><p><strong>wait()</strong>功用</p>
+                    <ul>
+                        <li><strong>wait(), notify(), notifyAll()</strong> 和 synchonized 需要搭配使用， 用于线程同步</li>
+                        <li>wait()总是在一个循环中被调用，挂起当前线程来等待一个条件的成立。 Wait调用会一直等到其他线程调用notifyAll()时才返回。</li>
+                        <li>当一个线程在执行synchronized 的方法内部，调用了wait()后， 该线程会释放该对象的锁， 然后该线程会被添加到该对象的等待队列中（waiting queue）, 只要该线程在等待队列中， 就会一直处于闲置状态， 不会被调度执行。 要注意wait()方法会强迫线程先进行释放锁操作，所以在调用wait()时， 该线程必须已经获得锁，否则会抛出异常。由于wait()在synchonized的方法内部被执行， 锁一定已经获得， 就不会抛出异常了。</li>
+                        <li><img src='/images/线程获取锁过程.png' alt='' referrerPolicy='no-referrer' /></li>
+
+                    </ul>
+                </li>
+                <li><p>notify()的功用</p>
+                    <ul>
+                        <li>wait(), notify(), notifyAll() 和 synchonized 需要搭配使用， 用于线程同步</li>
+                        <li><strong>当一个线程调用一个对象的notify()方法时， 调度器会从所有处于该对象等待队列（waiting queue）的线程中取出任意一个线程， 将其添加到入口队列( entry queue) 中. 然后在入口队列中的多个线程就会竞争对象的锁， 得到锁的线程就可以继续执行。 如果等待队列中（waiting queue）没有线程， notify()方法不会产生任何作用</strong></li>
+                        <li>notifyAll() 和notify()工作机制一样， 区别在于notifyAll()会将等待队列（waiting queue）中所有的线程都添加到入口队列中（entry queue）</li>
+                        <li>注意, notifyAll()比notify()更加常用， 因为notify()方法只会唤起一个线程， 且无法指定唤醒哪一个线程，所以只有在多个执行相同任务的线程在并发运行时， 我们不关心哪一个线程被唤醒时，才会使用notify()</li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <h4>为什么wait()和notify()或notifyAll()需要搭配synchronized关键字使用</h4>
+            <ul>
+                <li>从语义角度来讲， 一个线程调用了wait()之后， 必然需要由另外一个线程调用notify()来唤醒该线程， 所以本质上， wait()与notify()的成对使用， 是一种线程间的通信手段。</li>
+                <li>进一步分析， wait() 操作的调用必然是在等待某种条件的成立， 而条件的成立必然是由其他的线程来完成的。 所以实际上， 我们调用 wait() 的时候， 实际上希望达到如下的效果</li>
+
+            </ul>
+            <pre><code class='language-java' lang='java'>  // 线程A 的代码
+  while(!condition){ // 不能使用 if , 因为存在一些特殊情况， 使得线程没有收到 notify 时也能退出等待状态
+      wait();
+  }
+  // do something
+
+  // 线程 B 的代码
+  if(!condition){
+  	// do something ...
+      condition = true;
+      notify();
+  }
+</code></pre>
+            <ul>
+                <li><p>现在考虑， 如果wait() 和 notify() 的操作没有相应的同步机制， 则会发生如下情况</p>
+                    <ol>
+                        <li>【线程A】 进入了 while 循环后（通过了 !condition 判断条件， 但尚未执行 wait 方法）, CPU 时间片耗尽， CPU 开始执行线程B的代码</li>
+                        <li>【线程B】 执行完毕了 condition = true; notify(); 的操作， 此时【线程A】的 wait() 操作尚未被执行， notify() 操作没有产生任何效果</li>
+                        <li>【线程A】执行wait() 操作， 进入等待状态，如果没有额外的 notify() 操作， 该线程将持续在 condition = true 的情形下， 持续处于等待状态得不到执行。
+                            由此看出， 在使用 wait() 和 notify() 这种会挂起线程的操作时， 我们需要一种同步机制保证， condition 的检查与 wait() 操作， 以及 condition 的更新与 notify() 是互斥的。</li>
+
+                    </ol>
+                </li>
+                <li><p>那是否简单的将之前的代码包裹在一个 synchronized 代码块中就可以满足需求呢？ 像下面这样。</p>
+                </li>
+
+            </ul>
+            <pre><code class='language-java' lang='java'>// 线程A 的代码
+  synchronized(obj_A)
+  {
+  	while(!condition){
+  	    wait();
+  	}
+  	// do something
+  }
+
+// 线程 B 的代码
+synchronized(obj_A)
+{
+	if(!condition){
+		// do something ...
+	    condition = true;
+	    notify();
+	}
+}
+</code></pre>
+            <ul>
+                <li>乍一看， 上述的代码可以解决问题， 但是仔细分析一下， 由于wait() 操作会挂起当前线程， 那么必然需要在挂起前释放掉 <strong>obj_A</strong> 的锁， 但如果 obj_A 允许是任意对象， wait() 函数作为一个没有参数输入的方法，无从得知应该释放哪个对象的锁 。于是很自然的， 语法就会被设计成 java 现在的样子。即基于对象的 wait() 与 notify() 的调用， 必须先获得该对象的锁。</li>
+                <li>正确的用法示例如下</li>
+
+            </ul>
+            <pre><code class='language-java' lang='java'>// 线程 A 的代码
+synchronized(obj_A)
+{
+	while(!condition){
+	    obj_A.wait();
+	}
+	// do something
+}
+
+// 线程 B 的代码
+synchronized(obj_A)
+{
+	if(!condition){
+		// do something ...
+	    condition = true;
+	    obj_A.notify();
+	}
+}
+</code></pre>
+
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
