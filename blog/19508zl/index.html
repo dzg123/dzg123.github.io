@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Linux常见指令</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-05-08</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Linux</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h1>前言</h1>
+            <blockquote><p>由于现在JAVA开发的很多应用都是部署到Linux系统上的，因此了解和掌握一些Linux的常用命令是非常有必要的，以下就是在Java开发过程中一些常用的命令。</p>
+            </blockquote>
+            <hr />
+            <h1 data-breakpage>常用命令</h1>
+            <ol>
+                <li>查找文件
+                    <code>find / <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>name log.txt</code>
+                    根据名称查找在 /目录下的 log.txt文件。</li>
+
+            </ol>
+            <p><code>find .<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>name &quot;*.xml&quot;</code>
+                递归查找所有的xml文件。</p>
+            <p><code>find .<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>name &quot;*.xml&quot;|xargs grep &quot;hello&quot;</code>
+                递归查找所有包含hello的xml文件。</p>
+            <p><code>ls <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>l grep &#39;jar&#39;</code>
+                查找当前目录中的所有jar文件。</p>
+            <ol>
+                <li>检查一个文件是否运行
+                    <code>ps –ef|grep tomecate</code>
+                    检查所有有关tomcat的进程。</li>
+                <li>终止线程
+                    <code>kill <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>9 19979</code>
+                    终止线程号为19979的线程</li>
+                <li>查看文件，包括隐藏文件。
+                    <code>ls <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>al</code></li>
+                <li>查看当前工作目录。
+                    <code>pwd</code></li>
+                <li>复制文件包括其子文件到指定目录
+                    <code>cp <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>r source target</code>
+                    复制source文件到target目录中。</li>
+                <li>创建一个目录
+                    <code>mkdir new</code>
+                    创建一个new的目录</li>
+                <li>删除目录(前提是此目录是空目录)
+                    <code>rmdir source</code>
+                    删除source目录。</li>
+                <li>删除文件 包括其子文件
+                    <code>rm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>rf file</code>
+                    删除file文件和其中的子文件。
+                    <code><span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>r</code>表示向下递归，不管有多少目录一律删除
+                    <code><span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>f</code>表示强制删除，不做任何提示。</li>
+                <li>移动文件
+                    <code>mv /temp/movefile /target</code></li>
+                <li>切换用户
+                    <code>su <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>username</code></li>
+                <li>查看ip
+                    <code>ifconfig</code>
+                    注意是 <code>ifconfig</code> 不是windows中的<code>ipconfig</code></li>
+
+            </ol>
+            <h1 data-breakpage>总结</h1>
+            <p>以上就是在Linux下开发Java应用常用的Linux命令，如有遗漏请在评论处补充，我将不定期添加。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Linux环境配置</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-25</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Linux</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h1>前言</h1>
+            <p>Linux相信对大多数程序员来说都不陌生，毕竟在服务器端依然还是霸主地位而且丝毫没有退居二线的意思，以至于现在几乎每一个软件开发的相关人员都得或多或少的知道一些Linux的相关内容，本文将介绍如何在刚拿到一台云服务器(采用<code>centos</code>)来进行运行环境的搭建，包括<code>JDK</code>、<code>Mysql</code>、<code>Tomcat</code>以及<code>nginx</code>。相信对于小白来说很有必要的，也是我个人的一个记录。</p>
+            <blockquote><p>该服务器的用途是用于部署JavaEE项目。</p>
+            </blockquote>
+            <h1 data-breakpage>JDK安装</h1>
+            <p>由于我们之后需要部署的是<code>JavaEE</code>项目，所以首先第一步就是安装JDK了。</p>
+            <h2>卸载自带的openJDK</h2>
+            <p>现在的服务器拿来之后一般都是默认给我们安装一个<code>openJDK</code>，首先我们需要卸载掉。</p>
+            <ol>
+                <li>使用<code>rpm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>qa | grep java</code>命令查看系统中是否存在有Java。</li>
+                <li>使用<code>rpm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>e <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>--</span>nodeps 相关应用名称</code>来进行卸载。(相关应用名称就是上一个命令中显示出来的名称复制到这里卸载即可)。</li>
+
+            </ol>
+            <h2>下载并安装JDK</h2>
+            <ol>
+                <li>之后是下载<code>ORACLE</code>所提供的JDK，<a href='http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html'>传送门</a>根据自己系统的情况下载对应版本即可。笔者使用的是<code>jdk<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8u101<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>linux<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>x64.rpm</code>版本。</li>
+                <li>然后使用FTP工具上传到<code>/usr/java</code>目录下即可，没有<code>java</code>目录新建一个即可。</li>
+                <li>然后使用<code>rpm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>ivh jdk<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8u101<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>linux<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>x64.rpm</code>命令进行解压安装。</li>
+
+            </ol>
+            <h2>profile文件配置</h2>
+            <p>安装完成之后使用<code>vi /etc/profile</code>命令编辑<code>profile</code>文件(注意该文件路径是指根目录下的etc文件夹不要找错了)。
+                在该文件中加入以下内容：</p>
+            <pre><code>export JAVA_HOME=/usr/java/jdk-8u101-linux-x64
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin
+</code></pre>
+            <p>&nbsp;</p>
+            <p>保存之后运行<code>source /etc/profile</code>使配置生效。</p>
+            <h2>验证是否安装成功</h2>
+            <p>之后我们使用在<code>windows</code>平台也有的命令<code>java <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>version</code>，如果输出如图：
+                <a href='http://img.blog.csdn.net/20160920000008974'><img src='http://img.blog.csdn.net/20160920000008974' alt='2' referrerPolicy='no-referrer' /></a>
+                表示安装成功。</p>
+            <h1 data-breakpage>MySQL安装</h1>
+            <h2>卸载自带的Mysql</h2>
+            <p>首先第一步还是要卸载掉自带的mysql。
+                <code>rpm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>e <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>--</span>nodeps mysql</code>命令和之前一样只是把应用名称换成mysql了而已。</p>
+            <h2>使用<code>yum</code>来安装mysql</h2>
+            <p>之后我们采用<code>yum</code>来安装mysql。这样的方式最简单便捷。
+                <code>yum install <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>y mysql<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>server mysql mysql<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>deve</code>执行该命令直到出现<code>Complete!</code>提示之后表示安装成功。
+                <code>rpm <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>qi mysql<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>server</code>之后使用该命令可以查看我们安装的mysql信息。</p>
+            <h2>mysql相关配置</h2>
+            <p>使用<code>service mysqld start</code>来启动mysql服务(第一次会输出很多信息)，之后就不会了。
+                然后我们可以使用<code>chkconfig mysqld on</code>命令将mysql设置为开机启动。
+                输入<code>chkconfig <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>--</span>list | grep mysql</code>命令显示如下图：
+                <a href='http://img.blog.csdn.net/20160920120817031'><img src='http://img.blog.csdn.net/20160920120817031' alt='3' referrerPolicy='no-referrer' /></a>
+                表示设置成功。
+                使用<code>mysqladmin <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>u root password &#39;root&#39;</code>为<code>root</code>账户设置密码。</p>
+            <h2>设置远程使用</h2>
+            <pre><code>grant all privileges on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;123456&#39; with grant option;
+# root是用户名，%代表任意主机，&#39;123456&#39;指定的登录密码（这个和本地的root密码可以设置不同的，互不影响）
+flush privileges; # 重载系统权限
+exit;
+</code></pre>
+            <h2>验证使用</h2>
+            <p>使用<code>mysql <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>u root <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>proot</code>来登录mysql。如果出现以下界面表示设置成功。
+                <a href='http://img.blog.csdn.net/20160920121542492'><img src='http://img.blog.csdn.net/20160920121542492' alt='4' referrerPolicy='no-referrer' /></a></p>
+            <h1 data-breakpage>Tomcat安装</h1>
+            <p><code>Tomcat</code>也是我们运行<code>JavaEE</code>项目必备的一个中间件。</p>
+            <ol>
+                <li><p>第一步需要下载linux的Tomcat，<a href='http://tomcat.apache.org/download-80.cgi'>传送门</a>。根据自己系统版本进行下载即可。之后将<code>apache<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>tomcat<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8.5.5.tar.gz</code>上传到<code>/usr/local</code>目录中。</p>
+                </li>
+                <li><p>解压该压缩包<code>tar <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>zxv <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>f apache<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>tomcat<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8.5.5.tar.gz</code>,再使用<code>mv apache<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>tomcat<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8.5.5 tomcat</code>将解压的Tomcat移动到外层的<code>Tomcat</code>目录中。</p>
+                </li>
+                <li><p>进入<code>/usr/local/tomcat/apache<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>tomcat<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span>8.5.5/bin</code>目录使用<code>./startup.bat</code>命令启动tomcat。</p>
+                </li>
+                <li><p>因为tomcat使用的默认端口是</p>
+                    <pre><code>8080
+</code></pre>
+                    <p>，linux防火墙默认是不能访问的，需要手动将其打开。使用</p>
+                    <pre><code>vi + /etc/sysconfig/iptables
+</code></pre>
+                    <p>编辑</p>
+                    <pre><code>iptables
+</code></pre>
+                    <p>(注意etc目录是根目录下的)，加入以下代码:</p>
+                    <pre><code>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+</code></pre>
+                </li>
+
+            </ol>
+            <p>这里我们开放了8080和80端口，之后安装nginx就不用在开放了。</p>
+            <blockquote><p>ps:这里用到了简单的vim命令。按<code>i</code>进入插入模式，输入上面两段代码。之后按<code>esc</code>退出插入模式。再按<code>:wq</code>保存关闭即可。
+                之后使用<code>service iptables restart</code>命令重启防火墙即可。在浏览器输入服务器的<code>ip+8080</code>如果出现Tomcat的欢迎页即表明<code>Tomcat</code>安装成功。</p>
+            </blockquote>
+            <h1 data-breakpage>nginx安装</h1>
+            <p>最后是安装<code>nginx</code>，这里我们还是使用最简单的<code>yum</code>的方式来进行安装。</p>
+            <ul>
+                <li><p>首先使用以下几个命令安装必备的几个库：</p>
+                    <pre><code>yum -y install pcre*
+yum -y install openssl*
+yum -y install gcc
+</code></pre>
+                </li>
+                <li><p>之后安装nginx。</p>
+                    <pre><code>cd /usr/local/
+wget http://nginx.org/download/nginx-1.4.2.tar.gz
+tar -zxvf nginx-1.4.2.tar.gz
+cd nginx-1.4.2
+./configure --prefix=/usr/local/nginx --with-http_stub_status_module
+make
+make install
+</code></pre>
+                </li>
+
+            </ul>
+            <ul>
+                <li>之后就可以使用<code>/usr/local/nginx/sbin/nginx</code>命令来启动nginx了。输入服务器的IP地址，如果出现nginx的欢迎界面表示安装成功了。</li>
+
+            </ul>
+            <h2>nginx配置</h2>
+            <p>这里我就简单贴以下我的配置，主要就是配置一个<code>upstream,</code>之后在<code>server</code>中引用配置的那个<code>upstream</code>即可。</p>
+            <pre><code>#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+    #                  &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+    #                  &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    upstream crossover_main {
+        server 127.0.0.1:8080;
+    }
+
+    server {
+        listen       80;
+        server_name  www.crossoverjie.top;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location  / {
+             proxy_pass http://crossover_main/examples/;
+             proxy_set_header Host $http_host;
+             proxy_set_header X-Forwarded-For $remote_addr;
+             index  index.jsp;
+        }
+
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache&#39;s document root
+        # concurs with nginx&#39;s one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443;
+    #    server_name  localhost;
+
+    #    ssl                  on;
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_timeout  5m;
+
+    #    ssl_protocols  SSLv2 SSLv3 TLSv1;
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers   on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
+</code></pre>
+            <p>&nbsp;</p>
+            <p>之后我们在地址栏输入服务器的IP地址(如果有域名解析了服务器的IP可以直接输入域名)就会进入我们在<code>upstream</code>中配置的地址加上在<code>server</code>中的地址。根据我这里的配置最后解析地址就是<code>http://127.0.0.1:8080/examples</code>应该是很好理解的。最终的结果是我在片头放的那张截图一样。</p>
+            <h1 data-breakpage>总结</h1>
+            <p>这是一个简单的基于centOS的运行环境配置，对于小白练手应该是够了，有不清楚和错误的地方欢迎指出反正我也不会回复。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
