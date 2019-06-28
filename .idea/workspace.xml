@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="Wait/Notify">
-      <change afterPath="$PROJECT_DIR$/blog/19627tl/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="一次分表踩坑">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,10 +20,14 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+            <state relative-caret-position="262">
+              <caret line="135" column="102" selection-start-line="135" selection-start-column="102" selection-end-line="135" selection-end-column="102" />
+              <folding>
+                <element signature="e#3706#3712#1" expanded="true" />
+                <element signature="e#3732#3738#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -118,8 +120,9 @@
         <option value="$PROJECT_DIR$/blog/19625pz/index.html" />
         <option value="$PROJECT_DIR$/blog/19508zl/index.html" />
         <option value="$PROJECT_DIR$/blog/19626jz/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19627tl/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19627it/index.html" />
       </list>
     </option>
   </component>
@@ -132,10 +135,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1860" />
+    <option name="height" value="1098" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -352,11 +355,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19627it" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19627tl" />
       <recent name="D:\localrepository\git\shzShine.github.io\images" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19626jz" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19508zl" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19625pz" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -471,14 +474,7 @@
       <workItem from="1561290386368" duration="597000" />
       <workItem from="1561371138847" duration="3345000" />
       <workItem from="1561448527630" duration="2428000" />
-      <workItem from="1561537812094" duration="1393000" />
-    </task>
-    <task id="LOCAL-00059" summary="blog">
-      <created>1551242498048</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1551242498050</updated>
+      <workItem from="1561537812094" duration="2127000" />
     </task>
     <task id="LOCAL-00060" summary="blog">
       <created>1551242828839</created>
@@ -816,11 +812,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561476155816</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="一次分表踩坑">
+      <created>1561549534277</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1561549534279</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122633000" />
+    <option name="totallyTimeSpent" value="123367000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="7" />
@@ -888,7 +891,8 @@
     <MESSAGE value="数据拆分" />
     <MESSAGE value="Linux" />
     <MESSAGE value="Wait/Notify" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wait/Notify" />
+    <MESSAGE value="一次分表踩坑" />
+    <option name="LAST_COMMIT_MESSAGE" value="一次分表踩坑" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1688,8 +1692,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+        <state relative-caret-position="103">
+          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="135" column="102" selection-start-line="135" selection-start-column="102" selection-end-line="135" selection-end-column="102" />
+          <folding>
+            <element signature="e#3706#3712#1" expanded="true" />
+            <element signature="e#3732#3738#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
