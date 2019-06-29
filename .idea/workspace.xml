@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="一次分表踩坑">
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="change">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/19627it/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19627it/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,14 +21,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="135" column="102" selection-start-line="135" selection-start-column="102" selection-end-line="135" selection-end-column="102" />
-              <folding>
-                <element signature="e#3706#3712#1" expanded="true" />
-                <element signature="e#3732#3738#1" expanded="true" />
-              </folding>
+            <state relative-caret-position="160">
+              <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -331,6 +328,18 @@
             <path>
               <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19627it" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19627tl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -346,7 +355,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19627it" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19629fs" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -475,13 +484,7 @@
       <workItem from="1561371138847" duration="3345000" />
       <workItem from="1561448527630" duration="2428000" />
       <workItem from="1561537812094" duration="2127000" />
-    </task>
-    <task id="LOCAL-00060" summary="blog">
-      <created>1551242828839</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1551242828839</updated>
+      <workItem from="1561698070584" duration="1651000" />
     </task>
     <task id="LOCAL-00061" summary="blog">
       <created>1551331987073</created>
@@ -819,14 +822,21 @@
       <option name="project" value="LOCAL" />
       <updated>1561549534279</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="change">
+      <created>1561698351538</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1561698351540</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123367000" />
+    <option name="totallyTimeSpent" value="125018000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1874" height="1096" extended-state="7" />
+    <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1185226" />
@@ -872,7 +882,6 @@
     <MESSAGE value=".." />
     <MESSAGE value="图标" />
     <MESSAGE value="appid" />
-    <MESSAGE value="change" />
     <MESSAGE value="about me" />
     <MESSAGE value="blog" />
     <MESSAGE value="最左匹配原则" />
@@ -892,7 +901,8 @@
     <MESSAGE value="Linux" />
     <MESSAGE value="Wait/Notify" />
     <MESSAGE value="一次分表踩坑" />
-    <option name="LAST_COMMIT_MESSAGE" value="一次分表踩坑" />
+    <MESSAGE value="change" />
+    <option name="LAST_COMMIT_MESSAGE" value="change" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
@@ -1420,13 +1430,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3770">
@@ -1669,10 +1672,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19627tl/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
+        <state relative-caret-position="-543">
+          <caret line="27" column="50" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="50" />
           <folding>
             <element signature="e#5906#5999#0" expanded="true" />
             <element signature="e#6158#6251#0" expanded="true" />
@@ -1690,21 +1700,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        <state relative-caret-position="312">
+          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
+          <folding>
+            <element signature="e#3286#3321#0" expanded="true" />
+            <element signature="e#4062#4097#0" expanded="true" />
+            <element signature="e#6480#6515#0" expanded="true" />
+            <element signature="e#6765#6800#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="135" column="102" selection-start-line="135" selection-start-column="102" selection-end-line="135" selection-end-column="102" />
-          <folding>
-            <element signature="e#3706#3712#1" expanded="true" />
-            <element signature="e#3732#3738#1" expanded="true" />
-          </folding>
+        <state relative-caret-position="160">
+          <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
         </state>
       </provider>
     </entry>

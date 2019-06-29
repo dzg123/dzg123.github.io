@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">线程通信的几种方式</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-06-29</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">多线程</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h2>前言</h2>
+            <p>开发中不免会遇到需要所有子线程执行完毕通知主线程处理某些逻辑的场景。</p>
+            <p>或者是线程 A 在执行到某个条件通知线程 B 执行某个操作。</p>
+            <p>可以通过以下几种方式实现：</p>
+            <h2>等待通知机制</h2>
+            <blockquote><p>等待通知模式是 Java 中比较经典的线程通信方式。</p>
+            </blockquote>
+            <p>两个线程通过对同一对象调用等待 wait() 和通知 notify() 方法来进行通讯。</p>
+            <p>如两个线程交替打印奇偶数：</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <pre><code>public class TwoThreadWaitNotify {
+
+    private int start = 1;
+
+    private boolean flag = false;
+
+    public static void main(String[] args) {
+        TwoThreadWaitNotify twoThread = new TwoThreadWaitNotify();
+
+        Thread t1 = new Thread(new OuNum(twoThread));
+        t1.setName(&quot;A&quot;);
+
+
+        Thread t2 = new Thread(new JiNum(twoThread));
+        t2.setName(&quot;B&quot;);
+
+        t1.start();
+        t2.start();
+    }
+
+    /**
+     * 偶数线程
+     */
+    public static class OuNum implements Runnable {
+        private TwoThreadWaitNotify number;
+
+        public OuNum(TwoThreadWaitNotify number) {
+            this.number = number;
+        }
+
+        @Override
+        public void run() {
+
+            while (number.start &lt;= 100) {
+                synchronized (TwoThreadWaitNotify.class) {
+                    System.out.println(&quot;偶数线程抢到锁了&quot;);
+                    if (number.flag) {
+                        System.out.println(Thread.currentThread().getName() + &quot;+-+偶数&quot; + number.start);
+                        number.start++;
+
+                        number.flag = false;
+                        TwoThreadWaitNotify.class.notify();
+
+                    }else {
+                        try {
+                            TwoThreadWaitNotify.class.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    /**
+     * 奇数线程
+     */
+    public static class JiNum implements Runnable {
+        private TwoThreadWaitNotify number;
+
+        public JiNum(TwoThreadWaitNotify number) {
+            this.number = number;
+        }
+
+        @Override
+        public void run() {
+            while (number.start &lt;= 100) {
+                synchronized (TwoThreadWaitNotify.class) {
+                    System.out.println(&quot;奇数线程抢到锁了&quot;);
+                    if (!number.flag) {
+                        System.out.println(Thread.currentThread().getName() + &quot;+-+奇数&quot; + number.start);
+                        number.start++;
+
+                        number.flag = true;
+
+                        TwoThreadWaitNotify.class.notify();
+                    }else {
+                        try {
+                            TwoThreadWaitNotify.class.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+            <p>输出结果：</p>
+            <pre><code>t2+-+奇数93
+t1+-+偶数94
+t2+-+奇数95
+t1+-+偶数96
+t2+-+奇数97
+t1+-+偶数98
+t2+-+奇数99
+t1+-+偶数100
+</code></pre>
+            <p>这里的线程 A 和线程 B 都对同一个对象 <code>TwoThreadWaitNotify.class</code> 获取锁，A 线程调用了同步对象的 wait() 方法释放了锁并进入 <code>WAITING</code> 状态。</p>
+            <p>B 线程调用了 notify() 方法，这样 A 线程收到通知之后就可以从 wait() 方法中返回。</p>
+            <p>这里利用了 <code>TwoThreadWaitNotify.class</code> 对象完成了通信。</p>
+            <p>有一些需要注意:</p>
+            <ul>
+                <li>wait() 、nofify() 、nofityAll() 调用的前提都是获得了对象的锁(也可称为对象监视器)。</li>
+                <li>调用 wait() 方法后线程会释放锁，进入 <code>WAITING</code> 状态，该线程也会被移动到<strong>等待队列</strong>中。</li>
+                <li>调用 notify() 方法会将<strong>等待队列</strong>中的线程移动到<strong>同步队列</strong>中，线程状态也会更新为 <code>BLOCKED</code></li>
+                <li>从 wait() 方法返回的前提是调用 notify() 方法的线程释放锁，wait() 方法的线程获得锁。</li>
+
+            </ul>
+            <p>等待通知有着一个经典范式：</p>
+            <p>线程 A 作为消费者：</p>
+            <ol>
+                <li>获取对象的锁。</li>
+                <li>进入 while(判断条件)，并调用 wait() 方法。</li>
+                <li>当条件满足跳出循环执行具体处理逻辑。</li>
+
+            </ol>
+            <p>线程 B 作为生产者:</p>
+            <ol>
+                <li>获取对象锁。</li>
+                <li>更改与线程 A 共用的判断条件。</li>
+                <li>调用 notify() 方法。</li>
+
+            </ol>
+            <p>伪代码如下:</p>
+            <pre><code>//Thread A
+
+synchronized(Object){
+    while(条件){
+        Object.wait();
+    }
+    //do something
+}
+
+//Thread B
+synchronized(Object){
+    条件=false;//改变条件
+    Object.notify();
+}
+</code></pre>
+            <h2>join() 方法</h2>
+            <pre><code>private static void join() throws InterruptedException {
+    Thread t1 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running&quot;);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }) ;
+    Thread t2 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running2&quot;);
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }) ;
+
+    t1.start();
+    t2.start();
+
+    //等待线程1终止
+    t1.join();
+
+    //等待线程2终止
+    t2.join();
+
+    LOGGER.info(&quot;main over&quot;);
+}
+</code></pre>
+            <p>输出结果:</p>
+            <pre><code>2018-03-16 20:21:30.967 [Thread-1] INFO  c.c.actual.ThreadCommunication - running2
+2018-03-16 20:21:30.967 [Thread-0] INFO  c.c.actual.ThreadCommunication - running
+2018-03-16 20:21:34.972 [main] INFO  c.c.actual.ThreadCommunication - main over
+</code></pre>
+            <p>在 <code>t1.join()</code> 时会一直阻塞到 t1 执行完毕，所以最终主线程会等待 t1 和 t2 线程执行完毕。</p>
+            <p>其实从源码可以看出，join() 也是利用的等待通知机制：</p>
+            <p>核心逻辑:</p>
+            <pre><code>while (isAlive()) {
+    wait(0);
+}
+</code></pre>
+            <p>在 join 线程完成后会调用 notifyAll() 方法，是在 JVM 实现中调用，所以这里看不出来。</p>
+            <h2>volatile 共享内存</h2>
+            <p>因为 Java 是采用共享内存的方式进行线程通信的，所以可以采用以下方式用主线程关闭 A 线程:</p>
+            <pre><code>public class Volatile implements Runnable{
+
+    private static volatile boolean flag = true ;
+
+    @Override
+    public void run() {
+        while (flag){
+            System.out.println(Thread.currentThread().getName() + &quot;正在运行。。。&quot;);
+        }
+        System.out.println(Thread.currentThread().getName() +&quot;执行完毕&quot;);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Volatile aVolatile = new Volatile();
+        new Thread(aVolatile,&quot;thread A&quot;).start();
+
+
+        System.out.println(&quot;main 线程正在运行&quot;) ;
+
+        TimeUnit.MILLISECONDS.sleep(100) ;
+
+        aVolatile.stopThread();
+
+    }
+
+    private void stopThread(){
+        flag = false ;
+    }
+}
+</code></pre>
+            <p>输出结果：</p>
+            <pre><code>thread A正在运行。。。
+thread A正在运行。。。
+thread A正在运行。。。
+thread A正在运行。。。
+thread A执行完毕
+</code></pre>
+            <p>&nbsp;</p>
+            <p>这里的 flag 存放于主内存中，所以主线程和线程 A 都可以看到。</p>
+            <p>flag 采用 volatile 修饰主要是为了内存可见性，更多内容可以查看<a href='http://crossoverjie.top/2018/03/09/volatile/'>这里</a>。</p>
+            <h2>CountDownLatch 并发工具</h2>
+            <p>CountDownLatch 可以实现 join 相同的功能，但是更加的灵活。</p>
+            <pre><code>private static void countDownLatch() throws Exception{
+    int thread = 3 ;
+    long start = System.currentTimeMillis();
+    final CountDownLatch countDown = new CountDownLatch(thread);
+    for (int i= 0 ;i&lt;thread ; i++){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                LOGGER.info(&quot;thread run&quot;);
+                try {
+                    Thread.sleep(2000);
+                    countDown.countDown();
+
+                    LOGGER.info(&quot;thread end&quot;);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    countDown.await();
+    long stop = System.currentTimeMillis();
+    LOGGER.info(&quot;main over total time={}&quot;,stop-start);
+}
+
+</code></pre>
+            <p>输出结果:</p>
+            <pre><code>2018-03-16 20:19:44.126 [Thread-0] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-16 20:19:44.126 [Thread-2] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-16 20:19:44.126 [Thread-1] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-16 20:19:46.136 [Thread-2] INFO  c.c.actual.ThreadCommunication - thread end
+2018-03-16 20:19:46.136 [Thread-1] INFO  c.c.actual.ThreadCommunication - thread end
+2018-03-16 20:19:46.136 [Thread-0] INFO  c.c.actual.ThreadCommunication - thread end
+2018-03-16 20:19:46.136 [main] INFO  c.c.actual.ThreadCommunication - main over total time=2012
+
+</code></pre>
+            <p>CountDownLatch 也是基于 AQS(AbstractQueuedSynchronizer) 实现的，更多实现参考 <a href='http://crossoverjie.top/2018/01/25/ReentrantLock/'>ReentrantLock 实现原理</a></p>
+            <ul>
+                <li>初始化一个 CountDownLatch 时告诉并发的线程，然后在每个线程处理完毕之后调用 countDown() 方法。</li>
+                <li>该方法会将 AQS 内置的一个 state 状态 -1 。</li>
+                <li>最终在主线程调用 await() 方法，它会阻塞直到 <code>state == 0</code> 的时候返回。</li>
+
+            </ul>
+            <h2>CyclicBarrier 并发工具</h2>
+            <pre><code>private static void cyclicBarrier() throws Exception {
+    CyclicBarrier cyclicBarrier = new CyclicBarrier(3) ;
+
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;thread run&quot;);
+            try {
+                cyclicBarrier.await() ;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            LOGGER.info(&quot;thread end do something&quot;);
+        }
+    }).start();
+
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;thread run&quot;);
+            try {
+                cyclicBarrier.await() ;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            LOGGER.info(&quot;thread end do something&quot;);
+        }
+    }).start();
+
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;thread run&quot;);
+            try {
+                Thread.sleep(5000);
+                cyclicBarrier.await() ;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            LOGGER.info(&quot;thread end do something&quot;);
+        }
+    }).start();
+
+    LOGGER.info(&quot;main thread&quot;);
+}
+
+</code></pre>
+            <p>CyclicBarrier 中文名叫做屏障或者是栅栏，也可以用于线程间通信。</p>
+            <p>它可以等待 N 个线程都达到某个状态后继续运行的效果。</p>
+            <ol>
+                <li>首先初始化线程参与者。</li>
+                <li>调用 <code>await()</code> 将会在所有参与者线程都调用之前等待。</li>
+                <li>直到所有参与者都调用了 <code>await()</code> 后，所有线程从 <code>await()</code> 返回继续后续逻辑。</li>
+
+            </ol>
+            <p>运行结果:</p>
+            <pre><code>2018-03-18 22:40:00.731 [Thread-0] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-18 22:40:00.731 [Thread-1] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-18 22:40:00.731 [Thread-2] INFO  c.c.actual.ThreadCommunication - thread run
+2018-03-18 22:40:00.731 [main] INFO  c.c.actual.ThreadCommunication - main thread
+2018-03-18 22:40:05.741 [Thread-0] INFO  c.c.actual.ThreadCommunication - thread end do something
+2018-03-18 22:40:05.741 [Thread-1] INFO  c.c.actual.ThreadCommunication - thread end do something
+2018-03-18 22:40:05.741 [Thread-2] INFO  c.c.actual.ThreadCommunication - thread end do something
+
+</code></pre>
+            <p>可以看出由于其中一个线程休眠了五秒，所有其余所有的线程都得等待这个线程调用 <code>await()</code> 。</p>
+            <p>该工具可以实现 CountDownLatch 同样的功能，但是要更加灵活。甚至可以调用 <code>reset()</code> 方法重置 CyclicBarrier (需要自行捕获 BrokenBarrierException 处理) 然后重新执行。</p>
+            <h2>线程响应中断</h2>
+            <pre><code>public class StopThread implements Runnable {
+    @Override
+    public void run() {
+
+        while ( !Thread.currentThread().isInterrupted()) {
+            // 线程执行具体逻辑
+            System.out.println(Thread.currentThread().getName() + &quot;运行中。。&quot;);
+        }
+
+        System.out.println(Thread.currentThread().getName() + &quot;退出。。&quot;);
+
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(new StopThread(), &quot;thread A&quot;);
+        thread.start();
+
+        System.out.println(&quot;main 线程正在运行&quot;) ;
+
+        TimeUnit.MILLISECONDS.sleep(10) ;
+        thread.interrupt();
+    }
+
+
+}
+
+</code></pre>
+            <p>输出结果:</p>
+            <pre><code>thread A运行中。。
+thread A运行中。。
+thread A退出。。
+
+</code></pre>
+            <p>可以采用中断线程的方式来通信，调用了 <code>thread.interrupt()</code> 方法其实就是将 thread 中的一个标志属性置为了 true。</p>
+            <p>并不是说调用了该方法就可以中断线程，如果不对这个标志进行响应其实是没有什么作用(这里对这个标志进行了判断)。</p>
+            <p><strong>但是如果抛出了 InterruptedException 异常，该标志就会被 JVM 重置为 false。</strong></p>
+            <h2>线程池 awaitTermination() 方法</h2>
+            <p>如果是用线程池来管理线程，可以使用以下方式来让主线程等待线程池中所有任务执行完毕:</p>
+            <pre><code>private static void executorService() throws Exception{
+    BlockingQueue&lt;Runnable&gt; queue = new LinkedBlockingQueue&lt;&gt;(10) ;
+    ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(5,5,1, TimeUnit.MILLISECONDS,queue) ;
+    poolExecutor.execute(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running&quot;);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    poolExecutor.execute(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running2&quot;);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
+    poolExecutor.shutdown();
+    while (!poolExecutor.awaitTermination(1,TimeUnit.SECONDS)){
+        LOGGER.info(&quot;线程还在执行。。。&quot;);
+    }
+    LOGGER.info(&quot;main over&quot;);
+}
+
+</code></pre>
+            <p>输出结果:</p>
+            <pre><code>2018-03-16 20:18:01.273 [pool-1-thread-2] INFO  c.c.actual.ThreadCommunication - running2
+2018-03-16 20:18:01.273 [pool-1-thread-1] INFO  c.c.actual.ThreadCommunication - running
+2018-03-16 20:18:02.273 [main] INFO  c.c.actual.ThreadCommunication - 线程还在执行。。。
+2018-03-16 20:18:03.278 [main] INFO  c.c.actual.ThreadCommunication - 线程还在执行。。。
+2018-03-16 20:18:04.278 [main] INFO  c.c.actual.ThreadCommunication - main over
+
+</code></pre>
+            <p>使用这个 <code>awaitTermination()</code> 方法的前提需要关闭线程池，如调用了 <code>shutdown()</code> 方法。</p>
+            <p>调用了 <code>shutdown()</code> 之后线程池会停止接受新任务，并且会平滑的关闭线程池中现有的任务。</p>
+            <h2>管道通信</h2>
+            <pre><code>public static void piped() throws IOException {
+    //面向于字符 PipedInputStream 面向于字节
+    PipedWriter writer = new PipedWriter();
+    PipedReader reader = new PipedReader();
+
+    //输入输出流建立连接
+    writer.connect(reader);
+
+
+    Thread t1 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running&quot;);
+            try {
+                for (int i = 0; i &lt; 10; i++) {
+
+                    writer.write(i+&quot;&quot;);
+                    Thread.sleep(10);
+                }
+            } catch (Exception e) {
+
+            } finally {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    });
+    Thread t2 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            LOGGER.info(&quot;running2&quot;);
+            int msg = 0;
+            try {
+                while ((msg = reader.read()) != -1) {
+                    LOGGER.info(&quot;msg={}&quot;, (char) msg);
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+    });
+    t1.start();
+    t2.start();
+}
+</code></pre>
+            <p>输出结果:</p>
+            <pre><code>2018-03-16 19:56:43.014 [Thread-0] INFO  c.c.actual.ThreadCommunication - running
+2018-03-16 19:56:43.014 [Thread-1] INFO  c.c.actual.ThreadCommunication - running2
+2018-03-16 19:56:43.130 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=0
+2018-03-16 19:56:43.132 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=1
+2018-03-16 19:56:43.132 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=2
+2018-03-16 19:56:43.133 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=3
+2018-03-16 19:56:43.133 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=4
+2018-03-16 19:56:43.133 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=5
+2018-03-16 19:56:43.133 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=6
+2018-03-16 19:56:43.134 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=7
+2018-03-16 19:56:43.134 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=8
+2018-03-16 19:56:43.134 [Thread-1] INFO  c.c.actual.ThreadCommunication - msg=9
+</code></pre>
+            <p>Java 虽说是基于内存通信的，但也可以使用管道通信。</p>
+            <p>需要注意的是，输入流和输出流需要首先建立连接。这样线程 B 就可以收到线程 A 发出的消息了。</p>
+            <p>实际开发中可以灵活根据需求选择最适合的线程通信方式。</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
