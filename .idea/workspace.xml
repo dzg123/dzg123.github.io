@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="change">
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="线程通信的几种方式">
+      <change afterPath="$PROJECT_DIR$/blog/19702db/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19702sz/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/19627it/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19627it/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+            <state relative-caret-position="275">
+              <caret line="95" column="90" lean-forward="true" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
             </state>
           </provider>
         </entry>
@@ -33,7 +36,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>blog-post-comments</find>
       <find>前端大爆炸-web-bang-bang-bang</find>
       <find>https://alili.tech/archive</find>
       <find>前</find>
@@ -63,6 +65,7 @@
       <find>阻塞</find>
       <find>Linux</find>
       <find>img</find>
+      <find>哈希</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -71,7 +74,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/190214qb/index.html" />
         <option value="$PROJECT_DIR$/blog/19418ty/index.html" />
         <option value="$PROJECT_DIR$/blog/19420qy/index.html" />
         <option value="$PROJECT_DIR$/blog/19422nc/index.html" />
@@ -118,8 +120,11 @@
         <option value="$PROJECT_DIR$/blog/19508zl/index.html" />
         <option value="$PROJECT_DIR$/blog/19626jz/index.html" />
         <option value="$PROJECT_DIR$/blog/19627tl/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19629fs/index.html" />
         <option value="$PROJECT_DIR$/blog/19627it/index.html" />
+        <option value="$PROJECT_DIR$/blog/19702sz/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19702db/index.html" />
       </list>
     </option>
   </component>
@@ -355,7 +360,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19629fs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19702db" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -364,11 +369,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19702db" />
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19702sz" />
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19629fs" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19627it" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19627tl" />
-      <recent name="D:\localrepository\git\shzShine.github.io\images" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19626jz" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19508zl" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -484,14 +489,9 @@
       <workItem from="1561371138847" duration="3345000" />
       <workItem from="1561448527630" duration="2428000" />
       <workItem from="1561537812094" duration="2127000" />
-      <workItem from="1561698070584" duration="1651000" />
-    </task>
-    <task id="LOCAL-00061" summary="blog">
-      <created>1551331987073</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1551331987074</updated>
+      <workItem from="1561698070584" duration="2485000" />
+      <workItem from="1561993163908" duration="1313000" />
+      <workItem from="1562034802340" duration="1564000" />
     </task>
     <task id="LOCAL-00062" summary="blog">
       <created>1551433443021</created>
@@ -829,11 +829,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561698351540</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL-00110" summary="线程通信的几种方式">
+      <created>1561820821433</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1561820821434</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="125018000" />
+    <option name="totallyTimeSpent" value="128729000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
@@ -902,23 +909,10 @@
     <MESSAGE value="Wait/Notify" />
     <MESSAGE value="一次分表踩坑" />
     <MESSAGE value="change" />
-    <option name="LAST_COMMIT_MESSAGE" value="change" />
+    <MESSAGE value="线程通信的几种方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="线程通信的几种方式" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19418ty/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="90" column="113" selection-start-line="90" selection-start-column="113" selection-end-line="90" selection-end-column="113" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19420qy/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-546">
-          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19422nc/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
@@ -1700,23 +1694,131 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19629fs/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="577" selection-start-line="577" selection-end-line="577" />
+          <folding>
+            <element signature="e#3497#3503#1" expanded="true" />
+            <element signature="e#3523#3529#1" expanded="true" />
+            <element signature="e#3842#3848#0" expanded="true" />
+            <element signature="e#3849#3855#0" expanded="true" />
+            <element signature="e#3933#3939#0" expanded="true" />
+            <element signature="e#3940#3946#0" expanded="true" />
+            <element signature="e#4297#4301#0" expanded="true" />
+            <element signature="e#4408#4414#0" expanded="true" />
+            <element signature="e#4422#4428#0" expanded="true" />
+            <element signature="e#4548#4554#0" expanded="true" />
+            <element signature="e#4559#4565#0" expanded="true" />
+            <element signature="e#5356#5360#0" expanded="true" />
+            <element signature="e#5467#5473#0" expanded="true" />
+            <element signature="e#5481#5487#0" expanded="true" />
+            <element signature="e#5608#5614#0" expanded="true" />
+            <element signature="e#5619#5625#0" expanded="true" />
+            <element signature="e#7887#7893#0" expanded="true" />
+            <element signature="e#7900#7906#0" expanded="true" />
+            <element signature="e#8194#8200#0" expanded="true" />
+            <element signature="e#8208#8214#0" expanded="true" />
+            <element signature="e#8498#8504#0" expanded="true" />
+            <element signature="e#8513#8519#0" expanded="true" />
+            <element signature="e#9498#9504#0" expanded="true" />
+            <element signature="e#9511#9517#0" expanded="true" />
+            <element signature="e#9591#9597#0" expanded="true" />
+            <element signature="e#9601#9607#0" expanded="true" />
+            <element signature="e#9764#9770#0" expanded="true" />
+            <element signature="e#9778#9784#0" expanded="true" />
+            <element signature="e#9824#9830#0" expanded="true" />
+            <element signature="e#9841#9847#0" expanded="true" />
+            <element signature="e#10166#10172#1" expanded="true" />
+            <element signature="e#10680#10684#0" expanded="true" />
+            <element signature="e#10817#10823#0" expanded="true" />
+            <element signature="e#10833#10839#0" expanded="true" />
+            <element signature="e#10980#10986#0" expanded="true" />
+            <element signature="e#10996#11002#0" expanded="true" />
+            <element signature="e#11239#11245#0" expanded="true" />
+            <element signature="e#11268#11274#0" expanded="true" />
+            <element signature="e#12678#12684#0" expanded="true" />
+            <element signature="e#12694#12700#0" expanded="true" />
+            <element signature="e#12873#12879#0" expanded="true" />
+            <element signature="e#12902#12908#0" expanded="true" />
+            <element signature="e#13040#13046#0" expanded="true" />
+            <element signature="e#13056#13062#0" expanded="true" />
+            <element signature="e#13235#13241#0" expanded="true" />
+            <element signature="e#13264#13270#0" expanded="true" />
+            <element signature="e#13402#13408#0" expanded="true" />
+            <element signature="e#13418#13424#0" expanded="true" />
+            <element signature="e#13633#13639#0" expanded="true" />
+            <element signature="e#13662#13668#0" expanded="true" />
+            <element signature="e#13714#13720#0" expanded="true" />
+            <element signature="e#13731#13737#0" expanded="true" />
+            <element signature="e#15305#15311#0" expanded="true" />
+            <element signature="e#15316#15322#0" expanded="true" />
+            <element signature="e#15398#15404#0" expanded="true" />
+            <element signature="e#15408#15414#0" expanded="true" />
+            <element signature="e#15551#15557#0" expanded="true" />
+            <element signature="e#15565#15571#0" expanded="true" />
+            <element signature="e#15626#15632#0" expanded="true" />
+            <element signature="e#15643#15649#0" expanded="true" />
+            <element signature="e#16324#16328#0" expanded="true" />
+            <element signature="e#16336#16340#0" expanded="true" />
+            <element signature="e#16372#16376#0" expanded="true" />
+            <element signature="e#16376#16380#0" expanded="true" />
+            <element signature="e#16598#16604#0" expanded="true" />
+            <element signature="e#16611#16617#0" expanded="true" />
+            <element signature="e#16902#16908#0" expanded="true" />
+            <element signature="e#16916#16922#0" expanded="true" />
+            <element signature="e#17209#17215#0" expanded="true" />
+            <element signature="e#17224#17230#0" expanded="true" />
+            <element signature="e#17255#17261#0" expanded="true" />
+            <element signature="e#17270#17276#0" expanded="true" />
+            <element signature="e#18341#18347#0" expanded="true" />
+            <element signature="e#18354#18360#0" expanded="true" />
+            <element signature="e#18415#18419#0" expanded="true" />
+            <element signature="e#18467#18473#0" expanded="true" />
+            <element signature="e#18473#18479#0" expanded="true" />
+            <element signature="e#18905#18911#0" expanded="true" />
+            <element signature="e#18919#18925#0" expanded="true" />
+            <element signature="e#19057#19063#0" expanded="true" />
+            <element signature="e#19069#19075#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19627it/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
+        <state relative-caret-position="369">
+          <caret line="151" column="45" selection-start-line="151" selection-start-column="45" selection-end-line="151" selection-end-column="45" />
           <folding>
-            <element signature="e#3286#3321#0" expanded="true" />
-            <element signature="e#4062#4097#0" expanded="true" />
-            <element signature="e#6480#6515#0" expanded="true" />
-            <element signature="e#6765#6800#0" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#p#1;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#p#8;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#p#13;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#p#15;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19702sz/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="57" column="91" selection-start-line="57" selection-start-column="91" selection-end-line="57" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19702db/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+          <folding>
+            <element signature="e#8394#8400#1" expanded="true" />
+            <element signature="e#8409#8415#1" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+        <state relative-caret-position="275">
+          <caret line="95" column="90" lean-forward="true" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
         </state>
       </provider>
     </entry>
