@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="贪心算法之霍夫曼压缩编码">
-      <change afterPath="$PROJECT_DIR$/blog/19704ky/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="MQ之保证高可用">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/19704bm/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19704bm/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,10 +21,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19704ky/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="57" column="88" selection-start-line="57" selection-start-column="88" selection-end-line="57" selection-end-column="88" />
+            <state relative-caret-position="199">
+              <caret line="97" column="38" lean-forward="true" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -34,7 +33,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>前端大爆炸-web-bang-bang-bang</find>
       <find>https://alili.tech/archive</find>
       <find>前</find>
       <find>about</find>
@@ -64,6 +62,7 @@
       <find>Linux</find>
       <find>哈希</find>
       <find>img</find>
+      <find>400</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -120,9 +119,9 @@
         <option value="$PROJECT_DIR$/blog/19627it/index.html" />
         <option value="$PROJECT_DIR$/blog/19702sz/index.html" />
         <option value="$PROJECT_DIR$/blog/19702db/index.html" />
-        <option value="$PROJECT_DIR$/blog/19704bm/index.html" />
         <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19704ky/index.html" />
+        <option value="$PROJECT_DIR$/blog/19704bm/index.html" />
       </list>
     </option>
   </component>
@@ -343,6 +342,12 @@
             <path>
               <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19704bm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="shzShine.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="shzShine.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -358,7 +363,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19704ky" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19705sx" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -490,14 +495,7 @@
       <workItem from="1561698070584" duration="2485000" />
       <workItem from="1561993163908" duration="1313000" />
       <workItem from="1562034802340" duration="2310000" />
-      <workItem from="1562226300824" duration="2340000" />
-    </task>
-    <task id="LOCAL-00064" summary="blog">
-      <created>1551849769878</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1551849769880</updated>
+      <workItem from="1562226300824" duration="3389000" />
     </task>
     <task id="LOCAL-00065" summary="blog">
       <created>1551850051196</created>
@@ -835,11 +833,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562304737481</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="MQ之保证高可用">
+      <created>1562305027937</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1562305027937</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131815000" />
+    <option name="totallyTimeSpent" value="132864000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
@@ -861,10 +866,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32640332" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32952183" />
-      <window_info anchor="bottom" id="Messages" order="9" weight="0.32962137" />
+      <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" visible="true" weight="0.32952183" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32952183" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
@@ -925,7 +930,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="图标" />
     <MESSAGE value="appid" />
     <MESSAGE value="about me" />
     <MESSAGE value="blog" />
@@ -950,7 +954,8 @@
     <MESSAGE value="线程通信的几种方式" />
     <MESSAGE value="MQ" />
     <MESSAGE value="贪心算法之霍夫曼压缩编码" />
-    <option name="LAST_COMMIT_MESSAGE" value="贪心算法之霍夫曼压缩编码" />
+    <MESSAGE value="MQ之保证高可用" />
+    <option name="LAST_COMMIT_MESSAGE" value="MQ之保证高可用" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19428sf/index.html">
@@ -1834,31 +1839,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19704bm/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-335">
-          <caret line="108" lean-forward="true" selection-start-line="108" selection-end-line="108" />
-          <folding>
-            <element signature="e#3837#3871#0" expanded="true" />
-            <element signature="e#4661#4665#0" expanded="true" />
-            <element signature="e#4667#4671#0" expanded="true" />
-            <element signature="e#4673#4677#0" expanded="true" />
-            <element signature="e#4880#4914#0" expanded="true" />
-            <element signature="e#4919#4923#0" expanded="true" />
-            <element signature="e#4925#4929#0" expanded="true" />
-            <element signature="e#4931#4935#0" expanded="true" />
-            <element signature="e#5172#5176#0" expanded="true" />
-            <element signature="e#6092#6126#0" expanded="true" />
-            <element signature="e#6207#6241#0" expanded="true" />
-            <element signature="e#6653#6687#0" expanded="true" />
-            <element signature="e#7779#7813#0" expanded="true" />
-            <element signature="e#8240#8274#0" expanded="true" />
-            <element signature="e#8572#8606#0" expanded="true" />
-            <element signature="e#8791#8797#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/template.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -1866,17 +1846,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19704ky/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        <state relative-caret-position="582">
+          <caret line="96" selection-start-line="96" selection-end-line="96" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19704ky/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19704bm/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="57" column="88" selection-start-line="57" selection-start-column="88" selection-end-line="57" selection-end-column="88" />
+        <state relative-caret-position="435">
+          <caret line="102" column="143" selection-start-line="102" selection-start-column="143" selection-end-line="102" selection-end-column="143" />
+          <folding>
+            <element signature="e#3837#3871#0" expanded="true" />
+            <element signature="e#4880#4914#0" expanded="true" />
+            <element signature="e#6207#6241#0" expanded="true" />
+            <element signature="e#6653#6687#0" expanded="true" />
+            <element signature="e#7779#7813#0" expanded="true" />
+            <element signature="e#8240#8274#0" expanded="true" />
+            <element signature="e#8572#8606#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="97" column="38" lean-forward="true" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
         </state>
       </provider>
     </entry>

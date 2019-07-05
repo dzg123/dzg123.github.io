@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">分治算法：谈一谈大规模计算框架MapReduce中的分治思想</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-07-05</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">algorithm</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h2>定义</h2>
+            <p>将原问题划分成n个规模较小，并且结构与原问题相似的子问题，递归地解决这些子问题，然后再合并其结果，就得到原问题的解。</p>
+            <h2>每一次递归都会涉及三个操作</h2>
+            <ul>
+                <li>分解：将原问题分解成一系列子问题；</li>
+                <li>解决：递归地求解各个子问题，若子问题足够小，则直接求解；</li>
+                <li>合并：将子问题的结果合并成原问题；</li>
+
+            </ul>
+            <h2>使用分治算法的前提条件</h2>
+            <ul>
+                <li>原问题与分解成的小问题具有相同的模式；</li>
+                <li>原问题分解成的子问题可以独立求解，子问题之间没有相关性，这一点是分治算法跟动态规划的明显区别；</li>
+                <li>具有分解终止条件，也就是说，当问题足够小时，可以直接求解；</li>
+                <li>可以将子问题合并成原问题，而这个合并操作的复杂度不能太高，否则就起不到减小算法总体复杂度的效果了。</li>
+
+            </ul>
+            <h2>分治算法实践</h2>
+            <ol>
+                <li>如何编程求出一组数据的有序对个数或者逆序对个数呢？
+                    解答：使用归并排序算法</li>
+
+            </ol>
+            <pre><code>public class MergeSort {
+
+    private int num = 0;
+
+    public int count(int[] a, int n) {
+
+        num = 0;
+        mergeSortCount(a, 0, n - 1);
+        return num;
+    }
+
+    private void mergeSortCount(int[] a, int p, int r) {
+
+        if (p &gt;= r) {
+
+            return;
+        }
+
+        int q = (p + r) / 2;
+        mergeSortCount(a, p, q);
+        mergeSortCount(a, q + 1, r);
+        merge(a, p, q, r);
+    }
+
+    private void merge(int[] a, int low, int middle, int high) {
+
+        int i = low;
+        int j = middle + 1;
+        int k = 0;
+        int[] tmp = new int[high - low + 1];
+        while (i &lt;= middle &amp;&amp; j &lt;= high) {
+
+            if (a[i] &lt;= a[j]) {
+
+                tmp[k++] = a[i++];
+            }
+            else {
+
+                num += (middle - i + 1); //统计middle-low之间，比a[j]大的元素个数
+                tmp[k++] = a[j++];
+            }
+        }
+
+        while (i &lt;= low) {
+
+            tmp[k++] = a[i++];
+        }
+
+        while (j &lt;= high) {
+
+            tmp[k++] = a[j++];
+        }
+
+        for (i = 0; i &lt;= high - low; ++i) {
+
+            a[low + i] = tmp[i];
+        }
+    }
+}
+</code></pre>
+            <ol>
+                <li>二位平面上有n个点，如何快速计算出两个距离最近的点对？
+                    解答：分成两块单独求其中一块点对最小距离，然后求这两块之间点对的最小距离，通过一些排序和删除，可以减少到6个点之间比较。</li>
+                <li>有两个n<em>n的矩阵A，B，如何快速求解两个矩阵的乘积C=A</em>B?
+                    解答：v.斯特拉森提出了2*2分块矩阵的计算公式 从原来的8次乘法 缩减到了7次
+                    当n规模很大的时候 缩减效果就很明显 （7/8）^(logn)</li>
+                <li>给10GB的订单文件按照金额排序？
+                    解答：我们先扫描一遍订单，根据订单的金额，将10GB的文件划分为几个金额区间。</li>
+                <li>为什么说MapReduce的本质就是分治思想？
+                    解答：MapReduce框架只是一个任务调度器，底层依赖GFS来存储数据，依赖Borg管理处理器。它从GFS中拿数据，交给Borg中的机器执行，并且时刻监控机器执行的速度，一旦出现机器宕机、进度卡壳等，就重新从Borg中调度一台机器执行。</li>
+
+            </ol>
+            <h2>典型的应用场景</h2>
+            <ul>
+                <li>用来指导编码，降低问题求解的时间复杂度</li>
+                <li>解决海量数据处理问题</li>
+
+            </ul>
+            <h2>解释</h2>
+            <ul>
+                <li>Google文件系统（英语：Google File System，缩写为GFS或GoogleFS），一种专有分布式文件系统，由Google公司开发，运行于Linux平台上</li>
+                <li>BigTable是一种压缩的、高性能的、高可扩展性的，基于Google文件系统（Google File System，GFS）的数据存储系统，用于存储大规模结构化数据，适用于云端计算</li>
+                <li>MapReduce是Google提出的一个软件架构,用于大规模数据集（大于1TB的并行运算)。</li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
