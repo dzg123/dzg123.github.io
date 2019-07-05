@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="线程通信的几种方式">
-      <change afterPath="$PROJECT_DIR$/blog/19702db/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19702sz/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="MQ">
+      <change afterPath="$PROJECT_DIR$/blog/19704bm/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/19627it/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19627it/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -26,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="95" column="90" lean-forward="true" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
+            <state relative-caret-position="180">
+              <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -74,7 +72,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19418ty/index.html" />
         <option value="$PROJECT_DIR$/blog/19420qy/index.html" />
         <option value="$PROJECT_DIR$/blog/19422nc/index.html" />
         <option value="$PROJECT_DIR$/blog/19425sf/index.html" />
@@ -123,8 +120,9 @@
         <option value="$PROJECT_DIR$/blog/19629fs/index.html" />
         <option value="$PROJECT_DIR$/blog/19627it/index.html" />
         <option value="$PROJECT_DIR$/blog/19702sz/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19702db/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19704bm/index.html" />
       </list>
     </option>
   </component>
@@ -351,8 +349,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -360,20 +358,20 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19702db" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19704bm" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\git\shzShine.github.io\blog\19704bm" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19702db" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19702sz" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19629fs" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19627it" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19627tl" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -491,14 +489,8 @@
       <workItem from="1561537812094" duration="2127000" />
       <workItem from="1561698070584" duration="2485000" />
       <workItem from="1561993163908" duration="1313000" />
-      <workItem from="1562034802340" duration="1564000" />
-    </task>
-    <task id="LOCAL-00062" summary="blog">
-      <created>1551433443021</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1551433443022</updated>
+      <workItem from="1562034802340" duration="2310000" />
+      <workItem from="1562226300824" duration="2063000" />
     </task>
     <task id="LOCAL-00063" summary="blog">
       <created>1551763222131</created>
@@ -836,17 +828,24 @@
       <option name="project" value="LOCAL" />
       <updated>1561820821434</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="MQ">
+      <created>1562036940486</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1562036940489</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128729000" />
+    <option name="totallyTimeSpent" value="131538000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1874" height="1096" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1185226" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.119625136" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -860,15 +859,15 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32640332" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32640332" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32952183" />
       <window_info anchor="bottom" id="Messages" order="9" weight="0.32962137" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32952183" />
+      <window_info anchor="bottom" id="Version Control" order="12" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
-      <window_info anchor="bottom" id="LuaCheck" order="15" />
+      <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -884,6 +883,46 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value=".." />
@@ -910,16 +949,10 @@
     <MESSAGE value="一次分表踩坑" />
     <MESSAGE value="change" />
     <MESSAGE value="线程通信的几种方式" />
-    <option name="LAST_COMMIT_MESSAGE" value="线程通信的几种方式" />
+    <MESSAGE value="MQ" />
+    <option name="LAST_COMMIT_MESSAGE" value="MQ" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19422nc/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="64" column="25" lean-forward="true" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19425sf/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
@@ -1294,13 +1327,6 @@
             <element signature="e#25885#25978#0" expanded="true" />
             <element signature="e#26057#26150#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/template.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
         </state>
       </provider>
     </entry>
@@ -1815,10 +1841,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19704bm/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-335">
+          <caret line="108" lean-forward="true" selection-start-line="108" selection-end-line="108" />
+          <folding>
+            <element signature="e#3837#3871#0" expanded="true" />
+            <element signature="e#4661#4665#0" expanded="true" />
+            <element signature="e#4667#4671#0" expanded="true" />
+            <element signature="e#4673#4677#0" expanded="true" />
+            <element signature="e#4880#4914#0" expanded="true" />
+            <element signature="e#4919#4923#0" expanded="true" />
+            <element signature="e#4925#4929#0" expanded="true" />
+            <element signature="e#4931#4935#0" expanded="true" />
+            <element signature="e#5172#5176#0" expanded="true" />
+            <element signature="e#6092#6126#0" expanded="true" />
+            <element signature="e#6207#6241#0" expanded="true" />
+            <element signature="e#6653#6687#0" expanded="true" />
+            <element signature="e#7779#7813#0" expanded="true" />
+            <element signature="e#8240#8274#0" expanded="true" />
+            <element signature="e#8572#8606#0" expanded="true" />
+            <element signature="e#8791#8797#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/template.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="95" column="90" lean-forward="true" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
+        <state relative-caret-position="180">
+          <caret line="96" column="21" lean-forward="true" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
         </state>
       </provider>
     </entry>
