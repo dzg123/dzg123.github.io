@@ -60,6 +60,84 @@
                 </div>
             </header>
             <!--markdown-->
+            <h2><a name="header-n43" class="md-header-anchor md-print-anchor" href="af://n43"> </a><span>字段类型</span></h2>
+            <h3><a name="header-n44" class="md-header-anchor md-print-anchor" href="af://n44"> </a><span>数值</span></h3>
+            <p><span>MySQL 的数值数据类型可以大致划分为两个类别，一个是</span><strong><span>整数</span></strong><span>，另一个是</span><strong><span>浮点数</span></strong><span>或小数。</span>
+                <span>许多不同的子类型对这些类别中的每一个都是可用的，每个子类型支持不同大小的数据，并且 MySQL 允许我们指定数值字段中的值是否有正负之分(</span><code>UNSIGNED</code><span>)或者用零填补(</span><code>ZEROFILL</code><span>)。</span></p>
+            <p><img src='https://segmentfault.com/img/bVQaHb?w=861&h=688' alt='clipboard.png' referrerPolicy='no-referrer' /></p>
+            <p><span>MySQL 以一个</span><strong><span>可选的</span></strong><span>显示</span><code>宽度指示器</code><span>的形式对 SQL 标准进行扩展(如 INT(6),6即是其宽度指示器,</span><strong><span>该宽度指示器并不会影响int列存储字段的大小,也就是说,超过6位它不会自动截取,依然会存储,只有超过它本身的存储范围才会截取;此处宽度指示器的作用在于该字段是否有zerofill,如果有就未满足6位的部分就会用0来填充)</span></strong><span>，这样当从数据库检索一个值时，可以把这个值加长到指定的长度。例如，指定一个字段的类型为 INT(6)，就可以保证所包含数字少于 6 个的值从数据库中检索出来时能够自动地用空格填充。需要注意的是，使用一个宽度指示器不会影响字段的大小和它可以存储的值的范围。</span>
+                <span>万一我们需要对一个字段存储一个超出许可范围的数字，MySQL 会根据允许范围最接近它的一端截短后再进行存储。还有一个比较特别的地方是，MySQL 会在不合规定的值插入表前自动修改为 0。</span></p>
+            <h3><a name="header-n48" class="md-header-anchor md-print-anchor" href="af://n48"> </a><span>字符串类型</span></h3>
+            <p><span>MySQL 提供了 8 个基本的字符串类型，可以存储的范围从简单的一个字符到巨大的文本块或二进制字符串数据。</span></p>
+            <blockquote><p><span>一个英文字符 占用一个字节; </span>
+                <span>汉字：</span>
+                <span>字符类型若为gbk，每个字符最多占2个字节; </span>
+                <span>字符类型若为utf8，每个字符最多占3个字节。</span></p>
+            </blockquote>
+            <ul>
+                <li><span>CHAR 和 VARCHAR 类型</span></li>
+
+            </ul>
+            <p><strong><span>CHAR</span></strong><span> 类型用于</span><strong><span>定长字符串</span></strong><span>，并且必须在圆括号内用一个大小修饰符来定义。这个大小修饰符的范围从 0-255。比指定长度大的值将被截短，而比指定长度小的值将会用空格作填补。</span></p>
+            <p><span>CHAR 类型的一个变体是 </span><strong><span>VARCHAR</span></strong><span> 类型。它是一种</span><strong><span>可变长度</span></strong><span>的字符串类型，并且也必须带有一个范围指示器。</span></p>
+            <p><span>CHAR 和 VARCHGAR 不同之处在于 MYSQL 数据库处理这个指示器的方式：CHAR 把这个大小视为值的大小，不长度不足的情况下就用空格补足。而 VARCHAR 类型把它视为最大值并且只使用存储字符串实际需要的长度（</span><strong><span>增加一个额外字节来存储字符串本身的长度</span></strong><span>）来存储值。所以短于指示器长度的 VARCHAR 类型不会被空格填补，但长于指示器的值仍然会被截短。</span></p>
+            <blockquote><p><span>因为 VARCHAR 类型可以根据实际内容动态改变存储值的长度，所以在不能确定字段需要多少字符时使用 VARCHAR类型可以大大地节约磁盘空间、提高存储效率。但如果确切知道字符串长度,比如就在50~55之间,那就用 CHAR 因为 CHAR</span>
+                <span>类型由于本身定长的特性使其性能要高于 VARCHAR;</span></p>
+            </blockquote>
+            <h3><a name="header-n60" class="md-header-anchor md-print-anchor" href="af://n60"> </a><span>时间类型</span></h3>
+            <p><img src='https://segmentfault.com/img/bVQaKG?w=862&h=314' alt='clipboard.png' referrerPolicy='no-referrer' /></p>
+            <h2><a name="header-n62" class="md-header-anchor md-print-anchor" href="af://n62"> </a><span>int(11)最大长度是多少？</span></h2>
+            <p><span>　　在SQL语句中int代表你要创建字段的类型，int代表整型，11代表</span><strong><span>字段的长度</span></strong><span>。</span>
+                <span>　　这个11代表</span><code>显示宽度</code><span>，整数列的显示宽度与mysql需要用多少个字符来显示该列数值，</span><strong><span>与该整数需要的存储空间的大小都没有关系</span></strong><span>，比如，不管设定了显示宽度是多少个字符，bigint都要占用8个字节。</span>
+                <span>　　int是整型，(11)是指显示字符的长度，但要加参数的，最大为255，比如它是记录行数的id,插入10笔资料，它就显示00000000001 ~~~00000000010，当字符的位数超过11,它也只显示11位，如果你没有加那个让它未满11位就前面加0的参数，它不会在前面加0</span>
+                <span>　　声明整型数据列时，我们可以为它指定个显示宽度M(1~255)，如INT(5)，指定显示宽度为5个字符,如果没有给它指定显示宽度，MySQL会为它指定一个默认值。显示宽度只用于显示，并不能限制取值范围和占用空间，如：INT(3)会占用4个字节的存储空间，并且允许的最大值也不会是999,而是 INT整型所允许的最大值。</span>
+                <span>在整型数据列后加上</span><strong><span>UNSIGNED属性可以禁止负数，取值从0开始</span></strong><span>。</span></p>
+            <h2><a name="header-n64" class="md-header-anchor md-print-anchor" href="af://n64"> </a><span>varchar最大长度是多少？</span></h2>
+            <p><span>一. varchar存储规则：</span>
+                <span>　　4.0版本以下，varchar(20)，指的是20字节，如果存放UTF8汉字时，只能存6个（每个汉字3字节） </span>
+                <strong><span>5.0版本以上，varchar(20)，指的是20字符，无论存放的是数字、字母还是UTF8汉字（每个汉字3字节），都可以存放20个，最大大小是65532字节</span></strong><span> </span>
+                <span>Mysql4中最大也不过是20个字节,但是Mysql5根据编码不同,存储大小也不同。</span></p>
+            <p><span>在varchar(M)类型的数据列里，每个值只占用刚好够用的字节再加上一个用来记录其长度的字节（即总长度为L+1字节）．</span></p>
+            <p><span>varchar最大长度是多少？</span>
+                <span>　　这不是一个固定的数字。先简要说明一下限制规则。</span>
+                <span>　　</span><strong><span>1、限制规则</span></strong>
+                <span>　　字段的限制在字段定义的时候有以下规则：</span>
+                <span>　　</span><strong><span>a) 存储限制</span></strong>
+                <span>　　varchar 字段是将实际内容单独存储在聚簇索引之外，内容开头用1到2个字节表示实际长度（长度超过255时需要2个字节），因此最大长度不能超过65535。</span>
+                <span>　　</span><strong><span>b) 编码长度限制</span></strong>
+                <span>　　字符类型若为gbk，每个字符最多占2个字节，最大长度不能超过32766;</span>
+                <span>　　字符类型若为utf8，每个字符最多占3个字节，最大长度不能超过21845。</span>
+                <span>　　若定义的时候超过上述限制，则varchar字段会被强行转为text类型，并产生warning。</span>
+                <span>　　</span><strong><span>c) 行长度限制</span></strong>
+                <span>　　导致实际应用中varchar长度限制的是一个行定义的长度。 MySQL要求一个行的定义长度不能超过65535。若定义的表长度超过这个值，则提示</span>
+                <span>　　ERROR 1118 (42000): Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. You have to change some columns to TEXT or BLOBs。</span>
+                <span>　　</span><strong><span>2、计算例子</span></strong>
+                <span>　　举两个例说明一下实际长度的计算。</span>
+                <span>　　a) 若一个表只有一个varchar类型，如定义为</span>
+                <span>　　create table t4(c varchar(N)) charset=gbk;</span>
+                <span>　　则此处N的最大值为(65535-1-2)/2= 32766。</span>
+                <span>　　减1的原因是实际行存储从第二个字节开始’;</span>
+                <span>　　减2的原因是varchar头部的2个字节表示长度;</span>
+                <span>　　除2的原因是字符编码是gbk。</span></p>
+            <h2><a name="header-n68" class="md-header-anchor md-print-anchor" href="af://n68"> </a><span>字段类型总结</span></h2>
+            <p><span>1.关于手机号，推荐用char(11),char(11)在查询上更有效率，因为手机号是一个活跃字段参与逻辑会很多。</span></p>
+            <h2><a name="header-n70" class="md-header-anchor md-print-anchor" href="af://n70"> </a><span>合理的选择数据类型</span></h2>
+            <ul>
+                <li><span>选择合理范围内最小的</span></li>
+
+            </ul>
+            <p><span>我们应该选择最小的数据范围，因为这样可以大大减少磁盘空间及磁盘I/0读写开销，</span><strong><span>减少内存占用，减少CPU的占用率</span></strong><span>。</span></p>
+            <ul>
+                <li><span>选择相对简单的数据类型</span></li>
+
+            </ul>
+            <p><span>数字类型相对字符串类型要简单的多，尤其是在比较运算时，所以我们应该选择最简单的数据类型。</span></p>
+            <ul>
+                <li><strong><span>列属性尽量为NOT NULL</span></strong></li>
+
+            </ul>
+            <p><span>为什么这么说呢，因为MYSQL对NULL字段索引优化不佳，增加更多的计算难度，同时在保存与处理NULL类形时，也会做更多的工作，所以从效率上来说，不建议用过多的NULL。有些值他确实有可能没有值，怎么办呢？</span><strong><span>解决方法是数值弄用整数0，字符串用空来定义默认值即可</span></strong><span>。</span></p>
+
         </article>
         <script src="/js/av-min.js"></script>
         <script src="/js/Valine.min.js"></script>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="MQ之保证高可用">
-      <change afterPath="$PROJECT_DIR$/blog/19715cj/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="idea插件">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/19623xj/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19623xj/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,10 +21,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19715cj/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="57" column="98" selection-start-line="57" selection-start-column="98" selection-end-line="57" selection-end-column="98" />
+            <state relative-caret-position="95">
+              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -107,7 +106,6 @@
         <option value="$PROJECT_DIR$/blog/19618fx/index.html" />
         <option value="$PROJECT_DIR$/blog/19620ys/index.html" />
         <option value="$PROJECT_DIR$/blog/19621js/index.html" />
-        <option value="$PROJECT_DIR$/blog/19623xj/index.html" />
         <option value="$PROJECT_DIR$/blog/19623cq/index.html" />
         <option value="$PROJECT_DIR$/blog/19624ccw/index.html" />
         <option value="$PROJECT_DIR$/blog/19625cf/index.html" />
@@ -123,6 +121,7 @@
         <option value="$PROJECT_DIR$/blog/19704bm/index.html" />
         <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19715cj/index.html" />
+        <option value="$PROJECT_DIR$/blog/19623xj/index.html" />
       </list>
     </option>
   </component>
@@ -328,7 +327,7 @@
               <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19715cj" type="462c0819:PsiDirectoryNode" />
+              <item name="19705sx" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -338,26 +337,27 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="GO_FMT" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563159658262" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563160672135" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19715cj" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19704ky" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19704bm" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19702db" />
       <recent name="D:\localrepository\git\shzShine.github.io\blog\19702sz" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19629fs" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -475,14 +475,7 @@
       <workItem from="1561993163908" duration="1313000" />
       <workItem from="1562034802340" duration="2310000" />
       <workItem from="1562226300824" duration="3389000" />
-      <workItem from="1563159342775" duration="301000" />
-    </task>
-    <task id="LOCAL-00065" summary="blog">
-      <created>1551850051196</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1551850051196</updated>
+      <workItem from="1563159342775" duration="1151000" />
     </task>
     <task id="LOCAL-00066" summary="blog">
       <created>1552205512632</created>
@@ -820,11 +813,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562305027937</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="idea插件">
+      <created>1563159712351</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1563159712351</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133165000" />
+    <option name="totallyTimeSpent" value="134015000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -850,7 +850,7 @@
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32952183" />
+      <window_info anchor="bottom" id="Version Control" order="12" visible="true" weight="0.3295082" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
@@ -911,7 +911,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="appid" />
     <MESSAGE value="about me" />
     <MESSAGE value="blog" />
     <MESSAGE value="最左匹配原则" />
@@ -936,16 +935,10 @@
     <MESSAGE value="MQ" />
     <MESSAGE value="贪心算法之霍夫曼压缩编码" />
     <MESSAGE value="MQ之保证高可用" />
-    <option name="LAST_COMMIT_MESSAGE" value="MQ之保证高可用" />
+    <MESSAGE value="idea插件" />
+    <option name="LAST_COMMIT_MESSAGE" value="idea插件" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19430xj/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="94" column="34" lean-forward="true" selection-start-line="94" selection-start-column="34" selection-end-line="94" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19502wt/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2582">
@@ -1836,24 +1829,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19715cj/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="50" column="74" selection-start-line="50" selection-start-column="63" selection-end-line="50" selection-end-column="74" />
+        <state relative-caret-position="128">
+          <caret line="282" lean-forward="true" selection-start-line="282" selection-end-line="282" />
+          <folding>
+            <element signature="e#6583#6587#0" expanded="true" />
+            <element signature="e#9410#9414#0" expanded="true" />
+            <element signature="e#13790#13914#0" expanded="true" />
+          </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19705sx/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1026" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="93" column="96" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        <state relative-caret-position="218">
+          <caret line="179" column="53" selection-start-line="179" selection-start-column="53" selection-end-line="179" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19715cj/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="57" column="98" selection-start-line="57" selection-start-column="98" selection-end-line="57" selection-end-column="98" />
+        <state relative-caret-position="95">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
         </state>
       </provider>
     </entry>
