@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Go学习之资源管理与异常处理</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-07-13</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Go</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h3><a name="header-n48" class="md-header-anchor md-print-anchor" href="af://n48"> </a><span>def调用</span></h3>
+            <ul>
+                <li><p><span>保证调用在函数结束时发生</span></p>
+                    <pre><code class='language-go' lang='go'>func writeFile(filename string) {
+    file, e := os.Create(filename)
+    if e != nil {      panic(e)   }
+    defer file.Close()
+    writer := bufio.NewWriter(file)
+    defer writer.Flush()
+    f := fib.Fibonacci()
+    for i := 0; i &lt; 20; i++ {
+        fmt.Fprintln(writer, f())
+    }
+}
+</code></pre>
+                    <p>&nbsp;</p>
+                </li>
+                <li><p><span>参数在defer语句时计算</span></p>
+                </li>
+                <li><p><span>defer列表为后进先出</span></p>
+                </li>
+                <li><p><span>何时使用defer调用</span></p>
+                    <ul>
+                        <li><span>Open/Close</span></li>
+                        <li><span>Lock/Unlock</span></li>
+                        <li><span>PrintHeader/PrintFooter</span></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <h3><a name="header-n67" class="md-header-anchor md-print-anchor" href="af://n67"> </a><span>出错处理</span></h3>
+            <ul>
+                <li><p><span>包装函数</span></p>
+                    <pre><code class='language-go' lang='go'>type appHandler func(writer http.ResponseWriter, request *http.Request) error
+func errWrapper(handler appHandler) func(writer http.ResponseWriter, request *http.Request) {
+		return func(writer http.ResponseWriter, request *http.Request) {
+		err := handler(writer, request)
+		if err != nil {
+		log.Warn(&quot;Error handling request:%s&quot;, err.Error())
+		code := http.StatusOK
+		switch {
+			case os.IsNotExist(err):
+				code = http.StatusNotFound
+			case os.IsPermission(err):
+				code = http.StatusForbidden
+			default:
+				code = http.StatusInternalServerError
+				}
+			http.Error(writer, http.StatusText(code), code)      }   }}
+</code></pre>
+                    <h3><a name="header-n72" class="md-header-anchor md-print-anchor" href="af://n72"> </a><span>panic</span></h3>
+                    <ul>
+                        <li><span>停止当前函数执行</span></li>
+                        <li><span>一直往上返回，执行每一层的defer</span></li>
+                        <li><span>如果没有遇到recover，程序退出</span></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <h3><a name="header-n80" class="md-header-anchor md-print-anchor" href="af://n80"> </a><span>recover</span></h3>
+            <ul>
+                <li><span>仅在defer调用中使用</span></li>
+                <li><span>获取panic的值</span></li>
+                <li><span>如果无法处理，可重新panic</span></li>
+
+            </ul>
+            <h3><a name="header-n88" class="md-header-anchor md-print-anchor" href="af://n88"> </a><span>error vs panic</span></h3>
+            <ul>
+                <li><span>意料之中的：使用error，如文件打不开</span></li>
+                <li><span>意料之外的：使用panic，如数组越界</span></li>
+
+            </ul>
+            <p><span>    </span></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>

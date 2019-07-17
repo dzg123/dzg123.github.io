@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="idea插件">
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="mysql字段">
+      <change afterPath="$PROJECT_DIR$/blog/19713cl/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19717cw/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19717el/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/channel.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/19623xj/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19623xj/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shzShine.github.io.iml" beforeDir="false" afterPath="$PROJECT_DIR$/shzShine.github.io.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,10 +26,13 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19717el/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+            <state relative-caret-position="159">
+              <caret line="62" column="44" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
+              <folding>
+                <element signature="e#3598#3604#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -65,15 +73,13 @@
       <find>400</find>
     </findStrings>
   </component>
+  <component name="GOROOT" path="D:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19425sf/index.html" />
-        <option value="$PROJECT_DIR$/blog/19428sf/index.html" />
-        <option value="$PROJECT_DIR$/blog/19430xj/index.html" />
         <option value="$PROJECT_DIR$/blog/19502wt/index.html" />
         <option value="$PROJECT_DIR$/blog/19503uc/index.html" />
         <option value="$PROJECT_DIR$/blog/19503sk/index.html" />
@@ -119,9 +125,12 @@
         <option value="$PROJECT_DIR$/blog/19702db/index.html" />
         <option value="$PROJECT_DIR$/blog/19704ky/index.html" />
         <option value="$PROJECT_DIR$/blog/19704bm/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19715cj/index.html" />
         <option value="$PROJECT_DIR$/blog/19623xj/index.html" />
+        <option value="$PROJECT_DIR$/blog/19717cw/index.html" />
+        <option value="$PROJECT_DIR$/blog/19713cl/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19717el/index.html" />
       </list>
     </option>
   </component>
@@ -134,8 +143,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="696" />
-    <option name="y" value="95" />
+    <option name="x" value="676" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -304,7 +312,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -329,10 +336,16 @@
               <item name="blog" type="462c0819:PsiDirectoryNode" />
               <item name="19705sx" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -342,8 +355,9 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563160672135" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563346997856" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -353,11 +367,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\images" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19717el" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19713cl" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19717cw" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19715cj" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19704ky" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19704bm" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19702db" />
-      <recent name="D:\localrepository\git\shzShine.github.io\blog\19702sz" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -475,14 +489,8 @@
       <workItem from="1561993163908" duration="1313000" />
       <workItem from="1562034802340" duration="2310000" />
       <workItem from="1562226300824" duration="3389000" />
-      <workItem from="1563159342775" duration="1151000" />
-    </task>
-    <task id="LOCAL-00066" summary="blog">
-      <created>1552205512632</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1552205512633</updated>
+      <workItem from="1563159342775" duration="2372000" />
+      <workItem from="1563324673171" duration="1532000" />
     </task>
     <task id="LOCAL-00067" summary="blog">
       <created>1553870381339</created>
@@ -820,24 +828,32 @@
       <option name="project" value="LOCAL" />
       <updated>1563159712351</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="mysql字段">
+      <created>1563160698400</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1563160698400</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134015000" />
+    <option name="totallyTimeSpent" value="136768000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12102874" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21406959" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
-      <window_info anchor="bottom" id="FindBugs-IDEA" />
+      <window_info anchor="bottom" id="Run with VisualVM" />
+      <window_info anchor="bottom" id="Debug with VisualVM" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -850,10 +866,11 @@
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" visible="true" weight="0.3295082" />
+      <window_info anchor="bottom" id="Version Control" order="12" visible="true" weight="0.32459018" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
+      <window_info anchor="bottom" id="FindBugs-IDEA" order="16" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -911,7 +928,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="about me" />
     <MESSAGE value="blog" />
     <MESSAGE value="最左匹配原则" />
     <MESSAGE value="redo/undo" />
@@ -936,30 +952,10 @@
     <MESSAGE value="贪心算法之霍夫曼压缩编码" />
     <MESSAGE value="MQ之保证高可用" />
     <MESSAGE value="idea插件" />
-    <option name="LAST_COMMIT_MESSAGE" value="idea插件" />
+    <MESSAGE value="mysql字段" />
+    <option name="LAST_COMMIT_MESSAGE" value="mysql字段" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19502wt/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2582">
-          <caret line="256" lean-forward="true" selection-start-line="256" selection-end-line="256" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19503uc/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="79" column="25" lean-forward="true" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19503sk/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="124" column="18" selection-start-line="124" selection-start-column="18" selection-end-line="124" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19505wt/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1443">
@@ -1846,17 +1842,74 @@
         <state relative-caret-position="-1026" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="179" column="53" selection-start-line="179" selection-start-column="53" selection-end-line="179" selection-end-column="53" />
+        <state relative-caret-position="479">
+          <caret line="134" column="16" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19623xj/index.html">
+    <entry file="file://$PROJECT_DIR$/blog/19717cw/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+        <state relative-caret-position="349">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+          <folding>
+            <element signature="e#3248#3253#0" expanded="true" />
+            <element signature="e#3253#3258#0" expanded="true" />
+            <element signature="e#3554#3558#0" expanded="true" />
+            <element signature="e#3568#3572#0" expanded="true" />
+            <element signature="e#3577#3581#0" expanded="true" />
+            <element signature="e#3588#3592#0" expanded="true" />
+            <element signature="e#3603#3607#0" expanded="true" />
+            <element signature="e#3615#3619#0" expanded="true" />
+            <element signature="e#3624#3628#0" expanded="true" />
+            <element signature="e#3638#3642#0" expanded="true" />
+            <element signature="e#3650#3654#0" expanded="true" />
+            <element signature="e#3665#3669#0" expanded="true" />
+            <element signature="e#3674#3678#0" expanded="true" />
+            <element signature="e#3685#3689#0" expanded="true" />
+            <element signature="e#3692#3696#0" expanded="true" />
+            <element signature="e#3704#3708#0" expanded="true" />
+            <element signature="e#3709#3713#0" expanded="true" />
+            <element signature="e#3724#3728#0" expanded="true" />
+            <element signature="e#4586#4592#0" expanded="true" />
+            <element signature="e#4603#4609#0" expanded="true" />
+            <element signature="e#4727#4733#0" expanded="true" />
+            <element signature="e#4752#4758#0" expanded="true" />
+            <element signature="e#4760#4766#0" expanded="true" />
+            <element signature="e#4785#4791#0" expanded="true" />
+            <element signature="e#4823#4829#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19713cl/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
+          <folding>
+            <element signature="e#3623#3627#0" expanded="true" />
+            <element signature="e#3726#3732#1" expanded="true" />
+            <element signature="e#4811#4817#0" expanded="true" />
+            <element signature="e#4842#4848#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19717el/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="62" column="44" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
+          <folding>
+            <element signature="e#3598#3604#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
