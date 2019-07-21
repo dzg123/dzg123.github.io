@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Go与Java包导入的区别</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-07-19</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Go</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>闲暇时翻阅了近期下载到的电子书</span><a href='https://book.douban.com/subject/26345890/'><span>《Go in Practice》</span></a><span> ，看到1.2.4 Package Management一节中的代码Demo，感觉作者对Go package导入的说法似乎不够精确：“Packages are imported by their name”(后续的说明将解释不精确的原因)。联想到前几天遇到的一个Java包导入的问题，让我隐约地感觉Java程序员很容易将两种语言的Package import机制搞混淆，于是打算在这里将Golang和Java的Package import机制做一个对比，对于Java转型到Golang的程序员将大有裨益:)。这里的重点在于与Java的对比，关于Golang的Package Import的细节可以参考我之前写过的一篇文章</span><a href='http://tonybai.com/2015/03/09/understanding-import-packages/'><span>《理解Golang包导入》</span></a><span>。</span></p>
+            <p><span>我们先来看两个功能等价的代码。</span></p>
+            <pre><code>//TestDate.java
+import java.util.*;
+import java.text.DateFormat;
+
+public class TestDate {
+        public static void main(String []args){
+                Date d = new Date();
+                String s = DateFormat.getDateInstance().format(d);
+                System.out.println(s);
+        }
+}
+</code></pre>
+            <p><span>和</span></p>
+            <pre><code>//testdate.go
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    t := time.Now()
+    fmt.Println(t.Format(&quot;2006-01-02&quot;))
+}
+</code></pre>
+            <p><span>两个程序在Run时，都输出下面内容：</span></p>
+            <pre><code>2016-9-13
+</code></pre>
+            <p><span>我们看到Golang和Java都是用import关键字来进行包导入的：</span></p>
+            <pre><code>import java.util.Date;
+
+Date d = new Date();
+</code></pre>
+            <p><span>vs.</span></p>
+            <pre><code>import &quot;time&quot;
+
+t := time.Now()
+</code></pre>
+            <p><span>咋看起来，Java在package import后似乎使用起来更Easy，使用包内的类和方法时，前面无需再附着Package name，即Date d，而不是java.util.Date d。而Go在导入”time”后，引用包中方法时依然要附着着包名，比如time.Now()。但实质上两种语言在import package的机制上是有很大不同的。</span></p>
+            <h4><a name="header-n54" class="md-header-anchor md-print-anchor" href="af://n54"> </a><span>1、机制</span></h4>
+            <p><span>虽然都使用import，但import关键字后面的字符串所代表的含义有不同。</span></p>
+            <p><span>Java import导入的是类而不是包，import后面的字符串表示的是按需导入Java Package下面的类，比如import java.util.*； 或导入Package下某个类，比如import java.util.Date。而Go import关键字后面的字符串是包名吗？很多初学者会认为这个就是Go包名，实则不然，Go import后面的字符串实际上是一个包导入路径，这也是Java用”xxx.yyy.zzz”形式而Golang使用”xxx/yyy/zzz”形式的原因。我们用个简单的例子就能证明这一点。我们知道Golang会在</span><span>$</span><span>GOROOT/src + </span><span>$</span><span>GOPATH/src下面导入xxx/yyy/zzz路径下的包，我们在import “fmt”时，实际上导入的是</span><span>$</span><span>GOROOT/src/fmt目录下的包，只是恰好这个下面的包的名字是fmt罢了。如果我们将</span><span>$</span><span>GOROOT/src/fmt目录改名为fmt1，结果会是如何呢？</span></p>
+            <pre><code>$go build helloworld.go
+helloworld.go:3:8: cannot find package &quot;fmt&quot; in any of:
+           /Users/tony/.bin/go17/src/fmt (from $GOROOT)
+           /Users/tony/Test/GoToolsProjects/src/fmt (from $GOPATH)
+
+helloworld.go是一个helloworld go源码。
+</code></pre>
+            <p><span>之所以出错是因为在</span><span>$</span><span>GOROOT/src下已经没有fmt这个目录了，所以下面代码中的两个fmt含义是不同的（这也解释了Go in practice中关于包导入的说法的不精确的原因）：</span></p>
+            <pre><code>package main
+
+import &quot;fmt&quot;  ---- 这里的fmt指的是$GOROOT/src下的名为&quot;fmt&quot;的目录名
+
+func main() {
+    fmt.Println(&quot;Hello, World&quot;) --- 这里的fmt是真正的包名&quot;fmt&quot;
+}
+</code></pre>
+            <p><span>从上面我们可以看出Go的包名和包的源文件所在的路径的名字并没有必须一致的要求，这也是为什么在Go源码使用包时一定是用packagename.XX形式，而不是packagename.subpackagename.XX的形式了。比如导入”net/http”后，我们在源码中使用的是http.xxx，而不是net.http.xxx，因为net/http只是一个路径，并不是一个嵌套的包名。</span></p>
+            <p><span>之所以看起来导入路径的终段目录名与包名一致，只是因为这是Go官方的建议：Go的导入路径的最后一段目录名(xxx/yyy/zzz中的zzz)与该目录（zzz）下面源文件中的Go Package名字相同。</span></p>
+            <p><span>下面是一个非标准库的包名与导入路径终段名完全不一致的例子：</span></p>
+            <pre><code>//github.com/pkgtest/pkg1/foo.go
+package foo
+
+import &quot;fmt&quot;
+
+func Foo() {
+    fmt.Println(&quot;Foo in pkg1&quot;)
+}
+
+//testfoo.go
+package main
+
+import (
+    &quot;github.com/pkgtest/pkg1&quot;
+)
+
+func main() {
+    foo.Foo() //输出：Foo in pkg1
+}
+</code></pre>
+            <p><span>可以看出testfoo.go导入的是”github.com/pkgtest/pkg1″这个路径，但这个路径下的包名却是foo。</span></p>
+            <p><span>Java语言中的包实际以.jar为单位，.jar内部实际上也是以路径组织.class文件的，比如：foo.jar这个jar包中有一个package名为：com.tonybai.foo，foo包中包含类Foo、Bar，那实际上foo.jar内部的目录格式将是：</span></p>
+            <pre><code>foo.jar
+    - com/
+        - tonybai/
+            - foo/
+                - Foo.class
+                - Bar.class
+
+</code></pre>
+            <p><span>但对于Java包的使用者，这些都是透明的。</span></p>
+            <h4><a name="header-n68" class="md-header-anchor md-print-anchor" href="af://n68"> </a><span>2、重名</span></h4>
+            <p><span>Java中关于包导入(实则是类导入)唯一的约束就是不能有两个类导入后的full name相同，如果存在两个导入类的full name完全相同，Javac在resolve时，要以ClassPath路径的先后顺序为准了，选择最先遇到的那个类。但是在Go中，如果导入的两个路径下的包名相同，那么Go compiler显然是不能允许这种情况的存在的，会给出Error信息。</span></p>
+            <p><span>比如我们在GOPATH下的github.com/pkgtest/pkg1和github.com/pkgtest/pkg2下放置了同名包foo，下面代码将会报错：</span></p>
+            <pre><code>package main
+
+import (
+    &quot;github.com/pkgtest/pkg1&quot;
+    &quot;github.com/pkgtest/pkg2&quot;
+)
+
+func main() {
+    foo.Foo()
+}
+
+</code></pre>
+            <p><span>错误信息如下：</span></p>
+            <pre><code>$go run testfoo.go
+# command-line-arguments
+./testdate.go:8: foo redeclared as imported package name
+           previous declaration at ./testfoo.go:7
+
+</code></pre>
+            <p><span>解决这一问题的方法就是采用package alias：</span></p>
+            <pre><code>package main
+
+import (
+    a &quot;github.com/pkgtest/pkg1&quot;
+    b &quot;github.com/pkgtest/pkg2&quot;
+)
+
+func main() {
+    a.Foo()
+    b.Foo()
+}
+
+</code></pre>
+            <p><span>编译执行上面程序将得到下面结果，而不是Error：</span></p>
+            <pre><code class='language-go' lang='go'>Foo of foo package in pkg1
+Foo in foo package in pkg2
+
+</code></pre>
+            <p><span>转自：</span><a href='https://tonybai.com/2016/09/13/package-import-in-golang-vs-in-java' target='_blank' class='url'>https://tonybai.com/2016/09/13/package-import-in-golang-vs-in-java</a></p>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
