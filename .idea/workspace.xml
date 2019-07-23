@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="数据库与缓存双写如何保证一致性">
-      <change afterPath="$PROJECT_DIR$/blog/19719qb/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19720gn/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="如何利用并行处理提高算法的执行效率？">
+      <change afterPath="$PROJECT_DIR$/blog/19722yy/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
@@ -25,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+            <state relative-caret-position="-221">
+              <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
             </state>
           </provider>
         </entry>
@@ -74,8 +73,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19505wt/index.html" />
-        <option value="$PROJECT_DIR$/blog/19505zl/index.html" />
         <option value="$PROJECT_DIR$/blog/19510wt/index.html" />
         <option value="$PROJECT_DIR$/blog/19511yf/index.html" />
         <option value="$PROJECT_DIR$/blog/19513wt/index.html" />
@@ -124,7 +121,9 @@
         <option value="$PROJECT_DIR$/blog/19718ebz/index.html" />
         <option value="$PROJECT_DIR$/blog/19719qb/index.html" />
         <option value="$PROJECT_DIR$/blog/19720gn/index.html" />
+        <option value="$PROJECT_DIR$/blog/19721xl/index.html" />
         <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19722yy/index.html" />
       </list>
     </option>
   </component>
@@ -344,11 +343,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19722yy" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19721xl" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19720gn" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19719qb" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19718ebz" />
-      <recent name="E:\VCS\Git\dzg123.github.io\images" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19717el" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -470,14 +469,7 @@
       <workItem from="1563324673171" duration="3337000" />
       <workItem from="1563497862427" duration="618000" />
       <workItem from="1563511816205" duration="573000" />
-      <workItem from="1563551034692" duration="1176000" />
-    </task>
-    <task id="LOCAL-00069" summary="blog">
-      <created>1554459159396</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1554459159397</updated>
+      <workItem from="1563551034692" duration="3893000" />
     </task>
     <task id="LOCAL-00070" summary="blog">
       <created>1554479415896</created>
@@ -815,11 +807,18 @@
       <option name="project" value="LOCAL" />
       <updated>1563459885522</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL-00118" summary="如何利用并行处理提高算法的执行效率？">
+      <created>1563699394467</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1563699394468</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140940000" />
+    <option name="totallyTimeSpent" value="143657000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -908,7 +907,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="redo/undo" />
     <MESSAGE value="java泛型" />
     <MESSAGE value="SSO" />
     <MESSAGE value="内存堆栈与数据结构堆栈" />
@@ -933,23 +931,10 @@
     <MESSAGE value="mysql字段" />
     <MESSAGE value="Go学习" />
     <MESSAGE value="数据库与缓存双写如何保证一致性" />
-    <option name="LAST_COMMIT_MESSAGE" value="数据库与缓存双写如何保证一致性" />
+    <MESSAGE value="如何利用并行处理提高算法的执行效率？" />
+    <option name="LAST_COMMIT_MESSAGE" value="如何利用并行处理提高算法的执行效率？" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19510wt/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="188" column="41" lean-forward="true" selection-start-line="188" selection-start-column="41" selection-end-line="188" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19511yf/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="139" column="27" lean-forward="true" selection-start-line="139" selection-start-column="27" selection-end-line="139" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19513wt/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="321">
@@ -1956,10 +1941,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19721xl/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19722yy/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="128" selection-start-line="128" selection-end-line="128" />
+          <folding>
+            <element signature="e#7960#8053#0" expanded="true" />
+            <element signature="e#8205#8298#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+        <state relative-caret-position="-221">
+          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
         </state>
       </provider>
     </entry>
