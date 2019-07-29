@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="如何利用并行处理提高算法的执行效率？">
-      <change afterPath="$PROJECT_DIR$/blog/19722yy/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="什么是列式存储？">
+      <change afterPath="$PROJECT_DIR$/blog/19726fs/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19727cc/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
@@ -22,10 +23,20 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19727cc/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-221">
-              <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+            <state relative-caret-position="356">
+              <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+              <folding>
+                <element signature="e#6926#6932#1" expanded="true" />
+                <element signature="e#7386#7392#1" expanded="true" />
+                <element signature="e#7907#7913#1" expanded="true" />
+                <element signature="e#8299#8305#1" expanded="true" />
+                <element signature="e#8854#8860#1" expanded="true" />
+                <element signature="e#9306#9312#1" expanded="true" />
+                <element signature="e#9722#9728#1" expanded="true" />
+                <element signature="e#10143#10149#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,8 +84,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19510wt/index.html" />
-        <option value="$PROJECT_DIR$/blog/19511yf/index.html" />
         <option value="$PROJECT_DIR$/blog/19513wt/index.html" />
         <option value="$PROJECT_DIR$/blog/19516hc/index.html" />
         <option value="$PROJECT_DIR$/blog/19519qb/index.html" />
@@ -122,8 +131,10 @@
         <option value="$PROJECT_DIR$/blog/19719qb/index.html" />
         <option value="$PROJECT_DIR$/blog/19720gn/index.html" />
         <option value="$PROJECT_DIR$/blog/19721xl/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19722yy/index.html" />
+        <option value="$PROJECT_DIR$/blog/19726fs/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19727cc/index.html" />
       </list>
     </option>
   </component>
@@ -305,6 +316,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -322,7 +334,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -331,7 +342,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563465244919" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564416041130" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -343,11 +354,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19727cc" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19726fs" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19722yy" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19721xl" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19720gn" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19719qb" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19718ebz" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -470,13 +481,11 @@
       <workItem from="1563497862427" duration="618000" />
       <workItem from="1563511816205" duration="573000" />
       <workItem from="1563551034692" duration="3893000" />
-    </task>
-    <task id="LOCAL-00070" summary="blog">
-      <created>1554479415896</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1554479415896</updated>
+      <workItem from="1563890026124" duration="642000" />
+      <workItem from="1563932192414" duration="594000" />
+      <workItem from="1563947395443" duration="573000" />
+      <workItem from="1564144344745" duration="596000" />
+      <workItem from="1564295819853" duration="2767000" />
     </task>
     <task id="LOCAL-00071" summary="blog">
       <created>1554777389704</created>
@@ -814,17 +823,24 @@
       <option name="project" value="LOCAL" />
       <updated>1563699394468</updated>
     </task>
-    <option name="localTasksCounter" value="119" />
+    <task id="LOCAL-00119" summary="数据库分库分表思想以及应用">
+      <created>1563890070088</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1563890070088</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="143657000" />
+    <option name="totallyTimeSpent" value="148829000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2632375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14599092" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -839,11 +855,11 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32640332" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5030257" side_tool="true" visible="true" weight="0.3147541" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50907713" side_tool="true" weight="0.30983606" />
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.4969743" visible="true" weight="0.3147541" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49092284" visible="true" weight="0.31311476" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
@@ -907,8 +923,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="java泛型" />
-    <MESSAGE value="SSO" />
     <MESSAGE value="内存堆栈与数据结构堆栈" />
     <MESSAGE value="InfoQ_News" />
     <MESSAGE value="如何创建节约内存的JavaBean和线性排序介绍" />
@@ -932,23 +946,11 @@
     <MESSAGE value="Go学习" />
     <MESSAGE value="数据库与缓存双写如何保证一致性" />
     <MESSAGE value="如何利用并行处理提高算法的执行效率？" />
-    <option name="LAST_COMMIT_MESSAGE" value="如何利用并行处理提高算法的执行效率？" />
+    <MESSAGE value="数据库分库分表思想以及应用" />
+    <MESSAGE value="什么是列式存储？" />
+    <option name="LAST_COMMIT_MESSAGE" value="什么是列式存储？" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19513wt/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="214" column="29" selection-start-line="214" selection-start-column="29" selection-end-line="214" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19516hc/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="848">
-          <caret line="102" lean-forward="true" selection-start-line="102" selection-end-line="102" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19519qb/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
@@ -1959,10 +1961,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19726fs/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="102" column="38" lean-forward="true" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
+          <folding>
+            <element signature="e#4185#4191#0" expanded="true" />
+            <element signature="e#4205#4211#0" expanded="true" />
+            <element signature="e#4212#4216#0" expanded="true" />
+            <element signature="e#4388#4392#0" expanded="true" />
+            <element signature="e#7843#7849#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-221">
-          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        <state relative-caret-position="133">
+          <caret line="93" column="98" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19727cc/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+          <folding>
+            <element signature="e#6926#6932#1" expanded="true" />
+            <element signature="e#7386#7392#1" expanded="true" />
+            <element signature="e#7907#7913#1" expanded="true" />
+            <element signature="e#8299#8305#1" expanded="true" />
+            <element signature="e#8854#8860#1" expanded="true" />
+            <element signature="e#9306#9312#1" expanded="true" />
+            <element signature="e#9722#9728#1" expanded="true" />
+            <element signature="e#10143#10149#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

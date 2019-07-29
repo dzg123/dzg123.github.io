@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">什么是列式存储？</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-07-27</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">HBase</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><strong><span>行式存储</span></strong></p>
+            <p><span>传统的数据库是关系型的，且是按行来存储的。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmHOIokqlGic1QvkoyQ05HWnUl1g5oiagshg0R3eI1uHKiaxlUt9JzTy0ibA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>其中只有张三把一行数据填满了，李四王五赵六的行都没有填满。</span><em><span>因为这里的行结构是固定的，每一行都一样，即使你不用，也必须空到那里，而不能没有。</span></em><span>来一张形象的图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmFtnShN2HE59ElfiaKKoLibicenVFRhzZHdIBFmNiah2bRt0Jrv68L1JOtA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><em><span>不管你坐或不坐，座位都在那里，不离不弃。</span></em></p>
+            <p><strong><span>列式存储</span></strong></p>
+            <p><span>为了与传统的区别，新型数据库叫做非关系型数据库，是按列来存储的。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgm3PYIyX0PHsRdqJuCFzBbKyCJe69wxYxxfEvqa4gYZeicK5OLicRicqzGg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>初次看列式存储稍微有点懵，下面给出行存与列存的转换：</span></p>
+            <p><em><span>原来张三的一列（单元格）数据对应现在张三的一行数据。原来张三的六列数据变成了现在的六行。</span></em></p>
+            <p><em><span>原来的六列数据是在一行，所以共用一个主键（即张三）。现在变成了六行，每行都需要一个主键（不然不知道这行数据是谁的），所以原来的主键（即张三）重复了六次。</span></em><span>如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmed9xLSLUdxm2WXxaibTJl0A8rUwhY0eP6ZJjyHOwunVIoKwyAamZvIg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>由于原来的列变为了现在的行，</span><em><span>有需要就加一行，没需要就不加</span></em><span>，不会造成空间浪费。来一张形象的图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_jpg/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmaMDk0jgjasC8GPKTqbGYgbCVzHhGGLZ6tWx5mr18e7Wlx02UVVql3Q/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>（摆渡车内部就是一个大平板）</span></p>
+            <p><em><span>你要站便站，我给你空间，你不站便不站，还给我空间。</span></em></p>
+            <p><strong><span>行列对比</span></strong></p>
+            <p><span>① 行式存储倾向于结构固定，列式存储倾向于结构弱化。</span></p>
+            <p><span>（</span><em><span>行式存储相当于套餐，即使一个人来了也给你上八菜一汤，造成浪费；列式存储相等于自助餐，按需自取，人少了也不浪费</span></em><span>）</span></p>
+            <p><span>② 行式存储一行数据只需一份主键，列式存储一行数据需要多份主键。</span></p>
+            <p><span>③ 行式存储存的都是业务数据，列式存储除了业务数据外，还要存储列名。</span></p>
+            <p><span>④ 行式存储更像一个Java Bean，所有字段都提前定义好，且不能改变；列式存储更像一个Map，不提前定义，随意往里添加key/value。</span></p>
+            <p><strong><span>官方介绍</span></strong></p>
+            <p><span>Apache Hbase是Hadoop数据库，一个分布式、可扩展、大数据存储。</span></p>
+            <p><span>当你需要随机地实时读写大数据时使用Hbase。它的目标是管理超级大表-数十亿行X数百万列。</span></p>
+            <p><span>Hbase是一个开源的、分布式的、带版本的、非关系型数据库，模仿谷歌的BigTable。BigTable使用Google File System作为分布式数据存储，同理Hbase使用HDFS。</span></p>
+            <p><strong><span>Hbase世界</span></strong></p>
+            <p><span>Hbase虽然弱化了结构，但并不等于放任不管。传统关系型数据库在插入数据前表结构（即所有列和列的数据类型）已经是严格确定的。</span></p>
+            <p><span>Hbase的表在放入数据前也有需要确定下来的东西，那就是</span><strong><span>Column Family</span></strong><span>（常译为列族/列簇）。单词Family就是家庭的意思，所以列族就是列的家庭。那么列自然就是家庭成员了，通常家庭成员都有多个，所以一个列族包含多个列。</span></p>
+            <p><span>一个家庭的成员之间具有血缘关系，所以一个列族的多个列之间通常也具有某种关系，比如相似或同种类别。所以列族可以看作是某种分类（归类）。</span></p>
+            <p><span>一个非常常见的例子，去面试的时候，一般前台MM都会让填一张表，通常信息很多，每个公司又不尽相同。但大致可以分三类：人员基本信息，教育经历信息，工作经历信息，这三个类别其实就相当于三个列族。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmPjJBib1Lsxnuq5ibksyfwtOEG29A6s6UFwBWcfjwQT2ric6TkyzicIGonw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>每个类别里都会有具体的信息，比如人员基本信息里有姓名、电话、出生年月等，它们就相当于一个个标识符（变量名），在Hbase中叫做</span><strong><span>Column Qualifier</span></strong><span>（列修饰符）。列修饰符位于列族里面用来标识一条条数据。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmQEiaBmeibzqica9Dibj7BnXJznl1rFKaHBvt9ZKia9r9oFgV33xSiazbma3g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>在Hbase中一个列族（Column Family）和一个列修饰符（Column Qualifier）组合起来才叫一个列（</span><strong><span>Column</span></strong><span>），使用冒号（</span><strong><span>:</span></strong><span>）分割，列族</span><strong><span>:</span></strong><span>列修饰符，如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgm9DfUeWqK6a8UrwvzDQy7Js6Ap2gr9HUy1GeaxSmmmJoRctDBaU1OyA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>在传统数据库中每一行的唯一标识符叫做主键，在Hbase中叫做</span><strong><span>row key</span></strong><span>（行键）。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmtdFOFLCq0gJPHLzkSxFibosupiaNjbyxzMDXV1a1Vwl3eUqbesUc1Tnw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>数据在进入Hbase时都会被打上一个时间戳，这个时间戳可以作为版本号来使用。</span></p>
+            <p><em><span>在t1时间我存入一个人的基本信息，之后发现姓名错了，在t2时间又更新了姓名，此时并不会去更新原来的那条数据，而是又插入了一条新数据且打上新的时间戳。</span></em></p>
+            <p><em><span>此时去查询获取的是新数据，仿佛是更新了，但其实只是默认返回了最新版本的数据而已。</span></em><span>如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmPbO4StxwWrdnz39g0Ys88ArZPbDk4UfyvWMuDZFhkiaxj8WZeQQY8AQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>一个行键、列族、列修饰符、数据和时间戳组合起来叫做一个单元格（</span><strong><span>Cell</span></strong><span>）。这里的行键、列族、列修饰符和时间戳其实可以看作是定位属性（类似坐标），最终确定了一个数据。下图中的一行相等于Hbase中的一个单元格：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmpbyRzAlCibV5Q8WKjcF0XzibZlJpkbL8AXI5bictiaQ20D73ZCQkWVJjQQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>一个行键、一到多列（包括数据）组合起来叫做一行（</span><strong><span>Row</span></strong><span>）。下图中所有1001的数据合起来相当于Hbase中的一行，1002的相当于另一行：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmiaBJzOScq7iaugIh0YsUmB9zyQLCIyynWzTS6yTOkHrKUe9NicYwTaS7w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><span>在Hbase中，只要确定了列族（</span><em><span>具体的列不用管</span></em><span>），表（</span><strong><span>Table</span></strong><span>）就确定了。如下图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/ibyjamcabcjeFUaNvD5vyJ1mv4uAAehgmDaBsNsyEWEAsJOrFnpuSJu0U4qk5dogYvpOJZO2XnJpVfuJE0FqqKw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p><strong><span>官方文档中提醒*</span></strong><em><span>：**把传统数据库中的表/行/列的概念用在Hbase中</span></em><span>不是一个有帮助</span><em><span>的类比。相反可以把Hbase的表想象成一个多（两）维Map（Map套Map）。</span></em><span>列族是第一维，列修饰符是第二维*。</span></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
