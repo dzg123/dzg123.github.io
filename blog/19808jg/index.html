@@ -296,9 +296,16 @@
 <script>(function () {
     var imgArr = document.getElementsByTagName("img");
     for (var i = 0; i < imgArr.length; i++) {
-        console.log(imgArr);
-        if (imgArr[i].width > 500) imgArr[i].width = 500;
-        if (imgArr[i].height > 350) imgArr[i].height = 350;
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
     }
     var ga = document.createElement('script');
     var curProtocol = window.location.protocol.split(':')[0];

@@ -40,7 +40,7 @@
         class="fa fa-chevron-up fa-lg"></i></a> <span
         id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
         href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
-                                            target="_blank">Github</a></li></ul></span><br>
+                                          target="_blank">Github</a></li></ul></span><br>
 
 </span>
 </div>
@@ -94,6 +94,19 @@
 <script src="/js/main.js"></script>
 <script async src=""></script>
 <script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
     var ga = document.createElement('script');
     var curProtocol = window.location.protocol.split(':')[0];
     ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
@@ -114,8 +127,7 @@
     var curProtocol = window.location.protocol.split(':')[0];
     if (curProtocol === 'https') {
         bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-    }
-    else {
+    } else {
         bp.src = 'http://push.zhanzhang.baidu.com/push.js';
     }
     var s = document.getElementsByTagName("script")[0];
