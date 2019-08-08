@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:协程">
-      <change afterPath="$PROJECT_DIR$/blog/19729qb/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19731kz/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19801yl/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19803jg/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19805jz/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/19808jh/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/19727cc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19727cc/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/19803jg/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19803jg/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -25,10 +25,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19808jh/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="156" column="21" lean-forward="true" selection-start-line="156" selection-start-column="21" selection-end-line="156" selection-end-column="21" />
+            <state relative-caret-position="362">
+              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -63,10 +63,10 @@
       <find>阻塞</find>
       <find>Linux</find>
       <find>哈希</find>
-      <find>img</find>
       <find>400</find>
       <find>多</find>
       <find>redis</find>
+      <find>img</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="D:\Go" />
@@ -76,8 +76,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19520sf/index.html" />
-        <option value="$PROJECT_DIR$/blog/19525yz/index.html" />
         <option value="$PROJECT_DIR$/blog/19527cd/index.html" />
         <option value="$PROJECT_DIR$/blog/19529sk/index.html" />
         <option value="$PROJECT_DIR$/blog/19601xj/index.html" />
@@ -121,12 +119,14 @@
         <option value="$PROJECT_DIR$/blog/19721xl/index.html" />
         <option value="$PROJECT_DIR$/blog/19722yy/index.html" />
         <option value="$PROJECT_DIR$/blog/19726fs/index.html" />
-        <option value="$PROJECT_DIR$/blog/19727cc/index.html" />
         <option value="$PROJECT_DIR$/blog/19729qb/index.html" />
         <option value="$PROJECT_DIR$/blog/19731kz/index.html" />
         <option value="$PROJECT_DIR$/blog/19801yl/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19803jg/index.html" />
+        <option value="$PROJECT_DIR$/blog/19727cc/index.html" />
+        <option value="$PROJECT_DIR$/blog/19805jz/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19808jh/index.html" />
       </list>
     </option>
   </component>
@@ -305,6 +305,7 @@
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <autoscrollToSource ProjectPane="false" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -326,6 +327,18 @@
               <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="blog" type="462c0819:PsiDirectoryNode" />
               <item name="19623xj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19727cc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19803jg" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -352,11 +365,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19808jh" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19805jz" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19803jg" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19801yl" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19731kz" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19729qb" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19727cc" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -485,14 +498,8 @@
       <workItem from="1564144344745" duration="596000" />
       <workItem from="1564295819853" duration="5252000" />
       <workItem from="1564550550393" duration="592000" />
-      <workItem from="1564575573125" duration="1763000" />
-    </task>
-    <task id="LOCAL-00072" summary="blog">
-      <created>1554824221486</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1554824221488</updated>
+      <workItem from="1564575573125" duration="2394000" />
+      <workItem from="1565053876125" duration="2119000" />
     </task>
     <task id="LOCAL-00073" summary="blog">
       <created>1555151436266</created>
@@ -830,17 +837,24 @@
       <option name="project" value="LOCAL" />
       <updated>1564416079398</updated>
     </task>
-    <option name="localTasksCounter" value="121" />
+    <task id="LOCAL-00121" summary="add:协程">
+      <created>1564999705824</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1564999705825</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153669000" />
+    <option name="totallyTimeSpent" value="156419000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.07488654" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -859,7 +873,7 @@
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
       <window_info anchor="bottom" id="Problems" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49092284" visible="true" weight="0.30819672" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49092284" visible="true" weight="0.30327868" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="LuaCheck" order="15" weight="0.32952183" />
@@ -951,16 +965,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="add:协程" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/images/io控制方式.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19529sk/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="72" column="59" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19601xj/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="725">
@@ -1926,30 +1930,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19727cc/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-100">
-          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
-          <folding>
-            <element signature="e#6926#6932#1" expanded="true" />
-            <element signature="e#7386#7392#1" expanded="true" />
-            <element signature="e#7907#7913#1" expanded="true" />
-            <element signature="e#8299#8305#1" expanded="true" />
-            <element signature="e#8854#8860#1" expanded="true" />
-            <element signature="e#9306#9312#1" expanded="true" />
-            <element signature="e#9722#9728#1" expanded="true" />
-            <element signature="e#10143#10149#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/template.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19729qb/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="356">
@@ -1986,18 +1966,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/19803jg/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="121" column="15" lean-forward="true" selection-start-line="121" selection-start-column="15" selection-end-line="121" selection-end-column="15" />
+        <state relative-caret-position="218">
+          <caret line="83" column="92" lean-forward="true" selection-start-line="83" selection-start-column="92" selection-end-line="83" selection-end-column="92" />
           <folding>
+            <element signature="n#style#0;n#img#0;n#p#9;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#p#10;n#article#0;n#section#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="e#8974#8980#1" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19727cc/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="66" column="61" lean-forward="true" selection-start-line="66" selection-start-column="61" selection-end-line="66" selection-end-column="61" />
+          <folding>
+            <element signature="e#6926#6932#1" expanded="true" />
+            <element signature="e#7386#7392#1" expanded="true" />
+            <element signature="e#7907#7913#1" expanded="true" />
+            <element signature="e#8299#8305#1" expanded="true" />
+            <element signature="e#8854#8860#1" expanded="true" />
+            <element signature="e#9306#9312#1" expanded="true" />
+            <element signature="e#9722#9728#1" expanded="true" />
+            <element signature="e#10143#10149#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19805jz/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="514">
+          <caret line="69" column="13" lean-forward="true" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/template.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="156" column="21" lean-forward="true" selection-start-line="156" selection-start-column="21" selection-end-line="156" selection-end-column="21" />
+        <state relative-caret-position="198">
+          <caret line="93" column="95" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19808jh/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
         </state>
       </provider>
     </entry>

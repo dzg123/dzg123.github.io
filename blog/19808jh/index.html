@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">redis之持久化</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-08</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">redis</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>转自：Java3y</span></p>
+            <h1 data-breakpage><a name="header-n547" class="md-header-anchor md-print-anchor" href="af://n547"> </a><span>一、Redis服务器中的数据库</span></h1>
+            <p><span>我们应该都用过MySQL，MySQL我们可以在里边创建好几个库：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW298oUCk4kiaQJjKuxqRy4UP6ct8xj2C9HpcUMldIX1K9oG09Tuyl4Nmw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>MySQL创建几个数据库</span></p>
+            <p><span>同样地，Redis服务器中也有数据库这么一个概念。如果不指定具体的数量，默认会有</span><strong><span>16</span></strong><span>个数据库。</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2aVhiajoicKWmwOOM5icLpTiaBWQJRFD2oT5dMPtXWp14TreuWF5ibTVRydg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='通过SELECT命令可以切换到0~15的数据库' referrerPolicy='no-referrer' /><span>通过SELECT命令可以切换到0~15的数据库</span></p>
+            <p><span>上面的命令我们也可以发现：当切换到15号数据库，存进15号库的数据，再切换到0号数据库时，是获取不到的！</span></p>
+            <ul>
+                <li><span>这说明，数据库与数据库之间的数据是</span><strong><span>隔离</span></strong><span>的。</span></li>
+
+            </ul>
+            <h2><a name="header-n557" class="md-header-anchor md-print-anchor" href="af://n557"> </a><span>1.1Redis数据库的原理</span></h2>
+            <p><span>Redis服务器用redisServer结构体来表示，其中redisDb是一个数组，用来保存所有的数据库，dbnum代表数据库的数量(这个可以配置，默认是16)</span></p>
+            <pre><code>struct redisServer{      //redisDb数组,表示服务器中所有的数据库    redisDb *db;      //服务器中数据库的数量    int dbnum;  };
+</code></pre>
+            <p><span>我们知道Redis是C/S结构，Redis客户端通过redisClient结构体来表示：</span></p>
+            <pre><code>typedef struct redisClient{      //客户端当前所选数据库    redisDb *db;  }redisClient;
+</code></pre>
+            <p><span>Redis客户端连接Redis服务端时的示例图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2BMtlbicrPdVRAENZpAbftAFs3qDOB8Yu3pBsCMKiacWM6d8EQtAGllpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='Redis客户端连接Redis服务端时的示例图' referrerPolicy='no-referrer' /><span>Redis客户端连接Redis服务端时的示例图</span></p>
+            <p><span>Redis中对每个数据库用redisDb结构体来表示：</span></p>
+            <pre><code>typedef struct redisDb {     int id;         // 数据库ID标识    dict *dict;     // 键空间，存放着所有的键值对                  dict *expires;  // 过期哈希表，保存着键的过期时间                              dict *watched_keys; // 被watch命令监控的key和相应client        long long avg_ttl;  // 数据库内所有键的平均TTL（生存时间）     } redisDb;
+</code></pre>
+            <p><span>从代码上我们可以发现最重要的应该是</span><code>dict *dict</code><span>，它用来存放着所有的键值对。对于</span><code>dict</code><span>数据结构(哈希表)我们在上一篇也已经详细说了。一般我们将存储所有键值对的</span><code>dict</code><span>称为</span><strong><span>键空间</span></strong><span>。</span></p>
+            <p><span>键空间示意图：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2AC1gtvq3ibvicwU8XFTib4Y3aicN96AUbrNBlyAB1MHnb9fvDVsYerzoicQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='键空间示意图' referrerPolicy='no-referrer' /><span>键空间示意图</span></p>
+            <blockquote><p><span>Redis的数据库就是使用字典(哈希表)来作为底层实现的，对</span><strong><span>数据库的增删改查都是构建在字典(哈希表)的操作之上的</span></strong><span>。</span></p>
+            </blockquote>
+            <p><span>例如：</span></p>
+            <pre><code>redis &gt; GET message&quot;hello world&quot;
+</code></pre>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2tiagicnJMog5YjszvjrXiafwuQCiaU6CNBEc4fuSl1MzbreesTtosrT5ew/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='查找键的示意图' referrerPolicy='no-referrer' /><span>查找键的示意图</span></p>
+            <h2><a name="header-n574" class="md-header-anchor md-print-anchor" href="af://n574"> </a><span>1.2键的过期时间</span></h2>
+            <p><span>Redis是基于内存，内存是比较昂贵的，容量肯定比不上硬盘的。就我们现在一台普通的机子，可能就8G内存，但硬盘随随便便都1T了。</span></p>
+            <p><span>因为我们的内存是</span><strong><span>有限</span></strong><span>的。所以我们</span><strong><span>会干掉不常用的数据，保留常用的数据</span></strong><span>。这就需要我们设置一下键的过期(生存)时间了。</span></p>
+            <ul>
+                <li><span>设置键的</span><strong><span>生存</span></strong><span>时间可以通过</span><code>EXPIRE</code><span>或者</span><code>PEXPIRE</code><span>命令。</span></li>
+                <li><span>设置键的</span><strong><span>过期</span></strong><span>时间可以通过</span><code>EXPIREAT</code><span>或者</span><code>PEXPIREAT</code><span>命令。</span></li>
+
+            </ul>
+            <p><span>其实</span><code>EXPIRE</code><span>、</span><code>PEXPIRE</code><span>、</span><code>EXPIREAT</code><span>这三个命令都是通过</span><code>PEXPIREAT</code><span>命令来实现的。</span></p>
+            <p><span>我们在redisDb结构体中还发现了</span><code>dict *expires<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span></code><span>属性，存放所有键过期的时间。</span></p>
+            <p><span>举个例子基本就可以理解了：</span></p>
+            <pre><code>redis &gt; PEXPIREAT message 1391234400000(integer) 1
+</code></pre>
+            <p><span>设置了message键的过期时间为1391234400000</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2DMeziao6kQ1lEShvTh1V0sH6T1tVZY0hXJIlTI5s7pknCpXMVB0T17Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='新增一个过期时间的键' referrerPolicy='no-referrer' /><span>新增一个过期时间的键</span></p>
+            <p><span>既然有设置过期(生存)时间的命令，那肯定也有移除过期时间，查看剩余生存时间的命令了：</span></p>
+            <ul>
+                <li><span>PERSIST(移除过期时间)</span></li>
+                <li><span>TTL(Time To Live)返回剩余生存时间，以秒为单位</span></li>
+                <li><span>PTTL以毫秒为单位返回键的剩余生存时间</span></li>
+
+            </ul>
+            <h3><a name="header-n596" class="md-header-anchor md-print-anchor" href="af://n596"> </a><span>1.2.1过期策略</span></h3>
+            <p><span>上面我们已经能够了解到：过期键是保存在哈希表中了。那这些过期键到了过期的时间，就会立马被删除掉吗？？</span></p>
+            <p><span>要回答上面的问题，需要我们了解一下删除策略的知识，删除策略可分为三种</span></p>
+            <ul>
+                <li><p><span>定时删除(对内存友好，对CPU不友好)</span></p>
+                </li>
+                <ul>
+                    <li><span>到时间点上就把所有过期的键删除了。</span></li>
+
+                </ul>
+                <li><p><span>惰性删除(对CPU极度友好，对内存极度不友好)</span></p>
+                </li>
+                <ul>
+                    <li><span>每次从键空间取键的时候，判断一下该键是否过期了，如果过期了就删除。</span></li>
+
+                </ul>
+                <li><p><span>定期删除(折中)</span></p>
+                </li>
+                <ul>
+                    <li><strong><span>每隔</span></strong><span>一段时间去删除过期键，</span><strong><span>限制</span></strong><span>删除的执行时长和频率。</span></li>
+
+                </ul>
+
+            </ul>
+            <p><span>Redis采用的是</span><strong><span>惰性删除+定期删除</span></strong><span>两种策略，所以说，在Redis里边如果过期键到了过期的时间了，未必被立马删除的！</span></p>
+            <h3><a name="header-n616" class="md-header-anchor md-print-anchor" href="af://n616"> </a><span>1.2.2内存淘汰机制</span></h3>
+            <p><span>如果定期删除漏掉了很多过期key，也没及时去查(没走惰性删除)，大量过期key堆积在内存里，导致redis内存块耗尽了，咋整？</span></p>
+            <p><span>我们可以设置内存最大使用量，当内存使用量超出时，会施行</span><strong><span>数据淘汰策略</span></strong><span>。</span></p>
+            <p><span>Redis的内存淘汰机制有以下几种：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2TMibgqktURXxzDeSVITWJiaKQDlocMf2ibHS3vK3AyOgtibIzRW4LvrXhQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='内存淘汰机制' referrerPolicy='no-referrer' /><span>内存淘汰机制</span></p>
+            <p><span>一般场景：</span></p>
+            <blockquote><p><span>使用 Redis 缓存数据时，为了提高缓存命中率，需要保证缓存数据都是</span><strong><span>热点数据</span></strong><span>。可以将内存最大使用量设置为热点数据占用的内存量，然后启用allkeys-lru淘汰策略，将最近最少使用的数据淘汰</span></p>
+            </blockquote>
+            <h1 data-breakpage><a name="header-n624" class="md-header-anchor md-print-anchor" href="af://n624"> </a><span>二、Redis持久化</span></h1>
+            <p><span>Redis是基于内存的，如果不想办法将数据保存在硬盘上，一旦Redis重启(退出/故障)，内存的数据将会全部丢失。</span></p>
+            <ul>
+                <li><span>我们肯定不想Redis里头的数据由于某些故障全部丢失(导致所有请求都走MySQL)，即便发生了故障也希望可以将Redis原有的数据恢复过来，这就是持久化的作用。</span></li>
+
+            </ul>
+            <p><span>Redis提供了两种不同的持久化方法来讲数据存储到硬盘里边：</span></p>
+            <ul>
+                <li><span>RDB(基于快照)，将某一时刻的所有数据保存到一个RDB文件中。</span></li>
+                <li><span>AOF(append-only-file)，当Redis服务器执行</span><strong><span>写命令</span></strong><span>的时候，将执行的</span><strong><span>写命令</span></strong><span>保存到AOF文件中。</span></li>
+
+            </ul>
+            <h2><a name="header-n635" class="md-header-anchor md-print-anchor" href="af://n635"> </a><span>2.1RDB(快照持久化)</span></h2>
+            <p><span>RDB持久化可以</span><strong><span>手动</span></strong><span>执行，也可以根据服务器配置</span><strong><span>定期</span></strong><span>执行。RDB持久化所生成的RDB文件是一个经过</span><strong><span>压缩</span></strong><span>的二进制文件，Redis可以通过这个文件</span><strong><span>还原</span></strong><span>数据库的数据。</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2jO9MXFffOvSiaPSLhiceibaaicCXj65SribQYEkC5ibf6BZrkXzSuOk3tgQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='RDB文件还原数据' referrerPolicy='no-referrer' /><span>RDB文件还原数据</span></p>
+            <p><span>有两个命令可以生成RDB文件：</span></p>
+            <ul>
+                <li><code>SAVE</code><span>会</span><strong><span>阻塞</span></strong><span>Redis服务器进程，服务器不能接收任何请求，直到RDB文件创建完毕为止。</span></li>
+                <li><code>BGSAVE</code><span>创建出一个</span><strong><span>子进程</span></strong><span>，由子进程来负责创建RDB文件，服务器进程可以继续接收请求。</span></li>
+
+            </ul>
+            <p><span>Redis服务器在启动的时候，如果发现有RDB文件，就会</span><strong><span>自动</span></strong><span>载入RDB文件(不需要人工干预)</span></p>
+            <ul>
+                <li><span>服务器在载入RDB文件期间，会处于阻塞状态，直到载入工作完成。</span></li>
+
+            </ul>
+            <p><span>除了手动调用</span><code>SAVE</code><span>或者</span><code>BGSAVE</code><span>命令生成RDB文件之外，我们可以使用配置的方式来</span><strong><span>定期</span></strong><span>执行：</span></p>
+            <p><span>在默认的配置下，如果以下的条件被触发，就会执行</span><code>BGSAVE</code><span>命令</span></p>
+            <pre><code>    save 900 1              #在900秒(15分钟)之后，至少有1个key发生变化，    save 300 10            #在300秒(5分钟)之后，至少有10个key发生变化    save 60 10000        #在60秒(1分钟)之后，至少有10000个key发生变化
+</code></pre>
+            <p><span>原理大概就是这样子的(结合上面的配置来看)：</span></p>
+            <pre><code>struct redisServer{    // 修改计数器    long long dirty;    // 上一次执行保存的时间    time_t lastsave;    // 参数的配置    struct saveparam *saveparams;};
+</code></pre>
+            <p><span>遍历参数数组，判断修改次数和时间是否符合，如果符合则调用</span><code>besave()</code><span>来生成RDB文件</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2tZOVvhDtR1MfIzcMt5tfrnLZO8uS7gw2uBbRMZ2KWOPOYrciapRH7hA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='Redis服务器的状态' referrerPolicy='no-referrer' /><span>Redis服务器的状态</span></p>
+            <p><span>总结：通过手动调用</span><code>SAVE</code><span>或者</span><code>BGSAVE</code><span>命令或者配置条件触发，将数据库</span><strong><span>某一时刻</span></strong><span>的数据快照，生成RDB文件实现持久化。</span></p>
+            <h2><a name="header-n656" class="md-header-anchor md-print-anchor" href="af://n656"> </a><span>2.2AOF(文件追加)</span></h2>
+            <p><span>上面已经介绍了RDB持久化是通过将某一时刻数据库的数据“快照”来实现的，下面我们来看看AOF是怎么实现的。</span></p>
+            <ul>
+                <li><span>AOF是通过保存Redis服务器所执行的</span><strong><span>写命令</span></strong><span>来记录数据库的数据的。</span></li>
+
+            </ul>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2OmlBQd1icS7s2ndUiaUH1EuYbuYsqeLlPzmf6ujHxUyvqiaZOSAGiaric5w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='AOF原理图' referrerPolicy='no-referrer' /><span>AOF原理图</span></p>
+            <p><span>比如说我们对空白的数据库执行以下写命令：</span></p>
+            <pre><code>redis&gt; SET meg &quot;hello&quot;OKredis&gt; SADD fruits &quot;apple&quot; &quot;banana&quot; &quot;cherry&quot;(integer) 3redis&gt; RPUSH numbers 128 256 512(integer) 3
+</code></pre>
+            <p><span>Redis会产生以下内容的AOF文件：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2qK9ugpcc95LvEiaiam3QfoaPS0ibGfD1ZCkUoSJDWwGiaG39rxadZrLTyw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='AOF文件' referrerPolicy='no-referrer' /><span>AOF文件</span></p>
+            <p><span>这些都是以Redis的命令</span><strong><span>请求协议格式</span></strong><span>保存的。Redis协议规范(RESP)参考资料：</span></p>
+            <ul>
+                <li><a href='https://www.cnblogs.com/tommy-huang/p/6051577.html' target='_blank' class='url'>https://www.cnblogs.com/tommy-huang/p/6051577.html</a></li>
+
+            </ul>
+            <p><span>AOF持久化功能的实现可以分为3个步骤：</span></p>
+            <ul>
+                <li><span>命令追加：命令写入aof_buf缓冲区</span></li>
+                <li><span>文件写入：调用flushAppendOnlyFile函数，考虑是否要将aof_buf缓冲区写入AOF文件中</span></li>
+                <li><span>文件同步：考虑是否将内存缓冲区的数据真正写入到硬盘</span></li>
+
+            </ul>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2MjkXbZETIPbC23Br1ZrMNFaQmfU94kicv1H9vLNIU0VzMPFNnRdbRSw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='AOF持久化步骤' referrerPolicy='no-referrer' /><span>AOF持久化步骤</span></p>
+            <p><span>flushAppendOnlyFile函数的行为由服务器配置的</span><strong><span>appendfsyn选项</span></strong><span>来决定的：</span></p>
+            <pre><code>    appendfsync always     # 每次有数据修改发生时都会写入AOF文件。    appendfsync everysec   # 每秒钟同步一次，该策略为AOF的默认策略。    appendfsync no         # 从不同步。高效但是数据不会被持久化。
+</code></pre>
+            <p><span>从字面上应该就更好理解了，这里我就不细说了…</span></p>
+            <p><span>下面来看一下AOF是如何载入与数据还原的：</span></p>
+            <ul>
+                <li><span>创建一个</span><strong><span>伪客户端</span></strong><span>(本地)来执行AOF的命令，直到AOF命令被全部执行完毕。</span></li>
+
+            </ul>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2c34wOB0qyXe5ibMgWuXWQvasIeG5PauicQVyKl9hJQicFuwMFSE8YR6icw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='redis伪客户端载入AOF文件' referrerPolicy='no-referrer' /><span>redis伪客户端载入AOF文件</span></p>
+            <h3><a name="header-n687" class="md-header-anchor md-print-anchor" href="af://n687"> </a><span>2.2.1AOF重写</span></h3>
+            <p><span>从前面的示例看出，我们写了三条命令，AOF文件就保存了三条命令。如果我们的命令是这样子的：</span></p>
+            <pre><code>redis &gt; RPUSH list &quot;Java&quot; &quot;3y&quot;(integer)2redis &gt; RPUSH list &quot;Java3y&quot;integer(3)redis &gt; RPUSH list &quot;yyy&quot;integer(4)
+</code></pre>
+            <p><span>同样地，AOF也会保存3条命令。我们会发现一个问题：上面的命令是可以</span><strong><span>合并</span></strong><span>起来成为1条命令的，并不需要3条。这样就可以</span><strong><span>让AOF文件的体积变得更小</span></strong><span>。</span></p>
+            <p><span>AOF重写由Redis自行触发(参数配置)，也可以用</span><code>BGREWRITEAOF</code><span>命令</span><strong><span>手动触发</span></strong><span>重写操作。</span></p>
+            <ul>
+                <li><span>要值得说明的是：</span><strong><span>AOF重写不需要对现有的AOF文件进行任何的读取、分析。AOF重写是通过读取服务器当前数据库的数据来实现的</span></strong><span>！</span></li>
+
+            </ul>
+            <p><span>比如说现在有一个Redis数据库的数据如下：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2DVhNso3jZWicrLOso0UibN5p1xdzbQJWA0ibx3GzQ5zbmiaKYic2onS1cUw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='Redis数据库的数据' referrerPolicy='no-referrer' /><span>Redis数据库的数据</span></p>
+            <p><span>新的AOF文件的命令如下，</span><strong><span>没有一条是多余的</span></strong><span>！</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2KfBicHibhHOibibPoDAfGvQ6GRu2BHrewsoiaenUqBARGt040suU4BGC6jw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='AOF重写后的命令' referrerPolicy='no-referrer' /><span>AOF重写后的命令</span></p>
+            <h3><a name="header-n699" class="md-header-anchor md-print-anchor" href="af://n699"> </a><span>2.2.2AOF后台重写</span></h3>
+            <p><span>Redis将AOF重写程序放到</span><strong><span>子进程</span></strong><span>里执行(</span><code>BGREWRITEAOF</code><span>命令)，像</span><code>BGSAVE</code><span>命令一样fork出一个子进程来完成重写AOF的操作，从而不会影响到主进程。</span></p>
+            <p><span>AOF后台重写是不会阻塞主进程接收请求的，新的写命令请求可能会导致</span><strong><span>当前数据库和重写后的AOF文件的数据不一致</span></strong><span>！</span></p>
+            <p><span>为了解决数据不一致的问题，Redis服务器设置了一个</span><strong><span>AOF重写缓冲区</span></strong><span>，这个缓存区会在服务器</span><strong><span>创建出子进程之后使用</span></strong><span>。</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0LSf7wiaom7XfZ9RhpUWsW2oEqVcw6nVk535Avz8HsK8DtUzkZLES2icW17ibGdyeaTibwOJknpcwibAw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='AOF后台重写过程' referrerPolicy='no-referrer' /><span>AOF后台重写过程</span></p>
+            <h2><a name="header-n704" class="md-header-anchor md-print-anchor" href="af://n704"> </a><span>2.3RDB和AOF对过期键的策略</span></h2>
+            <p><span>RDB持久化对过期键的策略：</span></p>
+            <ul>
+                <li><span>执行</span><code>SAVE</code><span>或者</span><code>BGSAVE</code><span>命令创建出的RDB文件，程序会对数据库中的过期键检查，</span><strong><span>已过期的键不会保存在RDB文件中</span></strong><span>。</span></li>
+                <li><span>载入RDB文件时，程序同样会对RDB文件中的键进行检查，</span><strong><span>过期的键会被忽略</span></strong><span>。</span></li>
+
+            </ul>
+            <p><span>RDB持久化对过期键的策略：</span></p>
+            <ul>
+                <li><span>如果数据库的键已过期，但还没被惰性/定期删除，AOF文件不会因为这个过期键产生任何影响(也就说会保留)，当过期的键被删除了以后，会追加一条DEL命令来显示记录该键被删除了</span></li>
+                <li><span>重写AOF文件时，程序会对RDB文件中的键进行检查，</span><strong><span>过期的键会被忽略</span></strong><span>。</span></li>
+
+            </ul>
+            <p><span>复制模式：</span></p>
+            <ul>
+                <li><strong><span>主服务器来控制</span></strong><span>从服务器统一删除过期键(保证主从服务器数据的一致性)</span></li>
+
+            </ul>
+            <h2><a name="header-n721" class="md-header-anchor md-print-anchor" href="af://n721"> </a><span>2.4RDB和AOF用哪个？</span></h2>
+            <p><span>RDB和AOF并不互斥，它俩可以</span><strong><span>同时使用</span></strong><span>。</span></p>
+            <ul>
+                <li><span>RDB的优点：载入时</span><strong><span>恢复数据快</span></strong><span>、文件体积小。</span></li>
+                <li><span>RDB的缺点：会一定程度上</span><strong><span>丢失数据</span></strong><span>(因为系统一旦在定时持久化之前出现宕机现象，此前没有来得及写入磁盘的数据都将丢失。)</span></li>
+                <li><span>AOF的优点：丢失数据少(默认配置只丢失一秒的数据)。</span></li>
+                <li><span>AOF的缺点：恢复数据相对较慢，文件体积大</span></li>
+
+            </ul>
+            <p><span>如果Redis服务器</span><strong><span>同时开启</span></strong><span>了RDB和AOF持久化，服务器会</span><strong><span>优先使用AOF文件</span></strong><span>来还原数据(因为AOF更新频率比RDB更新频率要高，还原的数据更完善)</span></p>
+            <p><span>可能涉及到RDB和AOF的配置：</span></p>
+            <pre><code>redis持久化，两种方式1、rdb快照方式2、aof日志方式----------rdb快照------------save 900 1save 300 10save 60 10000stop-writes-on-bgsave-error yesrdbcompression yesrdbchecksum yesdbfilename dump.rdbdir /var/rdb/-----------Aof的配置-----------appendonly no # 是否打开 aof日志功能appendfsync always #每一个命令都立即同步到aof，安全速度慢appendfsync everysecappendfsync no 写入工作交给操作系统，由操作系统判断缓冲区大小，统一写入到aof  同步频率低，速度快no-appendfsync-on-rewrite yes 正在导出rdb快照的时候不要写aofauto-aof-rewrite-percentage 100auto-aof-rewrite-min-size 64mb ./bin/redis-benchmark -n 20000
+</code></pre>
+            <p><span>官网文档：</span></p>
+            <ul>
+                <li><a href='https://redis.io/topics/persistence#rdb-advantages' target='_blank' class='url'>https://redis.io/topics/persistence#rdb-advantages</a></li>
+
+            </ul>
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
