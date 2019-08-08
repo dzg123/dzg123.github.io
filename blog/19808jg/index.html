@@ -40,7 +40,7 @@
         class="fa fa-chevron-up fa-lg"></i></a> <span
         id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
         href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
-                                            target="_blank">Github</a></li></ul></span><br>
+                                          target="_blank">Github</a></li></ul></span><br>
 
 </span>
 </div>
@@ -61,10 +61,14 @@
             </header>
             <!--markdown-->
             <p><span>转自：Java3y</span></p>
-            <h1 data-breakpage><a name="header-n149" class="md-header-anchor md-print-anchor" href="af://n149"> </a><span>一、主从架构</span></h1>
-            <h2><a name="header-n150" class="md-header-anchor md-print-anchor" href="af://n150"> </a><span>1.1为什么要主从架构</span></h2>
+            <h1 data-breakpage><a name="header-n149" class="md-header-anchor md-print-anchor"
+                                  href="af://n149"> </a><span>一、主从架构</span></h1>
+            <h2><a name="header-n150" class="md-header-anchor md-print-anchor"
+                   href="af://n150"> </a><span>1.1为什么要主从架构</span></h2>
             <p><span>Redis也跟关系型数据(MySQL)一样，如果有过多请求还是撑不住的。</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYZVWvXXh3ukvQibzSEhsVuNrnCn6jCL5YcS9mBXt3gCDNBEs2CUgBRxA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='一台Redis撑不住' referrerPolicy='no-referrer' /><span>一台Redis撑不住</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYZVWvXXh3ukvQibzSEhsVuNrnCn6jCL5YcS9mBXt3gCDNBEs2CUgBRxA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='一台Redis撑不住' referrerPolicy='no-referrer'/><span>一台Redis撑不住</span></p>
             <p><span>因为Redis如果只有一台服务器的话，那随着请求越来越多：</span></p>
             <ul>
                 <li><strong><span>Redis的内存是有限的</span></strong><span>，可能放不下那么多的数据</span></li>
@@ -73,20 +77,33 @@
 
             </ul>
             <p><span>显然，出现的上述问题是因为一台Redis服务器不够，所以多搞几台Redis服务器就可以了</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzY4B9rmybBDy74twGvHu0I1nt5ibu6yGa4KOFt8rTiarpLgak7sxOAsrrQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='多搞几台Redis服务器' referrerPolicy='no-referrer' /><span>多搞几台Redis服务器</span></p>
-            <p><span>为了实现我们服务的</span><strong><span>高可用性</span></strong><span>，可以将这几台Redis服务器做成是</span><strong><span>主从</span></strong><span>来进行管理</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYOwG8zdc4bStcnyVZswgKEMt4qpHUZyiblYibgWut87TGMutWUJm9ZbLA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='主从架构' referrerPolicy='no-referrer' /><span>主从架构</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzY4B9rmybBDy74twGvHu0I1nt5ibu6yGa4KOFt8rTiarpLgak7sxOAsrrQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='多搞几台Redis服务器' referrerPolicy='no-referrer'/><span>多搞几台Redis服务器</span></p>
+            <p>
+                <span>为了实现我们服务的</span><strong><span>高可用性</span></strong><span>，可以将这几台Redis服务器做成是</span><strong><span>主从</span></strong><span>来进行管理</span>
+            </p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYOwG8zdc4bStcnyVZswgKEMt4qpHUZyiblYibgWut87TGMutWUJm9ZbLA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='主从架构' referrerPolicy='no-referrer'/><span>主从架构</span></p>
             <blockquote><p><span>tip:Redis作者已将Master/Slave架构改名为Master/Replica</span></p>
             </blockquote>
-            <h2><a name="header-n167" class="md-header-anchor md-print-anchor" href="af://n167"> </a><span>1.2主从架构的特点</span></h2>
+            <h2><a name="header-n167" class="md-header-anchor md-print-anchor"
+                   href="af://n167"> </a><span>1.2主从架构的特点</span></h2>
             <p><span>下面我们来看看Redis的主从架构特点：</span></p>
             <ul>
-                <li><strong><span>主</span></strong><span>服务器负责接收</span><strong><span>写</span></strong><span>请求</span></li>
-                <li><strong><span>从</span></strong><span>服务器负责接收</span><strong><span>读</span></strong><span>请求</span></li>
-                <li><span>从服务器的数据由主服务器</span><strong><span>复制</span></strong><span>过去。主从服务器的数据是</span><strong><span>一致</span></strong><span>的</span></li>
+                <li><strong><span>主</span></strong><span>服务器负责接收</span><strong><span>写</span></strong><span>请求</span>
+                </li>
+                <li><strong><span>从</span></strong><span>服务器负责接收</span><strong><span>读</span></strong><span>请求</span>
+                </li>
+                <li>
+                    <span>从服务器的数据由主服务器</span><strong><span>复制</span></strong><span>过去。主从服务器的数据是</span><strong><span>一致</span></strong><span>的</span>
+                </li>
 
             </ul>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzY9Kqt3bnM4PNALGwgj56NKOE3iaRoaWujgPAgkDFpKEwTxSOCjibrlD5w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='主从架构特点' referrerPolicy='no-referrer' /><span>主从架构特点</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzY9Kqt3bnM4PNALGwgj56NKOE3iaRoaWujgPAgkDFpKEwTxSOCjibrlD5w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='主从架构特点' referrerPolicy='no-referrer'/><span>主从架构特点</span></p>
             <p><span>主从架构的</span><strong><span>好处</span></strong><span>：</span></p>
             <ul>
                 <li><span>读写分离(主服务器负责写，从服务器负责读)</span></li>
@@ -95,14 +112,21 @@
 
             </ul>
             <p><span>主从架构除了上面的形式，也有下面这种的(只不过用得比较少)：</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYn17yEBcp9tSagay2Gj2wbhqsaibWByuicPtWo7pviaGbfvHuRGSbic9Qgg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='从服务器又挂着从服务器' referrerPolicy='no-referrer' /><span>从服务器又挂着从服务器</span></p>
-            <h1 data-breakpage><a name="header-n187" class="md-header-anchor md-print-anchor" href="af://n187"> </a><span>二、复制功能</span></h1>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYn17yEBcp9tSagay2Gj2wbhqsaibWByuicPtWo7pviaGbfvHuRGSbic9Qgg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='从服务器又挂着从服务器' referrerPolicy='no-referrer'/><span>从服务器又挂着从服务器</span></p>
+            <h1 data-breakpage><a name="header-n187" class="md-header-anchor md-print-anchor"
+                                  href="af://n187"> </a><span>二、复制功能</span></h1>
             <p><span>主从架构的特点之一：主服务器和从服务器的数据是</span><strong><span>一致</span></strong><span>的。</span></p>
             <p><span>因为主服务器是能接收写请求的，主服务器处理完写请求，会做什么来保证主从数据的一致性呢？如果主从服务器断开了，过一阵子才重连，又会怎么处理呢？下面将会了解到这些细节~</span></p>
-            <blockquote><p><span>在Redis中，用户可以通过执行SALVEOF命令或者设置salveof选项，让一个服务器去复制(replicate)另一个服务器，我们称呼被复制的服务器为主服务器(master)，而对主服务器进行复制的服务器则被称为从服务器(salve)</span></p>
+            <blockquote><p><span>在Redis中，用户可以通过执行SALVEOF命令或者设置salveof选项，让一个服务器去复制(replicate)另一个服务器，我们称呼被复制的服务器为主服务器(master)，而对主服务器进行复制的服务器则被称为从服务器(salve)</span>
+            </p>
             </blockquote>
-            <p><img src='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' alt='复制' referrerPolicy='no-referrer' /><span>复制</span></p>
-            <h2><a name="header-n193" class="md-header-anchor md-print-anchor" href="af://n193"> </a><span>2.1复制功能的具体实现</span></h2>
+            <p>
+                <img src='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
+                     alt='复制' referrerPolicy='no-referrer'/><span>复制</span></p>
+            <h2><a name="header-n193" class="md-header-anchor md-print-anchor"
+                   href="af://n193"> </a><span>2.1复制功能的具体实现</span></h2>
             <p><span>复制功能分为两个操作：</span></p>
             <ul>
                 <li><p><span>同步(sync)</span></p>
@@ -114,21 +138,32 @@
                 <li><p><span>命令传播(command propagate)</span></p>
                 </li>
                 <ul>
-                    <li><span>主服务器的数据库状态</span><strong><span>被修改</span></strong><span>，导致主从服务器的数据库状态</span><strong><span>不一致</span></strong><span>，让主从服务器的数据库状态</span><strong><span>重新回到一致状态</span></strong><span>。</span></li>
+                    <li>
+                        <span>主服务器的数据库状态</span><strong><span>被修改</span></strong><span>，导致主从服务器的数据库状态</span><strong><span>不一致</span></strong><span>，让主从服务器的数据库状态</span><strong><span>重新回到一致状态</span></strong><span>。</span>
+                    </li>
 
                 </ul>
 
             </ul>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYHVLR38XVOOG2lKfiaBFNHN4q3lVKuzlSDGFVSdNFgouHkrjmqiat2HkA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='主从数据一致性' referrerPolicy='no-referrer' /><span>主从数据一致性</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYHVLR38XVOOG2lKfiaBFNHN4q3lVKuzlSDGFVSdNFgouHkrjmqiat2HkA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='主从数据一致性' referrerPolicy='no-referrer'/><span>主从数据一致性</span></p>
             <p><span>从服务器对主服务器的</span><strong><span>同步又可以分为两种情况</span></strong><span>：</span></p>
             <ul>
-                <li><span>初次同步：从服务器</span><strong><span>没有复制过任何</span></strong><span>的主服务器，或者从服务器要复制的主服务器跟上次复制的主服务器</span><strong><span>不一样</span></strong><span>。</span></li>
-                <li><span>断线后同步：处于</span><strong><span>命令传播阶段</span></strong><span>的主从服务器因为</span><strong><span>网络原因</span></strong><span>中断了复制，从服务器通过</span><strong><span>自动重连</span></strong><span>重新连接主服务器，并继续复制主服务器</span></li>
+                <li>
+                    <span>初次同步：从服务器</span><strong><span>没有复制过任何</span></strong><span>的主服务器，或者从服务器要复制的主服务器跟上次复制的主服务器</span><strong><span>不一样</span></strong><span>。</span>
+                </li>
+                <li>
+                    <span>断线后同步：处于</span><strong><span>命令传播阶段</span></strong><span>的主从服务器因为</span><strong><span>网络原因</span></strong><span>中断了复制，从服务器通过</span><strong><span>自动重连</span></strong><span>重新连接主服务器，并继续复制主服务器</span>
+                </li>
 
             </ul>
-            <p><span>在Redis2.8以前，断线后复制这部分其实缺少的只是</span><strong><span>部分的数据</span></strong><span>，但是要让主从服务器</span><strong><span>重新执行SYNC命令</span></strong><span>，这样的做法是非常低效的。(因为执行SYNC命令是把</span><strong><span>所有的数据</span></strong><span>再次同步，而不是只同步丢失的数据)</span></p>
+            <p>
+                <span>在Redis2.8以前，断线后复制这部分其实缺少的只是</span><strong><span>部分的数据</span></strong><span>，但是要让主从服务器</span><strong><span>重新执行SYNC命令</span></strong><span>，这样的做法是非常低效的。(因为执行SYNC命令是把</span><strong><span>所有的数据</span></strong><span>再次同步，而不是只同步丢失的数据)</span>
+            </p>
             <p><span>接下来我们来详细看看Redis2.8以后复制功能是怎么实现的：</span></p>
-            <h3><a name="header-n215" class="md-header-anchor md-print-anchor" href="af://n215"> </a><span>2.1.1复制的前置工作</span></h3>
+            <h3><a name="header-n215" class="md-header-anchor md-print-anchor"
+                   href="af://n215"> </a><span>2.1.1复制的前置工作</span></h3>
             <p><span>首先我们来看一下</span><strong><span>前置的工作</span></strong><span>：</span></p>
             <ul>
                 <li><span>从服务器设置主服务器的IP和端口</span></li>
@@ -138,23 +173,38 @@
                 <li><span>从服务器给主服务器发送端口的信息，主服务器记录监听的端口</span></li>
 
             </ul>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYBqRh72uVGvQktTCorTYWwKEDGIibCAGjsEleZnujDibT2BwTaadUz7yw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='Redis复制的前置工作' referrerPolicy='no-referrer' /><span>Redis复制的前置工作</span></p>
-            <p><span>前面也提到了，Redis2.8之前，断线后同步会重新执行SYNC命令，这是非常</span><strong><span>低效</span></strong><span>的。下面我们来看一下Redis2.8之后是怎么进行同步的。</span></p>
-            <blockquote><p><span>Redis从2.8版本开始，使用PSYNC命令来</span><strong><span>替代</span></strong><span>SYNC命令执行复制时同步的操作。</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYBqRh72uVGvQktTCorTYWwKEDGIibCAGjsEleZnujDibT2BwTaadUz7yw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='Redis复制的前置工作' referrerPolicy='no-referrer'/><span>Redis复制的前置工作</span></p>
+            <p><span>前面也提到了，Redis2.8之前，断线后同步会重新执行SYNC命令，这是非常</span><strong><span>低效</span></strong><span>的。下面我们来看一下Redis2.8之后是怎么进行同步的。</span>
+            </p>
+            <blockquote><p>
+                <span>Redis从2.8版本开始，使用PSYNC命令来</span><strong><span>替代</span></strong><span>SYNC命令执行复制时同步的操作。</span></p>
             </blockquote>
-            <p><span>PSYNC命令具有</span><strong><span>完整</span></strong><span>重同步和</span><strong><span>部分</span></strong><span>重同步两种模式(其实就跟上面所说的初次复制和断线后复制差不多个意思)。</span></p>
-            <h3><a name="header-n233" class="md-header-anchor md-print-anchor" href="af://n233"> </a><span>2.1.2完整重同步</span></h3>
+            <p>
+                <span>PSYNC命令具有</span><strong><span>完整</span></strong><span>重同步和</span><strong><span>部分</span></strong><span>重同步两种模式(其实就跟上面所说的初次复制和断线后复制差不多个意思)。</span>
+            </p>
+            <h3><a name="header-n233" class="md-header-anchor md-print-anchor"
+                   href="af://n233"> </a><span>2.1.2完整重同步</span></h3>
             <p><span>下面先来看看</span><strong><span>完整</span></strong><span>重同步是怎么实现的：</span></p>
             <ul>
                 <li><span>从服务器向主服务器发送PSYNC命令</span></li>
-                <li><span>收到PSYNC命令的主服务器执行BGSAVE命令，在后台</span><strong><span>生成一个RDB文件</span></strong><span>。并用一个</span><strong><span>缓冲区</span></strong><span>来记录从现在开始执行的所有</span><strong><span>写命令</span></strong><span>。</span></li>
-                <li><span>当主服务器的BGSAVE命令执行完后，将生成的RDB文件发送给从服务器，</span><strong><span>从服务器接收和载入RBD文件</span></strong><span>。将自己的数据库状态更新至与主服务器执行BGSAVE命令时的状态。</span></li>
-                <li><span>主服务器将所有缓冲区的</span><strong><span>写命令发送给从服务器</span></strong><span>，从服务器执行这些写命令，达到数据最终一致性。</span></li>
+                <li>
+                    <span>收到PSYNC命令的主服务器执行BGSAVE命令，在后台</span><strong><span>生成一个RDB文件</span></strong><span>。并用一个</span><strong><span>缓冲区</span></strong><span>来记录从现在开始执行的所有</span><strong><span>写命令</span></strong><span>。</span>
+                </li>
+                <li><span>当主服务器的BGSAVE命令执行完后，将生成的RDB文件发送给从服务器，</span><strong><span>从服务器接收和载入RBD文件</span></strong><span>。将自己的数据库状态更新至与主服务器执行BGSAVE命令时的状态。</span>
+                </li>
+                <li><span>主服务器将所有缓冲区的</span><strong><span>写命令发送给从服务器</span></strong><span>，从服务器执行这些写命令，达到数据最终一致性。</span>
+                </li>
 
             </ul>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYXRvF29LQqXtRMA15zPUsibDpAaDzuqkhibzkwn3TwJQ71JlHqvfOia7Ow/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='完整重同步' referrerPolicy='no-referrer' /><span>完整重同步</span></p>
-            <h3><a name="header-n245" class="md-header-anchor md-print-anchor" href="af://n245"> </a><span>2.1.2部分重同步</span></h3>
-            <p><span>接下来我们来看看</span><strong><span>部分</span></strong><span>重同步，部分重同步可以让我们断线后重连</span><strong><span>只需要同步缺失的数据</span></strong><span>(而不是Redis2.8之前的同步全部数据)，这是符合逻辑的！</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYXRvF29LQqXtRMA15zPUsibDpAaDzuqkhibzkwn3TwJQ71JlHqvfOia7Ow/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='完整重同步' referrerPolicy='no-referrer'/><span>完整重同步</span></p>
+            <h3><a name="header-n245" class="md-header-anchor md-print-anchor"
+                   href="af://n245"> </a><span>2.1.2部分重同步</span></h3>
+            <p><span>接下来我们来看看</span><strong><span>部分</span></strong><span>重同步，部分重同步可以让我们断线后重连</span><strong><span>只需要同步缺失的数据</span></strong><span>(而不是Redis2.8之前的同步全部数据)，这是符合逻辑的！</span>
+            </p>
             <p><span>部分重同步功能由以下部分组成：</span></p>
             <ul>
                 <li><span>主从服务器的</span><strong><span>复制偏移量</span></strong></li>
@@ -170,16 +220,26 @@
 
             </ul>
             <p><span>通过</span><strong><span>对比主从复制的偏移量</span></strong><span>，就很容易知道主从服务器的数据是否处于一致性的状态！</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYpILEleTn1tctRfXcianicheNcbk43o1bWMZh0qDjjHGEIbMyyAlb9xNA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='复制偏移量' referrerPolicy='no-referrer' /><span>复制偏移量</span></p>
-            <p><span>那断线重连以后，从服务器向主服务器发送PSYNC命令，报告现在的偏移量是36，那么主服务器该对从服务器执行完整重同步还是部分重同步呢？？这就交由</span><strong><span>复制积压缓冲区</span></strong><span>来决定。</span></p>
-            <p><span>当主服务器进行命令传播时，不仅仅会将写命令发送给所有的从服务器，还会将写命令</span><strong><span>入队到复制积压缓冲区</span></strong><span>里面(这个大小可以调的)。如果复制积压缓冲区</span><strong><span>存在</span></strong><span>丢失的偏移量的数据，那就执行部分重同步，否则执行完整重同步。</span></p>
-            <p><span>服务器运行的ID(</span><strong><span>run ID</span></strong><span>)实际上就是用来比对ID是否相同。如果不相同，则说明从服务器断线之前复制的主服务器和当前连接的主服务器是两台服务器，这就会进行完整重同步。</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYpILEleTn1tctRfXcianicheNcbk43o1bWMZh0qDjjHGEIbMyyAlb9xNA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='复制偏移量' referrerPolicy='no-referrer'/><span>复制偏移量</span></p>
+            <p><span>那断线重连以后，从服务器向主服务器发送PSYNC命令，报告现在的偏移量是36，那么主服务器该对从服务器执行完整重同步还是部分重同步呢？？这就交由</span><strong><span>复制积压缓冲区</span></strong><span>来决定。</span>
+            </p>
+            <p><span>当主服务器进行命令传播时，不仅仅会将写命令发送给所有的从服务器，还会将写命令</span><strong><span>入队到复制积压缓冲区</span></strong><span>里面(这个大小可以调的)。如果复制积压缓冲区</span><strong><span>存在</span></strong><span>丢失的偏移量的数据，那就执行部分重同步，否则执行完整重同步。</span>
+            </p>
+            <p><span>服务器运行的ID(</span><strong><span>run ID</span></strong><span>)实际上就是用来比对ID是否相同。如果不相同，则说明从服务器断线之前复制的主服务器和当前连接的主服务器是两台服务器，这就会进行完整重同步。</span>
+            </p>
             <p><span>所以流程大概如此：</span></p>
-            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYpD7lobZpNv0oPdGKA5Fcw6dJp3SGLl8ibFXicLJk34YogtJ4EwemK0tA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='同步的流程' referrerPolicy='no-referrer' /><span>同步的流程</span></p>
-            <h3><a name="header-n269" class="md-header-anchor md-print-anchor" href="af://n269"> </a><span>2.1.3命令传播</span></h3>
-            <blockquote><p><span>当完成了同步之后，主从服务器就会进入命令传播阶段。这时主服务器只要将自己的写命令发送给从服务器，而从服务器接收并执行主服务器发送过来的写命令，就可以保证主从服务器一直保持数据一致了！</span></p>
+            <p>
+                <img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3ZO9Sp7eLYY6pHbicfkMlzYpD7lobZpNv0oPdGKA5Fcw6dJp3SGLl8ibFXicLJk34YogtJ4EwemK0tA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1'
+                     alt='同步的流程' referrerPolicy='no-referrer'/><span>同步的流程</span></p>
+            <h3><a name="header-n269" class="md-header-anchor md-print-anchor"
+                   href="af://n269"> </a><span>2.1.3命令传播</span></h3>
+            <blockquote><p><span>当完成了同步之后，主从服务器就会进入命令传播阶段。这时主服务器只要将自己的写命令发送给从服务器，而从服务器接收并执行主服务器发送过来的写命令，就可以保证主从服务器一直保持数据一致了！</span>
+            </p>
             </blockquote>
-            <p><span>在命令传播阶段，从服务器默认会以每秒一次的频率，向服务器发送命令</span><code>REPLCONF ACK &lt;replication_offset&gt;</code><span> 其中replication_offset是从服务器当前的复制偏移量</span></p>
+            <p><span>在命令传播阶段，从服务器默认会以每秒一次的频率，向服务器发送命令</span><code>REPLCONF ACK &lt;replication_offset&gt;</code><span> 其中replication_offset是从服务器当前的复制偏移量</span>
+            </p>
             <p><span>发送这个命令主要有三个作用：</span></p>
             <ul>
                 <li><strong><span>检测主从服务器的网络状态</span></strong></li>
@@ -187,9 +247,11 @@
                 <li><span>检测命令丢失</span></li>
 
             </ul>
-            <h1 data-breakpage><a name="header-n281" class="md-header-anchor md-print-anchor" href="af://n281"> </a><span>五、最后</span></h1>
+            <h1 data-breakpage><a name="header-n281" class="md-header-anchor md-print-anchor"
+                                  href="af://n281"> </a><span>五、最后</span></h1>
             <p><span>画了好久好久的图，终于写完啦。</span></p>
-            <blockquote><p><span>抛个问题：如果从服务器挂了，没关系，我们一般会有多个从服务器，其他的请求可以交由没有挂的从服务器继续处理。如果主服务器挂了，怎么办？因为我们的写请求由主服务器处理，只有一台主服务器，那就无法处理写请求了？</span></p>
+            <blockquote><p><span>抛个问题：如果从服务器挂了，没关系，我们一般会有多个从服务器，其他的请求可以交由没有挂的从服务器继续处理。如果主服务器挂了，怎么办？因为我们的写请求由主服务器处理，只有一台主服务器，那就无法处理写请求了？</span>
+            </p>
             </blockquote>
             <p><span>问题留到下篇解决~~</span></p>
             <p><span>参考资料：</span></p>
@@ -232,6 +294,12 @@
 <script src="/js/main.js"></script>
 <script async src=""></script>
 <script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        console.log(imgArr);
+        if (imgArr[i].width > 500) imgArr[i].width = 500;
+        if (imgArr[i].height > 350) imgArr[i].height = 350;
+    }
     var ga = document.createElement('script');
     var curProtocol = window.location.protocol.split(':')[0];
     ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
@@ -252,8 +320,7 @@
     var curProtocol = window.location.protocol.split(':')[0];
     if (curProtocol === 'https') {
         bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-    }
-    else {
+    } else {
         bp.src = 'http://push.zhanzhang.baidu.com/push.js';
     }
     var s = document.getElementsByTagName("script")[0];
