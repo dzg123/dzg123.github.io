@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">https之什么是非对称秘钥和CA证书</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-10</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Https</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h3><a name="header-n102" class="md-header-anchor md-print-anchor" href="af://n102"> </a><span>方案1——单纯用“对称加密算法”的可行性</span></h3>
+            <p><span>首先简单阐述一下，“单纯用对称加密”为啥是【不可行】滴。</span></p>
+            <p><span>如果“单纯用对称加密”，浏览器和网站之间势必先要交换“对称加密的密钥”。</span></p>
+            <p><span>如果这个密钥直接用【明文】传输，很容易就会被第三方（有可能是“攻击者”）偷窥到；如果这个密钥用密文传输，那就再次引入了“如何交换加密密钥”的问题——这就变成“先有鸡还是先有蛋”的循环逻辑了。</span></p>
+            <p><span>所以，【单纯用】对称加密，是没戏滴。</span></p>
+            <h3><a name="header-n107" class="md-header-anchor md-print-anchor" href="af://n107"> </a><span>方案2——单纯用“非对称加密算法”的风险</span></h3>
+            <p><span>说完“对称加密”，再来说说“非对称加密”。</span></p>
+            <p><span>在前面的“</span><a href='https://program-think.blogspot.com/2014/11/https-ssl-tls-1.html'><span>背景知识</span></a><span>”中，已经大致介绍过“非对称加密”的特点——“加密和解密采用不同的密钥”。基于这个特点，可以避开前面提到的“循环逻辑”的困境。大致的步骤如下：</span></p>
+            <blockquote><p><span>第1步 </span>
+                <span>网站服务器先基于“非对称加密算法”，随机生成一个“密钥对”（为叙述方便，称之为“k1 和 k2”）。因为是随机生成的，目前为止，只有网站服务器才知道 k1 和 k2。</span></p>
+                <p><span>第2步 </span>
+                    <span>网站把 k1 保留在自己手中，把 k2 用【明文】的方式发送给访问者的浏览器。 </span>
+                    <span>因为 k2 是明文发送的，自然有可能被偷窥。不过不要紧。即使偷窥者拿到 k2，也【很难】根据 k2 推算出 k1 </span>
+                    <span>（这一点是由“非对称加密算法”从数学上保证的）。</span></p>
+                <p><span>第3步 </span>
+                    <span>浏览器拿到 k2 之后，先【随机生成】第三个对称加密的密钥（简称 k）。 </span>
+                    <span>然后用 k2 加密 k，得到 k’（k’ 是 k 的加密结果） </span>
+                    <span>浏览器把 k’ 发送给网站服务器。</span></p>
+                <p><span>由于 k1 和 k2 是成对的，所以只有 k1 才能解密 k2 的加密结果。 </span>
+                    <span>因此这个过程中，即使被第三方偷窥，第三方也【无法】从 k’ 解密得到 k</span></p>
+                <p><span>第4步 </span>
+                    <span>网站服务器拿到 k’ 之后，用 k1 进行解密，得到 k </span>
+                    <span>至此，浏览器和网站服务器就完成了密钥交换，双方都知道 k，而且【貌似】第三方无法拿到 k </span>
+                    <span>然后，双方就可以用 k 来进行数据双向传输的加密。</span></p>
+            </blockquote>
+            <p><span>现在，给大伙儿留一个思考时间——你觉得上述过程是否严密？如果不严密，漏洞在哪里？</span></p>
+            <p><span>建</span></p>
+            <p><span>议</span></p>
+            <p><span>你</span></p>
+            <p><span>思</span></p>
+            <p><span>考</span></p>
+            <p><span>一</span></p>
+            <p><span>柱</span></p>
+            <p><span>香</span></p>
+            <p><span>的</span></p>
+            <p><span>时</span></p>
+            <p><span>间</span></p>
+            <p><span>，</span></p>
+            <p><span>再</span></p>
+            <p><span>来</span></p>
+            <p><span>看</span></p>
+            <p><span>答</span></p>
+            <p><span>案</span></p>
+            <p><span>OK，现在俺来揭晓答案。“方案2”依然是不安全滴——虽然“方案2”可以在一定程度上防止网络数据的【偷窥/嗅探】，但是【无法】防范网络数据的【篡改】。</span></p>
+            <p><span>假设有一个攻击者处于“浏览器”和“网站服务器”的通讯线路之间，并且这个攻击者具备“修改双方传输数据”的能力。那么，这个攻击者就可以攻破“方案2”。具体的攻击过程如下：</span></p>
+            <blockquote><p><span>第1步 </span>
+                <span>这一步跟原先一样——服务器先随机生成一个“非对称的密钥对”k1 和 k2（此时只有网站知道 k1 和 k2）</span></p>
+                <p><span>第2步 </span>
+                    <span>当网站发送 k2 给浏览器的时候，攻击者截获 k2，保留在自己手上。 </span>
+                    <span>然后攻击者自己生成一个【伪造的】密钥对（以下称为 pk1 和 pk2）。 </span>
+                    <span>攻击者把 pk2 发送给浏览器。</span></p>
+                <p><span>第3步 </span>
+                    <span>浏览器收到 pk2，以为 pk2 就是网站发送的。 </span>
+                    <span>浏览器不知情，依旧随机生成一个对称加密的密钥 k，然后用 pk2 加密 k，得到密文的 k’ </span>
+                    <span>浏览器把 k’ 发送给网站。 </span>
+                    <span>（以下是关键） </span>
+                    <span>发送的过程中，再次被攻击者截获。 </span>
+                    <span>因为 pk1 pk2 都是攻击者自己生成的，所以攻击者自然就可以用 pk1 来解密 k’ 得到 k </span>
+                    <span>然后，攻击者拿到 k 之后，用之前截获的 k2 重新加密，得到 k”，并把 k” 发送给网站。</span></p>
+                <p><span>第4步 </span>
+                    <span>网站服务器收到了 k” 之后，用自己保存的 k1 可以正常解密，所以网站方面不会起疑心。 </span>
+                    <span>至此，攻击者完成了一次漂亮的偷梁换柱，而且让双方都没有起疑心。</span></p>
+            </blockquote>
+            <p><span>上述过程，也就是传说中大名鼎鼎的“中间人攻击”。洋文叫做“Man-In-The-Middle attack”。缩写是 MITM。</span></p>
+            <p><span>“中间人攻击”有很多种“类型”，刚才演示的是针对“【单纯的】非对称加密”的中间人攻击。至于“中间人攻击”的其它类型，俺在本系列的后续博文中，还会再提到。</span></p>
+            <p><span>为了更加形象，补充两张示意图，分别对应“偷窥模式”和“中间人模式”。让你更直观地体会两者的差异。</span></p>
+            <p><img src='https://img-blog.csdn.net/20160122190903349' alt='这里写图片描述' referrerPolicy='no-referrer' /></p>
+            <p><img src='https://img-blog.csdn.net/20160122190919225' alt='不见图 请翻墙' referrerPolicy='no-referrer' /></p>
+            <h3><a name="header-n146" class="md-header-anchor md-print-anchor" href="af://n146"> </a><span>方案2失败的根源——缺乏【可靠的】身份认证</span></h3>
+            <p><span>为啥“方案2”会失败？</span></p>
+            <p><span>除了俺在图中提到的“攻击者具备篡改数据的能力”，还有另一点关键点——“方案2缺乏身份认证机制”。</span></p>
+            <p><span>正是因为“缺乏身份认证机制”，所以当攻击者一开始截获 k2 并把自己伪造的 pk2 发送给浏览器时，浏览器无法鉴别：自己收到的密钥是不是真的来自于网站服务器。</span></p>
+            <p><span>假如具备某种【可靠的】身份认证机制，即使攻击者能够篡改数据，但是篡改之后的数据很容易被识破。那篡改也就失去了意义。</span></p>
+            <h3><a name="header-n151" class="md-header-anchor md-print-anchor" href="af://n151"> </a><span>身份认证的几种方式</span></h3>
+            <p><span>下面，俺来介绍几种常见的“身份认证原理”。</span></p>
+            <h4><a name="header-n153" class="md-header-anchor md-print-anchor" href="af://n153"> </a><span>基于某些“私密的共享信息”</span></h4>
+            <p><span>为了解释“私密的共享信息”这个概念，咱们先抛开“信息安全”，谈谈日常生活中的某个场景。</span></p>
+            <p><span>假设你有一个久未联系的老朋友。因为时间久远，你已经没有此人的联系方式了。某天，此人突然给你发了一封电子邮件。</span></p>
+            <p><span>那么，你如何确保——发邮件的人确实是你的老朋友捏？</span></p>
+            <p><span>有一个办法就是：你用邮件向对方询问某个私密的事情（这个事情只有你和你的这个朋友知道，其他人不知道）。如果对方能够回答出来，那么对方【很有可能】确实是你的老朋友。</span></p>
+            <p><span>从这个例子可以看出，如果通讯双方具有某些“私密的共享信息”（只有双方知道，第三方不知道），就能以此为基础，进行身份认证，从而建立信任。</span></p>
+            <h4><a name="header-n159" class="md-header-anchor md-print-anchor" href="af://n159"> </a><span>基于双方都信任的“公证人”</span></h4>
+            <p><span>“私密的共享信息”，通常需要双方互相比较熟悉，才行得通。如果双方本来就互不相识，如何进行身份认证以建立信任关系捏？</span></p>
+            <p><span>这时候还有另一个办法——依靠双方都信任的某个“公证人”来建立信任关系。</span></p>
+            <p><span>如今 C2C 模式的电子商务，其实用的就是这种方式——由电商平台充当公证人，让买家与卖家建立某种程度的信任关系。</span></p>
+            <p><span>考虑到如今的网购已经相当普及，大伙儿应该对这类模式很熟悉吧。所以俺就不浪费口水了。</span></p>
+            <h3><a name="header-n164" class="md-header-anchor md-print-anchor" href="af://n164"> </a><span>如何解决 SSL 的身份认证问题——CA 的引入</span></h3>
+            <p><span>说完身份认证的方式/原理，再回到 SSL/TLS 的话题上。</span></p>
+            <p><span>对于 SSL/TLS 的应用场景，由于双方（“浏览器”和“网站服务器”）通常都是互不相识的，显然不可能采用第一种方式（私密的共享信息），而只能采用第二种方式（依赖双方都信任的“公证人”）。</span></p>
+            <p><span>那么，谁来充当这个公证人捏？这时候，CA 就华丽地登场啦。</span></p>
+            <p><span>所谓的 CA，就是“数字证书认证机构”的缩写，洋文全称叫做“Certificate Authority”。关于 CA 以及 CA 颁发的“CA 证书”，俺已经写过一篇教程：</span><a href='https://program-think.blogspot.com/2010/02/introduce-digital-certificate-and-ca.html'><span>《数字证书及CA的扫盲介绍》</span></a><span>，介绍其基本概念和功能。所以，此处就不再重复唠叨了。</span></p>
+            <p><span>如果你看完那篇 CA 的扫盲，你自然就明白——CA 完全有资格和能力，充当这个“公证人”的角色。</span></p>
+            <h3><a name="header-n170" class="md-header-anchor md-print-anchor" href="af://n170"> </a><span>方案3——基于 CA 证书进行密钥交换</span></h3>
+            <p><span>其实“方案3”跟“方案2”很像的，主要差别在于——“方案3”增加了“CA 数字证书”这个环节。所谓的数字证书，技术上依赖的还是前面提到的“非对称加密”。为了描述“CA 证书”在 SSL/TLS 中的作用，俺大致说一下原理（仅仅是原理，具体的技术实现要略复杂些）：</span></p>
+            <blockquote><p><span>第1步（这是“一次性”的准备工作） </span>
+                <span>网站方面首先要花一笔银子，在某个 CA 那里购买一个数字证书。 </span>
+                <span>该证书通常会对应几个文件：其中一个文件包含公钥，还有一个文件包含私钥。 </span>
+                <span>此处的“私钥”，相当于“方案2”里面的 k1；而“公钥”类似于“方案2”里面的 k2。 </span>
+                <span>网站方面必须在 Web 服务器上部署这两个文件。</span></p>
+                <p><span>所谓的“公钥”，顾名思义就是可以公开的 key；而所谓的“私钥”就是私密的 key。 </span>
+                    <span>其实前面已经说过了，这里再唠叨一下：</span></p>
+                <p><span>“非对称加密算法”从数学上确保了——即使你知道某个公钥，也很难（不是不可能，是很难）根据此公钥推导出对应的私钥。</span></p>
+                <p><span>第2步 </span>
+                    <span>当浏览器访问该网站，Web 服务器首先把包含公钥的证书发送给浏览器。</span></p>
+                <p><span>第3步 </span>
+                    <span>浏览器验证网站发过来的证书。如果发现其中有诈，浏览器会提示“CA 证书安全警告”。 </span>
+                    <span>由于有了这一步，就大大降低了（注意：是“大大降低”，而不是“彻底消除”）前面提到的“中间人攻击”的风险。</span></p>
+                <p><span>为啥浏览器能发现 CA 证书是否有诈？ </span>
+                    <span>因为正经的 CA 证书，都是来自某个权威的 CA。如果某个 CA 足够权威，那么主流的操作系统（或浏览器）会内置该 CA 的“根证书”。（比如 Windows 中就内置了几十个权威 CA 的根证书） </span>
+                    <span>因此，浏览器就可以利用系统内置的根证书，来判断网站发过来的 CA 证书是不是某个 CA 颁发的。 </span>
+                    <span>（关于“根证书”和“证书信任链”的概念，请参见之前的教程</span><a href='https://program-think.blogspot.com/2010/02/introduce-digital-certificate-and-ca.html'><span>《数字证书及CA的扫盲介绍》</span></a><span>）</span></p>
+                <p><span>第4步 </span>
+                    <span>如果网站发过来的 CA 证书没有问题，那么浏览器就从该 CA 证书中提取出“公钥”。 </span>
+                    <span>然后浏览器随机生成一个“对称加密的密钥”（以下称为 k）。用 CA 证书的公钥加密 k，得到密文 k’ </span>
+                    <span>浏览器把 k’ 发送给网站。</span></p>
+                <p><span>第5步 </span>
+                    <span>网站收到浏览器发过来的 k’，用服务器上的私钥进行解密，得到 k。 </span>
+                    <span>至此，浏览器和网站都拥有 k，“密钥交换”大功告成啦。</span></p>
+            </blockquote>
+            <h3><a name="header-n181" class="md-header-anchor md-print-anchor" href="af://n181"> </a><span>关于“客户端证书”</span></h3>
+            <p><span>前面介绍的“方案3”仅仅使用了“服务端证书”——通过服务端证书来确保服务器不是假冒的。</span></p>
+            <p><span>除了“服务端证书”，在某些场合中还会涉及到“客户端证书”。所谓的“客户端证书”就是用来证明客户端（浏览器端）访问者的身份。</span></p>
+            <p><span>比如在某些金融公司的内网，你的电脑上必须部署“客户端证书”，才能打开重要服务器的页面。</span></p>
+            <p><span>由于本文主要介绍的是【公网】上的场景，这种场景下大都【不需要】“客户端证书”。所以，对“客户端证书”这个话题，俺就偷个懒，略过不提。</span></p>
+            <h3><a name="header-n186" class="md-header-anchor md-print-anchor" href="af://n186"> </a><span>结尾</span></h3>
+            <p><span>可能有同学会问：那么“方案3”是否就足够严密，无懈可击了捏？</span></p>
+            <p><span>俺只能说，“方案3”【从理论上讲】没有明显的漏洞。目前的 SSL/TLS 大致采用的就是这个方案。</span></p>
+            <p><span>但是，“理论”一旦落实到“实践”，往往是有差距滴，会引出新的问题。套用某 IT 大牛的名言，就是：In theory, there is no difference between theory and practice. But in practice, there is.</span></p>
+            <p><span>所以在本系列的后续博文，俺还会再来介绍“针对 SSL/TLS 的种种攻击方式”以及“对应的防范措施”。</span></p>
+            <p><span>下一篇，打算大致说一下“协议的实现”。</span></p>
+            <h2><a name="header-n192" class="md-header-anchor md-print-anchor" href="af://n192"> </a><span>版权声明</span></h2>
+            <p><span>本博客所有的原创文章，作者皆保留版权。转载必须包含本声明，保持本文完整，并以超链接形式注明作者</span><a href='https://program-think.blogspot.com/'><span>编程随想</span></a><span>和本文原始地址：</span></p>
+            <p><span>[扫盲 HTTPS 和 SSL/TLS 协议</span><a href='https://program-think.blogspot.com/2014/11/https-ssl-tls-0.html#index'><span>0</span><span>]</span><span>：引子 @ 编程随想的博客</span></a></p>
+            <p><span>[扫盲 HTTPS 和 SSL/TLS 协议</span><a href='https://program-think.blogspot.com/2014/11/https-ssl-tls-1.html'><span>1</span><span>]</span><span>：背景知识、协议的需求、设计的难点 @ 编程随想的博客</span></a></p>
+            <p><span>[扫盲 HTTPS 和 SSL/TLS 协议</span><a href='https://program-think.blogspot.com/2014/11/https-ssl-tls-2.html'><span>2</span><span>]</span><span>：可靠密钥交换的原理 @ 编程随想的博客</span></a></p>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>

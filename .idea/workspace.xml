@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:redis">
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:fix pic size">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/19808jg/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/19808jg/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,15 +21,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19808jg/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="298" column="51" selection-start-line="298" selection-start-column="51" selection-end-line="298" selection-end-column="51" />
-              <folding>
-                <element signature="e#7223#7347#0" expanded="true" />
-                <element signature="e#14333#14337#0" expanded="true" />
-                <element signature="e#14355#14359#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="236">
+              <caret line="95" column="69" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -77,7 +72,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19529sk/index.html" />
         <option value="$PROJECT_DIR$/blog/19601xj/index.html" />
         <option value="$PROJECT_DIR$/blog/19602dl/index.html" />
         <option value="$PROJECT_DIR$/blog/19603lb/index.html" />
@@ -126,8 +120,9 @@
         <option value="$PROJECT_DIR$/blog/19727cc/index.html" />
         <option value="$PROJECT_DIR$/blog/19805jz/index.html" />
         <option value="$PROJECT_DIR$/blog/19808jh/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19808jg/index.html" />
+        <option value="$PROJECT_DIR$/blog/template.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
       </list>
     </option>
   </component>
@@ -341,6 +336,12 @@
               <item name="blog" type="462c0819:PsiDirectoryNode" />
               <item name="19803jg" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19808jh" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -500,21 +501,7 @@
       <workItem from="1564295819853" duration="5252000" />
       <workItem from="1564550550393" duration="592000" />
       <workItem from="1564575573125" duration="2394000" />
-      <workItem from="1565053876125" duration="3375000" />
-    </task>
-    <task id="LOCAL-00074" summary="blog">
-      <created>1555947517878</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1555947517879</updated>
-    </task>
-    <task id="LOCAL-00075" summary="blog">
-      <created>1555947763217</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1555947763217</updated>
+      <workItem from="1565053876125" duration="5781000" />
     </task>
     <task id="LOCAL-00076" summary="blog">
       <created>1556512427152</created>
@@ -845,17 +832,31 @@
       <option name="project" value="LOCAL" />
       <updated>1565241447745</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <task id="LOCAL-00123" summary="add:fix pic size">
+      <created>1565242995899</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1565242995899</updated>
+    </task>
+    <task id="LOCAL-00124" summary="add:fix pic size">
+      <created>1565243965938</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1565243965938</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="157675000" />
+    <option name="totallyTimeSpent" value="160081000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1323752" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -938,7 +939,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="如何创建节约内存的JavaBean和线性排序介绍" />
     <MESSAGE value="分布式事务解决方案" />
     <MESSAGE value="服务端高并发分布式架构演进之路" />
     <MESSAGE value="Java调优" />
@@ -963,7 +963,8 @@
     <MESSAGE value="什么是列式存储？" />
     <MESSAGE value="add:协程" />
     <MESSAGE value="add:redis" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:redis" />
+    <MESSAGE value="add:fix pic size" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:fix pic size" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19602dl/index.html">
@@ -1767,65 +1768,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19808jg/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="302" column="9" lean-forward="true" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/template.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
-          <caret line="50" column="73" lean-forward="true" selection-start-line="50" selection-start-column="73" selection-end-line="50" selection-end-column="73" />
+          <caret line="104" column="56" lean-forward="true" selection-start-line="104" selection-start-column="56" selection-end-line="104" selection-end-column="56" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/19808jh/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
+        <state relative-caret-position="-37">
           <caret line="273" column="93" lean-forward="true" selection-start-line="273" selection-start-column="93" selection-end-line="273" selection-end-column="93" />
-          <folding>
-            <element signature="e#6422#6426#0" expanded="true" />
-            <element signature="e#6438#6444#0" expanded="true" />
-            <element signature="e#6455#6461#0" expanded="true" />
-            <element signature="e#7774#7867#0" expanded="true" />
-            <element signature="e#7990#7994#0" expanded="true" />
-            <element signature="e#14694#14698#0" expanded="true" />
-            <element signature="e#14707#14713#0" expanded="true" />
-            <element signature="e#14718#14724#0" expanded="true" />
-            <element signature="e#14731#14735#0" expanded="true" />
-            <element signature="e#14748#14754#0" expanded="true" />
-            <element signature="e#14759#14765#0" expanded="true" />
-            <element signature="e#14766#14772#0" expanded="true" />
-            <element signature="e#14778#14784#0" expanded="true" />
-            <element signature="e#14785#14791#0" expanded="true" />
-            <element signature="e#14797#14803#0" expanded="true" />
-            <element signature="e#14819#14823#0" expanded="true" />
-            <element signature="e#17190#17194#0" expanded="true" />
-            <element signature="e#17206#17212#0" expanded="true" />
-            <element signature="e#17216#17222#0" expanded="true" />
-            <element signature="e#17223#17229#0" expanded="true" />
-            <element signature="e#17231#17237#0" expanded="true" />
-            <element signature="e#17253#17257#0" expanded="true" />
-            <element signature="e#17269#17275#0" expanded="true" />
-            <element signature="e#17281#17287#0" expanded="true" />
-            <element signature="e#17303#17307#0" expanded="true" />
-            <element signature="e#17319#17325#0" expanded="true" />
-            <element signature="e#17328#17334#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="93" column="101" selection-start-line="93" selection-start-column="91" selection-end-line="93" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19808jg/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="298" column="51" selection-start-line="298" selection-start-column="51" selection-end-line="298" selection-end-column="51" />
-          <folding>
-            <element signature="e#7223#7347#0" expanded="true" />
-            <element signature="e#14333#14337#0" expanded="true" />
-            <element signature="e#14355#14359#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="236">
+          <caret line="95" column="69" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="69" />
         </state>
       </provider>
     </entry>
