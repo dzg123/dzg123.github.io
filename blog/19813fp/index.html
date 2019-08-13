@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Jvm之静态链接、动态链接与分派</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-13</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Jvm</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h3><a name="header-n63" class="md-header-anchor md-print-anchor" href="af://n63"> </a><strong><span>前言</span></strong></h3>
+            <p><span>从接触Java语言的第一天起，往后，我相信你一定听过什么动态链接啊，动态扩展啊，静态链接啊，它和C++相比有哪些优缺点啊… …如果你只是听说而没有探究过他们，也许你现在仍没办法说出Java语言到底有什么优缺点。</span></p>
+            <p><span>我们知道class文件是源代码经过编译后得到的字节码，如果学过编译原理会知道，这个仅仅完成了一半的工作（词法分析、语法分析、语义分析、中间代码生成），接下来就是实际的运行了。而Java选择的是</span><strong><span>动态链接的方式，即用到某个类再加载进内存</span></strong><span>，而不是像C++那样使用</span><strong><span>静态链接：将所有类加载，不论是否使用到</span></strong><span>。当然了，孰优孰劣不好判断。</span><strong><span>静态链接优点在速度，动态链接优点在灵活</span></strong><span>。</span></p>
+            <hr />
+            <h3><a name="header-n67" class="md-header-anchor md-print-anchor" href="af://n67"> </a><strong><span>静态链接</span></strong></h3>
+            <p><span>那么，首先，咱们先来聊聊静态链接。</span></p>
+            <p><span>如上面的概念所述，在C/C++中静态链接就是在编译期将所有类加载并找到他们的直接引用，不论是否使用到。而在Java中我们知道，编译Java程序之后，会得到程序中每一个类或者接口的独立的class文件。虽然独立看上去毫无关联，但是</span><strong><span>他们之间通过接口(harbor)符号互相联系，或者与Java API的class文件相联系</span></strong><span>。</span></p>
+            <p><span>我们之前也讲述了类加载机制中的一个过程—解析，并在其中提到了解析就是将class文件中的一部分符号引用直接解析为直接引用的过程，但是当时我们并没有详细说明这种解析所发生的条件，现在我给大家进行补充：</span></p>
+            <blockquote><p><span>方法在程序真正运行之前就有一个可确定的调用版本，并且这个方法的调用版本在运行期是不可改变的。可以概括为：编译期可知、运行期不可变。</span></p>
+            </blockquote>
+            <p><span>符合上述条件的方法主要包括静态方法和私有方法两大类。前者与类型直接关联，后者在外部不可被访问，这两种方法的特点决定了它们都不可能通过继承或别的方式重写其他版本，因此它们适合在类加载阶段进行解析。</span></p>
+            <p><span>额外补充一点：</span></p>
+            <p><span>在Java虚拟机中提供了5条方法调用字节码指令，其中invokestatic和invokespecial指令调用的方法，都可以在解析阶段中确定唯一的调用版本，符合这个条件的有静态方法、私有方法、实例构造器、父类方法（不知道这是个什么玩意、不重要，先放下）4类。它们在类加载的时候就会把符号引用解析为该方法的直接引用，因此这些方法也被称为</span><strong><span>非虚方法（包括final方法）</span></strong><span>，与之相反的称为</span><strong><span>虚方法</span></strong><span>。</span></p>
+            <p><strong><span>解析调用一定是个静态过程，在编译期间就完全确定，在类加载的解析阶段就会把涉及的符号引用转化为可确定的直接引用，不会延迟到运行期再去完成</span></strong><span>，这也就是Java中的静态链接。</span></p>
+            <hr />
+            <h3><a name="header-n78" class="md-header-anchor md-print-anchor" href="af://n78"> </a><strong><span>动态链接</span></strong></h3>
+            <p><span>上面大概说完了静态链接，那么什么是动态链接、它有什么用？</span></p>
+            <p><span>如上所述，在Class文件中的常量持中存有大量的符号引用。字节码中的方法调用指令就以常量池中指向方法的符号引用作为参数。这些符号引用一部分在类的加载阶段（解析）或第一次使用的时候就转化为了直接引用（指向数据所存地址的指针或句柄等），这种转化称为</span><strong><span>静态链接</span></strong><span>。而相反的，另一部分</span><strong><span>在运行期间转化为直接引用，就称为动态链接</span></strong><span>。</span></p>
+            <p><span>与那些在编译时进行链接的语言不同，Java类型的加载和链接过程都是在运行的时候进行的，这样虽然在类加载的时候稍微增加一些性能开销，但是却能为Java应用程序提供高度的灵活性，Java中</span><strong><span>天生可以动态扩展的语言特性</span></strong><span>就是依赖动态加载和动态链接这个特点实现的。</span></p>
+            <p><span>动态扩展就是在运行期可以动态修改字节码，也就是反射机制与cglib，有兴趣的朋友可以查一下。</span></p>
+            <hr />
+            <h3><a name="header-n84" class="md-header-anchor md-print-anchor" href="af://n84"> </a><strong><span>分派</span></strong></h3>
+            <p><span>我们先不谈分派是什么，先来说说学习分派对你有什么用。</span></p>
+            <p><strong><span>分派会解释多态性特征的一些最基本的体现，如“重载”、“重写”在Java虚拟机中是如何实现的</span></strong><span>，当然这里的实现不是语法上该怎么写，我们关心的是虚拟机如何确定正确的目标方法。</span></p>
+            <hr />
+            <h4><a name="header-n88" class="md-header-anchor md-print-anchor" href="af://n88"> </a><strong><span>静态分派</span></strong></h4>
+            <p><span>这就是刚才不谈分派的原因，分派的概念比较泛，分为静态分派、动态分派、单分派、多分派。我们先来说说静态分派。</span></p>
+            <p><span>来看一下静态分派的概念：</span><strong><span>所有依赖静态类型来定位方法执行版本的分派动作称为静态分派。静态分派的典型应用是方法重载</span></strong><span>。</span></p>
+            <p><span>你应该会对</span><strong><span>静态类型</span></strong><span>这个名词感到疑惑。</span></p>
+            <p><span>再来解释一下：</span></p>
+            <pre><code>Human man = new Man();1
+</code></pre>
+            <p><span>如上代码，Human被称为静态类型，Man被称为实际类型。</span></p>
+            <p><span>再来看一段代码：</span></p>
+            <pre><code>//实际类型变化
+Human man = new Man();
+man = new Woman();
+
+//静态类型变化
+StaticDispatch sr = new StaticDispatch();
+sr.sayHello((Human) man);
+sr.sayHello((Woman) man);12345678
+</code></pre>
+            <p><span>可以看到的静态类型和实际类型都会发生变化，但是有区别：静态类型的变化仅仅在使用时发生，变量本身的静态类型不会被改变，并且最终的静态类型是在</span><strong><span>编译期可知</span></strong><span>的，而实际类型变化的结果在</span><strong><span>运行期才可确定</span></strong><span>。</span></p>
+            <p><span>知道这些东西之后，我给大家贴上完整代码：</span></p>
+            <pre><code>class Human {
+}
+
+class Man extends Human {
+}
+
+class Woman extends Human {
+}
+
+public class StaticDispatch {
+
+    public void sayHello(Human guy) {
+        System.out.println(&quot;hello, guy!&quot;);
+    }
+
+    public void sayHello(Man guy){
+        System.out.println(&quot;hello, gentleman!&quot;);
+    }
+
+    public void sayHello(Woman guy){
+        System.out.println(&quot;hello, lady!&quot;);
+    }
+
+    public static void main(String[] args){
+        Human man = new Man();
+        Human woman = new Woman();
+        StaticDisPatch sr = new StaticDisPatch();
+        sr.sayHello(man);
+        sr.sayHello(woman);
+    }
+}  12345678910111213141516171819202122232425262728293031
+</code></pre>
+            <p><span>运行结果：</span></p>
+            <pre><code class='language-repl' lang='repl'>hello, guy!
+hello, guy!
+123
+</code></pre>
+            <p><span>如上代码与运行结果，在调用 sayHello()方法时，方法的调用者都为sr的前提下，使用哪个重载版本，完全取决于传入参数的数量和数据类型。代码中刻意定义了两个静态类型相同、实际类型不同的变量，可见</span><strong><span>编译器</span></strong><span>（不是虚拟机，因为</span><strong><span>如果是根据静态类型做出的判断，那么在编译期就确定了</span></strong><span>）在重载时是</span><strong><span>通过参数的静态类型而不是实际类型作为判定依据的</span></strong><span>。并且静态类型是编译期可知的，所以在编译阶段，javac 编译器就根据参数的静态类型决定使用哪个重载版本。这就是静态分派最典型的应用。</span></p>
+            <p><span>在静态分派中还有一个</span><strong><span>重载方法匹配优先级</span></strong><span>的问题，因为觉得并不是我要分享的重点，所以在这里我就不贴了，有兴趣的同学可以查阅《深入理解Java虚拟机》第249页或自行百度。</span></p>
+            <hr />
+            <h4><a name="header-n105" class="md-header-anchor md-print-anchor" href="af://n105"> </a><strong><span>动态分派</span></strong></h4>
+            <p><span>动态分派与多态性的另一个重要体现——方法重写有着很紧密的关系。向上转型后调用子类覆写的方法便是一个很好地说明动态分派的例子。这种情况很常见，因此这里不再用示例程序进行分析。很显然，在判断执行父类中的方法还是子类中覆盖的方法时，如果用</span><strong><span>静态类型</span></strong><span>来判断，那么无论怎么进行向上转型，都只会调用父类中的方法，但实际情况是，根据对父类实例化的子类的不同，调用的是不同子类中覆写的方法，很明显，这里是要根据变量的实际类型来分派方法的执行版本。而实际类型的确定需要在程序运行时才能确定下来，这种在运行期根据实际类型确定方法执行版本的分派过程称为动态分派。</span></p>
+            <p><span>关于动态分派与多态实现机制更详细的内容，建议参考博主的另一篇博客：</span><a href='http://blog.csdn.net/championhengyi/article/details/78998821'><span> JVM–从JVM层面深入解析对象实例化、多态性实现机制</span></a></p>
+            <p><span>总结一下静态分派：注意静态类型，编译阶段。动态分派注意局部变量表、操作数栈、invokevirtual指令的解析过程。</span></p>
+            <hr />
+            <h4><a name="header-n110" class="md-header-anchor md-print-anchor" href="af://n110"> </a><strong><span>单分派与多分派</span></strong></h4>
+            <p><span>先给出</span><strong><span>宗量</span></strong><span>的定义：方法的接受者（亦即方法的调用者）与方法的参数统称为方法的宗量。单分派是根据一个宗量对目标方法进行选择，多分派是根据多于一个宗量对目标方法进行选择。</span></p>
+            <p><span>为了方便理解：</span></p>
+            <pre><code>class Eat {
+}
+
+class Drink {
+}
+
+class Father {
+    public void doSomething(Eat arg) {
+        System.out.println(&quot;爸爸在吃饭&quot;);
+    }
+
+    public void doSomething(Drink arg) {
+        System.out.println(&quot;爸爸在喝水&quot;);
+    }
+}
+
+class Child extends Father {
+    public void doSomething(Eat arg) {
+        System.out.println(&quot;儿子在吃饭&quot;);
+    }
+
+    public void doSomething(Drink arg) {
+        System.out.println(&quot;儿子在喝水&quot;);
+    }
+}
+
+public class SingleDoublePai {
+    public static void main(String[] args) {
+        Father father = new Father();
+        Father child = new Child();
+        father.doSomething(new Eat());
+        child.doSomething(new Drink());
+    }
+}  12345678910111213141516171819202122232425262728293031323334
+</code></pre>
+            <p><span>运行结果应该非常容易判断：</span></p>
+            <pre><code>爸爸在吃饭
+儿子在喝水12
+</code></pre>
+            <p><span>我们首先来看编译阶段编译器的选择过程，即静态分派过程。这时候选择目标方法的依据有两点：一是方法的接受者（即调用者）的静态类型是 Father 还是 Child，二是方法参数类型是 Eat 还是 Drink。因为是根据两个宗量进行选择，所以 </span><strong><span>Java 语言的静态分派属于多分派类型</span></strong><span>。</span></p>
+            <p><span>再来看运行阶段虚拟机的选择，即动态分派过程。由于编译期已经了确定了目标方法的参数类型（</span><strong><span>编译期根据参数的静态类型进行静态分派</span></strong><span>），因此唯一可以影响到虚拟机选择的因素只有此方法的接受者的实际类型是 Father 还是 Child。因为只有一个宗量作为选择依据，所以 </span><strong><span>Java 语言的动态分派属于单分派类型</span></strong><span>。</span></p>
+            <p><span>根据以上论证，我们可以总结如下：</span><strong><span>目前的 Java 语言（JDK1.6）是一门静态多分派（方法重载）、动态单分派（方法重写）的语言</span></strong><span>。</span></p>
+            <hr />
+            <h3><a name="header-n120" class="md-header-anchor md-print-anchor" href="af://n120"> </a><strong><span>参考阅读</span></strong></h3>
+            <p><span>《深入理解Java虚拟机》—周志明</span></p>
+            <p><a href='http://ningg.top/understanding-jvm-chapter-7/'><span>Understanding the JVM：虚拟机类加载机制</span></a></p>
+            <p><a href='http://www.360doc.com/content/17/0702/18/43088713_668245796.shtml'><span>JVM-动态链接(Dynamic Linking and Resolution)</span></a></p>
+            <p><a href='http://wiki.jikexueyuan.com/project/java-vm/polymorphism.html'><span>多态性实现机制——静态分派与动态分派</span></a></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
