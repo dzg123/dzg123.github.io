@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">数据中台与数据仓库的区别</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-14</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">BigData</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>数据中台从某个意义来说属于数仓的一种，都是要把数据抽进来建立一个数据仓库。但是两者的数据来源和建立数仓的目标以及数据应用的方向都存在很大差异。</span></p>
+            <p><span>首先，从</span><strong><span>数据来源</span></strong><span>来说，</span><strong><span>数据中台的数据来源期望是全域数据包括业务数据库，日志数据，埋点数据，爬虫数据，外部数据</span></strong><span>等。</span>
+                <span>数据的来源可以是结构化数据或者非结构化的数据。而传统数仓的数据来源主要是业务数据库，数据格式也是以结构化数据为主。</span></p>
+            <p><span>其次，建立</span><strong><span>数据中台的目标</span></strong><span>是</span><strong><span>为了融合整个企业的全部数据，打通数据之间的隔阂，消除数据标准和口径不一致的问题</span></strong><span>。数据中台通常会对来自多方面的的基础数据进行清洗，按照主题域概念建立多个以事物为主的主题域比如用户主题域，商品主题域，渠道主题域，门店主题域等等。数据中台遵循三个one的概念： </span><strong><span>One Data, One ID, One Service</span></strong><span>，就是说数据中台不仅仅是汇聚企业各种数据，而且让这些数据</span><strong><span>遵循相同的标准和口径</span></strong><span>，对事物的标识能统一或者相互关联，并且提供统一的数据服务接口。就像做菜一样，按照标准化的菜名，先把所有可能用到的材料都准备好。而传统的数仓主要用来做BI的报表，目的性很单一，只抽取和清洗该相关分析报表用到基础数据，新增一张报表，就要从底层到上层再做一次。</span></p>
+            <p><span>然后，在</span><strong><span>数据应用</span></strong><span>方面，建立在数据中台上的数据应用不仅仅只是面向于BI报表，更多</span><strong><span>面向营销推荐，用户画像，AI决策分析，风险评估</span></strong><span>等。而且这些应用的特点是比较轻，容易快速开发出来，因为重要的数据分析工作在数据中台已经完成并且沉淀，之前工作成果都能被多个应用共享。</span>
+                <span>而传统的数据仓库主要是面向报表，数据应用的建设就是传统烟囱式建设，每次都从头再来的开发方式。</span></p>
+            <p><span>最后，数据中台是建立在分布式计算平台和存储平台，理论上可以无限扩充平台的计算和存储能力。而多数的传统数仓工具都是建立的单机的基础上，一旦数据量变大，会受单机容量的限制。</span></p>
+            <p><img src='https://github.com/dzg123/BlogPic/blob/master/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%8F%B0.jpg' alt='' referrerPolicy='no-referrer' /></p>
+            <p><span>数据中台不单单指系统或者工具，而是</span><strong><span>一个职能部门</span></strong><span>，通过一系列平台、工具、流程、规范来为整个组织提供数据资产管理和服务的职能部门。数据中台</span><strong><span>负责全域数据采集</span></strong><span>、</span><strong><span>数据资产加工和管理</span></strong><span>、并</span><strong><span>向前台业务部门和决策部门提供数据服务</span></strong><span>的，所以数据中台的核</span><strong><span>心应该是数据资产管理和数据赋能</span></strong><span>。通俗的讲就是数据弹药库。</span></p>
+            <p><img src='https://img2018.cnblogs.com/blog/948447/201904/948447-20190405225449138-1703425287.jpg' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
