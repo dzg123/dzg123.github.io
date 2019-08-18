@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:dynamic linking">
-      <change afterPath="$PROJECT_DIR$/blog/19707bj/index.html" afterDir="false" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 贪心分治回溯dp">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
@@ -24,8 +23,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="231" column="108" lean-forward="true" selection-start-line="231" selection-start-column="108" selection-end-line="231" selection-end-column="108" />
+            <state relative-caret-position="443">
+              <caret line="95" column="74" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="74" />
             </state>
           </provider>
         </entry>
@@ -136,9 +135,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="width" value="928" />
-    <option name="height" value="1088" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="929" />
+    <option name="height" value="1089" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -306,7 +306,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -341,6 +341,12 @@
               <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
               <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19707bj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
               <item name="19727cc" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -365,7 +371,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -377,20 +383,23 @@
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564545235892" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19817wt" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\dzg123.github.io\blog" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19816fs" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19814qb" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19813fp" />
       <recent name="E:\VCS\Git\dzg123.github.io\blog\19810zs" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19808jg" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -530,14 +539,8 @@
       <workItem from="1565671399307" duration="1432000" />
       <workItem from="1565751865437" duration="2622000" />
       <workItem from="1565948788592" duration="626000" />
-      <workItem from="1566024865325" duration="239000" />
-    </task>
-    <task id="LOCAL-00078" summary="blog">
-      <created>1556697389680</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1556697389681</updated>
+      <workItem from="1566024865325" duration="892000" />
+      <workItem from="1566105612703" duration="1198000" />
     </task>
     <task id="LOCAL-00079" summary="blog">
       <created>1556698235991</created>
@@ -875,17 +878,24 @@
       <option name="project" value="LOCAL" />
       <updated>1565674297035</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL-00127" summary="add: 贪心分治回溯dp">
+      <created>1566025146172</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1566025146174</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="167638000" />
+    <option name="totallyTimeSpent" value="169728000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1472" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17256011" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.086280055" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -969,7 +979,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Java调优" />
     <MESSAGE value="限流算法介绍" />
     <MESSAGE value="分布式ID生成器" />
     <MESSAGE value="移位运算" />
@@ -994,7 +1003,8 @@
     <MESSAGE value="add:fix pic size" />
     <MESSAGE value="add:https" />
     <MESSAGE value="add:dynamic linking" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:dynamic linking" />
+    <MESSAGE value="add: 贪心分治回溯dp" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: 贪心分治回溯dp" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -1750,8 +1760,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="231" column="108" lean-forward="true" selection-start-line="231" selection-start-column="108" selection-end-line="231" selection-end-column="108" />
+        <state relative-caret-position="443">
+          <caret line="95" column="74" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="74" />
         </state>
       </provider>
     </entry>
