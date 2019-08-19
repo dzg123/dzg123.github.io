@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">mysql之explain命令</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-20</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">mysql</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <h1><a name="header-n136" class="md-header-anchor md-print-anchor" href="af://n136"> </a><span>一、explain命令</span></h1>
+            <h2><a name="header-n137" class="md-header-anchor md-print-anchor" href="af://n137"> </a><span>1.1体验explain命令</span></h2>
+            <p><span>首先我们来</span><strong><span>体验</span></strong><span>一下</span><code>explain</code><span>命令是怎么使用的，以及输出的结果是什么：</span></p>
+            <pre><code>explain select * from table_user ;
+</code></pre>
+            <p><span>输出结果：</span></p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3koYSyIq7vaHNRzy1COsFVZ0GibqR72jbdAu5Ud96bXmA1bSq5ypcq4wSJlUkU2hTUH2cIdCk9Tlg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='体验explain命令' referrerPolicy='no-referrer' /><span>体验explain命令</span></p>
+            <p><span>发现很使用起来很简单，只要explain后边跟着SQL语句就完事了(MySQL5.6之前的版本，只允许解释</span><code>SELECT</code><span>语句，从 MySQL5.6开始，非</span><code>SELECT</code><span>语句也可以被解释了)。</span></p>
+            <h2><a name="header-n143" class="md-header-anchor md-print-anchor" href="af://n143"> </a><span>1.2为什么需要explain命令</span></h2>
+            <p><span>我们很多时候编写完一条SQL语句，往往想知道这条SQL语句执行是否高效。或者说，我们建立好的索引在这条SQL语句中是否使用到了，就可以使用</span><code>explain</code><span>命令来分析一下！</span></p>
+            <ul>
+                <li><span>简单来说：通过</span><code>explain</code><span>命令我们可以学习到该条SQL是如何执行的，随后解析explain的结果可以帮助我们使用更好的索引，最终来优化它！</span></li>
+
+            </ul>
+            <p><span>通过</span><code>explain</code><span>命令我们可以知道以下信息：表的读取顺序，数据读取操作的类型，哪些索引可以使用，哪些索引实际使用了，表之间的引用，每张表有多少行被优化器查询等信息。</span></p>
+            <pre><code>// 好了，我们下面看一下explain出来的结果是怎么看的。
+</code></pre>
+            <h2><a name="header-n150" class="md-header-anchor md-print-anchor" href="af://n150"> </a><span>1.3读懂explain命令结果</span></h2>
+            <p><span>explain命令输出的结果有10列：</span><code>id、select_type、table、type、possible_keys、key、key_len、ref、rows、Extra</code></p>
+            <h3><a name="header-n152" class="md-header-anchor md-print-anchor" href="af://n152"> </a><span>1.3.1id</span></h3>
+            <blockquote><p><span>包含一组数字，表示查询中执行SELECT子句或操作表的</span><strong><span>顺序</span></strong><span>。</span></p>
+            </blockquote>
+            <p><span>在id列上也会有几种情况：</span></p>
+            <ul>
+                <li><p><span>如果id相同执行顺序由上至下。</span></p>
+                </li>
+                <li><p><span>如果id不相同，id的序号会递增，id值越大优先级越高，越先被执行。</span></p>
+                </li>
+                <ul>
+                    <li><span>(一般有子查询的SQL语句id就会不同)</span></li>
+
+                </ul>
+
+            </ul>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib3koYSyIq7vaHNRzy1COsFV2pM29O9H8Vn3HNwAzj3n7Jj1lS1hU3aBdHvXqrIfxxBSS5JialtOeRg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='explain一下拥有子查询的SQL' referrerPolicy='no-referrer' /><span>explain一下拥有子查询的SQL</span></p>
+            <h3><a name="header-n165" class="md-header-anchor md-print-anchor" href="af://n165"> </a><span>1.3.2select_type</span></h3>
+            <blockquote><p><span>表示select查询的类型</span></p>
+            </blockquote>
+            <p><span>select_type属性下有好几种类型：</span></p>
+            <ul>
+                <li><strong><span>SIMPLLE</span></strong><span>：简单查询，该查询不包含 UNION 或子查询</span></li>
+                <li><strong><span>PRIMARY</span></strong><span>：如果查询包含UNION 或子查询，则</span><strong><span>最外层的查询</span></strong><span>被标识为PRIMARY</span></li>
+                <li><span>UNION：表示此查询是 UNION 中的第二个或者随后的查询</span></li>
+                <li><span>DEPENDENT：UNION 满足 UNION 中的第二个或者随后的查询，其次取决于外面的查询</span></li>
+                <li><span>UNION RESULT：UNION 的结果</span></li>
+                <li><strong><span>SUBQUERY</span></strong><span>：子查询中的第一个select语句(该子查询不在from子句中)</span></li>
+                <li><span>DEPENDENT SUBQUERY：子查询中的 第一个 select，同时取决于外面的查询</span></li>
+                <li><strong><span>DERIVED</span></strong><span>：包含在from子句中子查询(也称为派生表)</span></li>
+                <li><span>UNCACHEABLE SUBQUERY：满足是子查询中的第一个 select 语句，同时意味着 select 中的某些特性阻止结果被缓存于一个 Item_cache 中</span></li>
+                <li><span>UNCACHEABLE UNION：满足此查询是 UNION 中的第二个或者随后的查询，同时意味着 select 中的某些特性阻止结果被缓存于一个 Item_cache 中</span></li>
+
+            </ul>
+            <blockquote><p><span>类型有点多啊，我加粗的是最常见的，起码要看得懂加粗的部分。</span></p>
+            </blockquote>
+            <h3><a name="header-n192" class="md-header-anchor md-print-anchor" href="af://n192"> </a><span>1.3.3table</span></h3>
+            <blockquote><p><span>该列显示了对应行正在访问哪个表(有别名就显示别名)。</span></p>
+            </blockquote>
+            <p><span>当from子句中有子查询时，table列是 </span><code>&lt;derivenN&gt;</code><span>格式，表示当前查询依赖 </span><code>id=N</code><span>的查询，于是先执行 </span><code>id=N</code><span> 的查询</span></p>
+            <h3><a name="header-n196" class="md-header-anchor md-print-anchor" href="af://n196"> </a><span>1.3.4type</span></h3>
+            <blockquote><p><span>该列称为</span><strong><span>关联类型或者访问类型</span></strong><span>，它指明了MySQL决定如何查找表中符合条件的行，同时</span><strong><span>是我们判断查询是否高效的重要依据</span></strong><span>。</span></p>
+            </blockquote>
+            <p><span>以下为常见的取值</span></p>
+            <ul>
+                <li><span>ALL：</span><strong><span>全表扫描</span></strong><span>，这个类型是性能最差的查询之一。通常来说，我们的查询不应该出现 ALL 类型，因为这样的查询，在数据量最大的情况下，对数据库的性能是巨大的灾难。</span></li>
+                <li><span>index：</span><strong><span>全索引扫描</span></strong><span>，和 ALL 类型类似，只不过 ALL 类型是全表扫描，而 index 类型是扫描全部的索引，主要优点是避免了排序，但是开销仍然非常大。如果在 Extra 列看到 Using index，说明正在使用覆盖索引，只扫描索引的数据，它比按索引次序全表扫描的开销要少很多。</span></li>
+                <li><span>range：</span><strong><span>范围扫描</span></strong><span>，就是一个有限制的索引扫描，它开始于索引里的某一点，返回匹配这个值域的行。这个类型通常出现在 </span><code>=、&amp;lt<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span>&amp;gt<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span>、&amp;gt<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span>、&amp;gt<span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>;</span>=、&lt;、&lt;=、IS NULL、&lt;=&gt;、BETWEEN、IN()</code><span> 的操作中，key 列显示使用了哪个索引，当 type 为该值时，则输出的 ref 列为 NULL，并且 key_len 列是此次查询中使用到的索引最长的那个。</span></li>
+                <li><span>ref：一种索引访问，也称索引查找，它返回所有匹配某个单个值的行。此类型通常出现在多表的 join 查询, 针对于非唯一或非主键索引, 或者是使用了最左前缀规则索引的查询。</span></li>
+                <li><span>eq_ref：使用这种索引查找，最多只返回一条符合条件的记录。在使用唯一性索引或主键查找时会出现该值，非常高效。</span></li>
+                <li><span>const、system：该表至多有一个匹配行，在查询开始时读取，或者该表是系统表，只有一行匹配。其中 const 用于在和 primary key 或 unique 索引中有固定值比较的情形。</span></li>
+                <li><span>NULL：在执行阶段不需要访问表。</span></li>
+
+            </ul>
+            <h3><a name="header-n215" class="md-header-anchor md-print-anchor" href="af://n215"> </a><span>1.3.5possible_keys</span></h3>
+            <blockquote><p><span>这一列显示查询</span><strong><span>可能</span></strong><span>使用哪些索引来查找</span></p>
+            </blockquote>
+            <h3><a name="header-n218" class="md-header-anchor md-print-anchor" href="af://n218"> </a><span>1.3.6key</span></h3>
+            <blockquote><p><span>这一列显示MySQL</span><strong><span>实际</span></strong><span>决定使用的索引。如果没有选择索引，键是NULL。</span></p>
+            </blockquote>
+            <h3><a name="header-n221" class="md-header-anchor md-print-anchor" href="af://n221"> </a><span>1.3.7key_len</span></h3>
+            <blockquote><p><span>这一列显示了在索引里使用的字节数，当key列的值为 NULL 时，则该列也是 NULL</span></p>
+            </blockquote>
+            <h3><a name="header-n224" class="md-header-anchor md-print-anchor" href="af://n224"> </a><span>1.3.8ref</span></h3>
+            <blockquote><p><span>这一列显示了哪些字段或者常量被用来和key配合从表中查询记录出来。</span></p>
+            </blockquote>
+            <h3><a name="header-n227" class="md-header-anchor md-print-anchor" href="af://n227"> </a><span>1.3.9rows</span></h3>
+            <blockquote><p><span>这一列显示了</span><strong><span>估计</span></strong><span>要找到所需的行而要读取的行数，这个值是个估计值，原则上值越小越好。</span></p>
+            </blockquote>
+            <h3><a name="header-n230" class="md-header-anchor md-print-anchor" href="af://n230"> </a><span>1.3.10extra</span></h3>
+            <blockquote><p><span>其他的信息</span></p>
+            </blockquote>
+            <p><span>常见的取值如下：</span></p>
+            <ul>
+                <li><strong><span>Using index</span></strong><span>：使用覆盖索引，表示查询索引就可查到所需数据，不用扫描表数据文件，往往说明性能不错。</span></li>
+                <li><span>Using Where：在存储引擎检索行后再进行过滤，使用了where从句来限制哪些行将与下一张表匹配或者是返回给用户。</span></li>
+                <li><span>Using temporary：在查询结果排序时会使用一个临时表，一般出现于排序、分组和多表 join 的情况，查询效率不高，建议优化。</span></li>
+                <li><span>Using filesort：对结果使用一个外部索引排序，而不是按索引次序从表里读取行，一般有出现该值，都建议优化去掉，因为这样的查询 CPU 资源消耗大。</span></li>
+
+            </ul>
+            <h1 data-breakpage><a name="header-n243" class="md-header-anchor md-print-anchor" href="af://n243"> </a><span>最后</span></h1>
+            <p><span>原本以为Explain命令是比较难学的，但查找资料看下来，之前只是不知道具体的列和列中下的属性是什么意思而已。常见出现的其实也就那么几个，感觉对着每个属性多看一会，还是可以能看懂的。</span></p>
+            <blockquote><p><span>当然了，在《高性能MySQL》中也有复杂的SQL语句来分析(但我认为我们一般不会写到那么复杂)..</span></p>
+            </blockquote>
+            <p><span>这篇文章也借鉴了很多其他优秀的博客，如果大家有兴趣的话可以去阅读一下：</span></p>
+            <ul>
+                <li><p><span>EXPLAIN 命令详解：</span></p>
+                </li>
+                <ul>
+                    <li><a href='https://www.cnblogs.com/gomysql/p/3720123.html' target='_blank' class='url'>https://www.cnblogs.com/gomysql/p/3720123.html</a></li>
+
+                </ul>
+                <li><p><span>MySQL Explain 命令详解：</span></p>
+                </li>
+                <ul>
+                    <li><a href='http://mrzhouxiaofei.com/2018/04/06/MySQL%20Explain%20%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/' target='_blank' class='url'>http://mrzhouxiaofei.com/2018/04/06/MySQL%20Explain%20%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/</a></li>
+
+                </ul>
+                <li><p><span>mysql系列_explain执行计划：</span></p>
+                </li>
+                <ul>
+                    <li><a href='https://zhuanlan.zhihu.com/p/34222512' target='_blank' class='url'>https://zhuanlan.zhihu.com/p/34222512</a></li>
+
+                </ul>
+                <li><p><span>MySQL explain详解</span></p>
+                </li>
+                <ul>
+                    <li><a href='https://www.cnblogs.com/butterfly100/archive/2018/01/15/8287569.html' target='_blank' class='url'>https://www.cnblogs.com/butterfly100/archive/2018/01/15/8287569.html</a></li>
+
+                </ul>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
