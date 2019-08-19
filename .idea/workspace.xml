@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:dynamic linking">
-      <change afterPath="$PROJECT_DIR$/blog/19814qb/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/19816fs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add:数据中台与数据仓库" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,13 +18,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19816fs/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-194">
-              <caret line="45" column="6" lean-forward="true" selection-start-line="45" selection-start-column="6" selection-end-line="45" selection-end-column="6" />
-              <folding>
-                <element signature="e#5401#5407#1" expanded="true" />
-              </folding>
+            <state relative-caret-position="253">
+              <caret line="103" column="38" lean-forward="true" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -531,14 +523,7 @@
       <workItem from="1565605540591" duration="418000" />
       <workItem from="1565671399307" duration="1432000" />
       <workItem from="1565751865437" duration="2622000" />
-      <workItem from="1565948788592" duration="626000" />
-    </task>
-    <task id="LOCAL-00078" summary="blog">
-      <created>1556697389680</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1556697389681</updated>
+      <workItem from="1565948788592" duration="796000" />
     </task>
     <task id="LOCAL-00079" summary="blog">
       <created>1556698235991</created>
@@ -876,17 +861,23 @@
       <option name="project" value="LOCAL" />
       <updated>1565674297035</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL-00127" summary="add:数据中台与数据仓库">
+      <created>1565951357671</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1565951357673</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="167638000" />
+    <option name="totallyTimeSpent" value="167808000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17019667" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17019667" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -900,7 +891,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32640332" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3262295" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50907713" side_tool="true" weight="0.30983606" />
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
@@ -970,7 +961,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Java调优" />
     <MESSAGE value="限流算法介绍" />
     <MESSAGE value="分布式ID生成器" />
     <MESSAGE value="移位运算" />
@@ -995,7 +985,8 @@
     <MESSAGE value="add:fix pic size" />
     <MESSAGE value="add:https" />
     <MESSAGE value="add:dynamic linking" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:dynamic linking" />
+    <MESSAGE value="add:数据中台与数据仓库" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:数据中台与数据仓库" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/blog/19608lj/index.html">
@@ -1753,13 +1744,6 @@
         <state relative-caret-position="-285" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="95" column="53" selection-start-line="95" selection-start-column="53" selection-end-line="95" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19816fs/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-194">
@@ -1767,6 +1751,13 @@
           <folding>
             <element signature="e#5401#5407#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="103" column="38" lean-forward="true" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
         </state>
       </provider>
     </entry>
