@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">操作系统之页、页表、页框(块)</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-25</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">OS</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>&nbsp;</p>
+            <p><span>### 基本介绍</span>
+                <span>我们知道，在linux操作系统中，CPU在执行一个进程的时候，都会访问内存。 </span>
+                <span>但CPU并不是直接访问</span><strong><span>物理内存地址</span></strong><span>，而是通过</span><strong><span>虚拟地址空间</span></strong><span>来间接的访问物理内存地址。 </span>
+                <span>所谓的虚拟地址空间，是操作系统为每一个正在执行的进程分配的一个</span><strong><span>逻辑地址</span></strong><span>，在32位机上，其范围从0 ~ 4G-1。操作系统通过将虚拟地址空间和物理内存地址之间建立映射关系，让CPU间接的访问物理内存地址。 </span>
+                <span>通常将虚拟地址空间以512Byte ~ 8K，作为一个单位，称为</span><strong><span>页</span></strong><span>，并从0开始依次对每一个页编号。这个大小通常被称为</span><strong><span>页面</span></strong><span> </span>
+                <span>将物理地址按照同样的大小，作为一个单位，称为</span><strong><span>框</span></strong><span>或者</span><strong><span>块</span></strong><span>，也从0开始依次对每一个框编号。 </span>
+                <span>操作系统通过维护一张表，这张表上记录了每一对页和框的映射关系。如图： </span>
+                <img src='https://img-blog.csdn.net/20180703231723887?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rpc3BsYXlNZXNzYWdl/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70' alt='页-页表-框' referrerPolicy='no-referrer' />
+                <span>这张表，称为</span><strong><span>页表</span></strong><span>。 </span>
+                <span>在windows系统下，页面为4k，这里我们以4k为例。 </span>
+                <span>一个4G虚拟地址空间，将会产生1024*1024个页，页表的每一项存储一个页和一个框的映射，所以，至少需要1M个</span><strong><span>页表项</span></strong><span>。如果一个页表项大小为1Byte，则至少需要1M的空间，所以页表被放在物理内存中，由操作系统维护。 </span>
+                <span>当CPU要访问一个虚拟地址空间对应的物理内存地址时，先将具体的虚拟地址A/页面大小4K，结果的商作为页表号，结果的余作为业内地址偏移。 </span>
+                <span>例如： </span>
+                <span>CPU访问的虚拟地址：A </span>
+                <span>页面：L </span>
+                <span>页表号：(A/L) </span>
+                <span>页内偏移：(A%L) </span>
+                <span>CPU中有一个页表寄存器，里面存放着当前进程页表的起始地址和页表长度。将上述计算的页表号和页表长度进行对比，确认在页表范围内，然后将页表号和页表项长度相乘，得到目标页相对于页表基地址的偏移量，最后加上页表基地址偏移量就可以访问到相对应的框了，CPU拿到框的起始地址之后，再把页内偏移地址加上，访问到最终的目标地址。如图： </span>
+                <img src='https://img-blog.csdn.net/20180704132653831?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rpc3BsYXlNZXNzYWdl/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70' alt='地址转换过程' referrerPolicy='no-referrer' />
+                <strong><span>注意，每个进程都有页表，页表起始地址和页表长度的信息在进程不被CPU执行的时候，存放在其PCB内。</span></strong><span> </span>
+                <span>按照上述的过程，可以发现，CPU对内存的一次访问动作需要访问两次物理内存才能达到目的，第一次，拿到框的起始地址，第二次，访问最终物理地址。CPU的效率变成了50%。为了提高CPU对内存的访问效率，在CPU第一次访问内存之前，加了一个快速缓冲区寄存器，它里面存放了近期访问过的页表项。当CPU发起一次访问时，先到TLB中查询是否存在对应的页表项，如果有就直接返回了。整个过程只需要访问一次内存。如图： </span>
+                <img src='https://img-blog.csdn.net/20180704140155646?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rpc3BsYXlNZXNzYWdl/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70' alt='快表' referrerPolicy='no-referrer' />
+                <span>这种方式极大的提高了CPU对内存的访问效率。将近90%。 </span>
+                <span>然而这样的方式还是存在弊端，在物理内存中需要拿出至少1M的连续的内存空间来存放页表。可以通过多级页表的方式，将页表分为多个部分，分别存放，这样就不要求连续的整段内存，只需要多个连续的小段内存即可。 </span>
+                <span>把连续的页表拆分成多个页表称之为一级页表，再创建一张页表，这张页表记录每一张一级页表的起始地址并按照顺序为其填写页表号。 </span>
+                <span>通过这样的方式，CPU从基地址寄存器中拿到了一级页表的地址，从地址结构中取出一级页表的页表号，找到二级页表的起始物理地址；然后结合地址结构中的中间10位(二级页表上的页表号)，可以找到对应的框的起始地址，最后结合页内偏移量，就可以计算出最终目标的物理地址。如图： </span>
+                <img src='https://img-blog.csdn.net/20180705085117125?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rpc3BsYXlNZXNzYWdl/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70' alt='多级页表' referrerPolicy='no-referrer' /></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
