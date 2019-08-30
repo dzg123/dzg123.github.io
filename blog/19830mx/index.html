@@ -61,7 +61,7 @@
             </header>
             <!--markdown-->
             <p><span>一个 Netty 程序启动时, 至少要指定一个 EventLoopGroup(如果使用到的是 NIO, 那么通常是NioEventLoopGroup), 那么这个 NioEventLoopGroup 在 Netty 中到底扮演着什么角色呢? 我们知道, Netty 是 Reactor 模型的一个实现, 那么首先从 Reactor 的线程模型开始吧.</span></p>
-            <h3><a name="header-n242" class="md-header-anchor md-print-anchor" href="af://n242"> </a><span>关于 Reactor 的线程模型</span></h3>
+            <h3><a name="header-n393" class="md-header-anchor md-print-anchor" href="af://n393"> </a><span>关于 Reactor 的线程模型</span></h3>
             <p><span>首先我们来看一下 Reactor 的线程模型.</span>
                 <span>Reactor 的线程模型有三种:</span></p>
             <ul>
@@ -87,8 +87,8 @@
                 <span>Reactor 的主从多线程模型就是在这样的情况下提出来的, 它的特点是: 服务器端接收客户端的连接请求不再是一个线程, 而是由一个独立的线程池组成. 它的线程模型如下:</span></p>
             <p><img src='https://i.loli.net/2019/08/29/bm8LtJlNSQu6Rxv.png' alt='主从多线程模型.png' referrerPolicy='no-referrer' /></p>
             <p><span>可以看到, Reactor 的主从多线程模型和 Reactor 多线程模型很类似, 只不过 Reactor 的主从多线程模型的 acceptor 使用了线程池来处理大量的客户端请求.</span></p>
-            <h4><a name="header-n267" class="md-header-anchor md-print-anchor" href="af://n267"> </a><span>NioEventLoopGroup 与 Reactor 线程模型的对应</span></h4>
-            <p><span>在Netty中实现了Reactor模式，来看看Netty是如何实现这些线程模型的：</span></p>
+            <h4><a name="header-n418" class="md-header-anchor md-print-anchor" href="af://n418"> </a><span>NioEventLoopGroup 与 Reactor 线程模型的对应</span></h4>
+            <p><span>在Netty中实现了Reactor模式，来看看Netty是如何实现这些线程模型的：</span><u><span>注意：本文章Netty版本为4.1.x，不同版本源码会略有不同</span></u></p>
             <ul>
                 <li><p><span>单线程模型</span></p>
                     <p><span>来看一下下面的例子:</span></p>
@@ -107,7 +107,7 @@ public ServerBootstrap group(EventLoopGroup group) {
 </code></pre>
                     <p><span>因此当传入一个 group 时, 那么 bossGroup 和 workerGroup 就是同一个 NioEventLoopGroup 了.</span>
                         <span>这时候呢, 因为 bossGroup 和 workerGroup 就是同一个 NioEventLoopGroup, 并且这个 NioEventLoopGroup 只有一个线程, 这样就会导致 Netty 中的 acceptor 和后续的所有客户端连接的 IO 操作都是在一个线程中处理的. 那么对应到 Reactor 的线程模型中, 我们这样设置 NioEventLoopGroup 时, 就相当于 </span><strong><span>Reactor 单线程模型</span></strong><span>.</span></p>
-                    <h4><a name="header-n277" class="md-header-anchor md-print-anchor" href="af://n277"> </a><span>多线程模型</span></h4>
+                    <h4><a name="header-n428" class="md-header-anchor md-print-anchor" href="af://n428"> </a><span>多线程模型</span></h4>
                     <p><span>同理, 再来看一下下面的例子:</span></p>
                     <p>&nbsp;</p>
                     <pre><code>EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -118,7 +118,7 @@ b.group(bossGroup, workerGroup)
  ...
 </code></pre>
                     <p><span>bossGroup 中只有一个线程, 而 workerGroup 中的线程是 CPU 核心数乘以2, 因此对应的到 Reactor 线程模型中, 我们知道, 这样设置的 NioEventLoopGroup 其实就是 </span><strong><span>Reactor 多线程模型</span></strong><span>.</span></p>
-                    <h4><a name="header-n282" class="md-header-anchor md-print-anchor" href="af://n282"> </a><span>主从多线程模型</span></h4>
+                    <h4><a name="header-n433" class="md-header-anchor md-print-anchor" href="af://n433"> </a><span>主从多线程模型</span></h4>
                     <p><span>根据上面的代码我们很容易想到主从多线程模式会是如下代码实现：</span></p>
                     <pre><code>EventLoopGroup bossGroup = new NioEventLoopGroup(4);
 EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -280,9 +280,9 @@ socketChannel.register(selector, SelectionKey.OP_ACCEPT);//对应这一步
             <blockquote><p><span> multiple boss threads are useful if we share NioEventLoopGroup between different server bootstraps, but I don&#39;t see the reason for it.</span></p>
             </blockquote>
             <p><span>如果我们用一个线程来处理两个bootstrap的绑定过程，显然这是不合理的，极端情况下一个bootstrap的所有连接请求会被饿死，永远得不到处理。</span></p>
+            <p><span>参考：</span><a href='https://segmentfault.com/a/1190000007282628' target='_blank' class='url'>https://segmentfault.com/a/1190000007282628</a></p>
 
-        </article>
-        <script src="/js/av-min.js"></script>
+            <script src="/js/av-min.js"></script>
         <script src="/js/Valine.min.js"></script>
         <div class="blog-post-comments"></div>
         <script>new Valine({
