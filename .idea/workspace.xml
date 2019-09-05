@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 分布式系统接口幂等性">
-      <change afterPath="$PROJECT_DIR$/blog/19905ym/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 分布式系统接口幂等性" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,15 +18,9 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/19905ym/index.html">
+        <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="683">
-              <caret line="136" selection-start-line="136" selection-end-line="136" />
-              <folding>
-                <element signature="e#6874#6880#0" expanded="true" />
-                <element signature="e#6885#6891#0" expanded="true" />
-              </folding>
-            </state>
+            <state relative-caret-position="-627" />
           </provider>
         </entry>
       </file>
@@ -311,70 +301,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19430xj" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19502wt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19623xj" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19707bj" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19727cc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19803jg" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19808jh" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="blog" type="462c0819:PsiDirectoryNode" />
-              <item name="19816fs" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
@@ -388,7 +315,7 @@
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564545235892" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19905ym" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -546,7 +473,7 @@
       <workItem from="1565948788592" duration="626000" />
       <workItem from="1566024865325" duration="892000" />
       <workItem from="1566105612703" duration="2633000" />
-      <workItem from="1567680242848" duration="1302000" />
+      <workItem from="1567680242848" duration="1600000" />
     </task>
     <task id="LOCAL-00081" summary="blog">
       <created>1556775754445</created>
@@ -895,11 +822,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172465000" />
+    <option name="totallyTimeSpent" value="172763000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1472" height="878" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14144272" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -915,7 +841,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32640332" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3253012" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50907713" side_tool="true" weight="0.30983606" />
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
@@ -1013,16 +939,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="add: 分布式系统接口幂等性" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19615zl/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="199" column="45" selection-start-line="199" selection-start-column="45" selection-end-line="199" selection-end-column="45" />
-          <folding>
-            <element signature="e#15558#15562#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19616fx/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
@@ -1814,13 +1730,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/19905ym/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="683">
-          <caret line="136" selection-start-line="136" selection-end-line="136" />
+        <state relative-caret-position="2717">
+          <caret line="143" column="56" selection-start-line="143" selection-start-column="56" selection-end-line="143" selection-end-column="56" />
           <folding>
             <element signature="e#6874#6880#0" expanded="true" />
             <element signature="e#6885#6891#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-627" />
       </provider>
     </entry>
   </component>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">Guava RateLimiter限流原理解析</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-08-23</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Guava</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>转自：</span><a href='https://cloud.tencent.com/developer/column/5049' target='_blank' class='url'>https://cloud.tencent.com/developer/column/5049</a></p>
+            <p><span>限流是保护高并发系统的三把利器之一，另外两个是缓存和降级。限流在很多场景中用来限制并发和请求量，比如说秒杀抢购，保护自身系统和下游系统不被巨型流量冲垮等。</span></p>
+            <p><span> 限流的目的是通过对并发访问/请求进行限速或者一个时间窗口内的的请求进行限速来保护系统，一旦达到限制速率则可以拒绝服务或进行流量整形。</span></p>
+            <p><span> 常用的限流方式和场景有：限制总并发数（比如数据库连接池、线程池）、限制瞬时并发数（如nginx的limit_conn模块，用来限制瞬时并发连接数，Java的Semaphore也可以实现）、限制时间窗口内的平均速率（如Guava的RateLimiter、nginx的limit_req模块，限制每秒的平均速率）；其他还有如限制远程接口调用速率、限制MQ的消费速率。另外还可以根据网络连接数、网络流量、CPU或内存负载等来限流。</span></p>
+            <p><span> 比如说，我们需要限制方法被调用的并发数不能超过100（同一时间并发数），则我们可以用信号量</span><code>Semaphore</code><span>实现。可如果我们要限制方法在一段时间内平均被调用次数不超过100，则需要使用</span><code>RateLimiter</code><span>。</span></p>
+            <h3><a name="header-n81" class="md-header-anchor md-print-anchor" href="af://n81"> </a><span>限流的基础算法</span></h3>
+            <p><span> 我们先来讲解一下两个限流相关的基本算法：漏桶算法和令牌桶算法。</span></p>
+            <p><img src='https://ask.qcloudimg.com/http-save/2541794/70ogn5h5i8.png?imageView2/2/w/1620' alt='img' referrerPolicy='no-referrer' /><span>漏桶算法</span></p>
+            <p><span> 从上图中，我们可以看到，就像一个漏斗一样，进来的水量就好像访问流量一样，而出去的水量就像是我们的系统处理请求一样。当访问流量过大时，这个漏斗中就会积水，如果水太多了就会溢出。</span></p>
+            <p><span> 漏桶算法的实现往往依赖于队列，请求到达如果队列未满则直接放入队列，然后有一个处理器按照固定频率从队列头取出请求进行处理。如果请求量大，则会导致队列满，那么新来的请求就会被抛弃。</span></p>
+            <p><img src='https://ask.qcloudimg.com/http-save/2541794/2c12ai7d39.png?imageView2/2/w/1620' alt='img' referrerPolicy='no-referrer' /><span>漏桶算法示意图</span></p>
+            <p><span> 令牌桶算法则是一个存放固定容量令牌的桶，按照固定速率往桶里添加令牌。桶中存放的令牌数有最大上限，超出之后就被丢弃或者拒绝。当流量或者网络请求到达时，每个请求都要获取一个令牌，如果能够获取到，则直接处理，并且令牌桶删除一个令牌。如果获取不同，该请求就要被限流，要么直接丢弃，要么在缓冲区等待。</span></p>
+            <p><img src='https://ask.qcloudimg.com/http-save/2541794/nm7td8ed7g.png?imageView2/2/w/1620' alt='img' referrerPolicy='no-referrer' /><span>令牌桶算法示意图</span></p>
+            <p><span>令牌桶和漏桶对比：</span></p>
+            <ul>
+                <li><span>令牌桶是按照固定速率往桶中添加令牌，请求是否被处理需要看桶中令牌是否足够，当令牌数减为零时则拒绝新的请求；漏桶则是按照常量固定速率流出请求，流入请求速率任意，当流入的请求数累积到漏桶容量时，则新流入的请求被拒绝；</span></li>
+                <li><span>令牌桶限制的是平均流入速率，允许突发请求，只要有令牌就可以处理，支持一次拿3个令牌，4个令牌；漏桶限制的是常量流出速率，即流出速率是一个固定常量值，比如都是1的速率流出，而不能一次是1，下次又是2，从而平滑突发流入速率；</span></li>
+                <li><span>令牌桶允许一定程度的突发，而漏桶主要目的是平滑流出速率；</span></li>
+
+            </ul>
+            <h3><a name="header-n97" class="md-header-anchor md-print-anchor" href="af://n97"> </a><span>Guava RateLimiter</span></h3>
+            <p><span> </span><code>Guava</code><span>是Java领域优秀的开源项目，它包含了Google在Java项目中使用一些核心库，包含集合(Collections)，缓存(Caching)，并发编程库(Concurrency)，常用注解(Common annotations)，String操作，I/O操作方面的众多非常实用的函数。</span></p>
+            <p><span> Guava的</span><code>RateLimiter</code><span>提供了令牌桶算法实现：平滑突发限流(SmoothBursty)和平滑预热限流(SmoothWarmingUp)实现。</span></p>
+            <p><img src='https://ask.qcloudimg.com/http-save/2541794/6o4rztposz.jpeg?imageView2/2/w/1620' alt='img' referrerPolicy='no-referrer' /><span>类图</span></p>
+            <p><span> </span><code>RateLimiter</code><span>的类图如上所示，其中</span><code>RateLimiter</code><span>是入口类，它提供了两套工厂方法来创建出两个子类。这很符合《Effective Java》中的用静态工厂方法代替构造函数的建议，毕竟该书的作者也正是Guava库的主要维护者，二者配合&quot;食用&quot;更佳。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>// RateLimiter提供了两个工厂方法，最终会调用下面两个函数，生成RateLimiter的两个子类。
+static RateLimiter create(SleepingStopwatch stopwatch, double permitsPerSecond) {
+    RateLimiter rateLimiter = new SmoothBursty(stopwatch, 1.0 /* maxBurstSeconds */);
+    rateLimiter.setRate(permitsPerSecond);
+    return rateLimiter;
+}
+static RateLimiter create(
+    SleepingStopwatch stopwatch, double permitsPerSecond, long warmupPeriod, TimeUnit unit,
+    double coldFactor) {
+    RateLimiter rateLimiter = new SmoothWarmingUp(stopwatch, warmupPeriod, unit, coldFactor);
+    rateLimiter.setRate(permitsPerSecond);
+    return rateLimiter;
+}
+</code></pre>
+            <h4><a name="header-n103" class="md-header-anchor md-print-anchor" href="af://n103"> </a><span>平滑突发限流</span></h4>
+            <p><span> 使用</span><code>RateLimiter</code><span>的静态方法创建一个限流器，设置每秒放置的令牌数为5个。返回的RateLimiter对象可以保证1秒内不会给超过5个令牌，并且以固定速率进行放置，达到平滑输出的效果。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>public void testSmoothBursty() {
+    RateLimiter r = RateLimiter.create(5);
+    while (true) {
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire() + &quot;s&quot;);
+    }
+    /**
+     * output: 基本上都是0.2s执行一次，符合一秒发放5个令牌的设定。
+     * get 1 tokens: 0.0s
+     * get 1 tokens: 0.182014s
+     * get 1 tokens: 0.188464s
+     * get 1 tokens: 0.198072s
+     * get 1 tokens: 0.196048s
+     * get 1 tokens: 0.197538s
+     * get 1 tokens: 0.196049s
+     */
+}
+</code></pre>
+            <p><span> </span><code>RateLimiter</code><span>使用令牌桶算法，会进行令牌的累积，如果获取令牌的频率比较低，则不会导致等待，直接获取令牌。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>public void testSmoothBursty2() {
+    RateLimiter r = RateLimiter.create(2);
+    while (true)
+    {
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      try {
+        Thread.sleep(2000);
+      } catch (Exception e) {}
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;end&quot;);
+      /**
+       * output:
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 0.0s
+       * end
+       * get 1 tokens: 0.499796s
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 0.0s
+       */
+    }
+}
+</code></pre>
+            <p><span> </span><code>RateLimiter</code><span>由于会累积令牌，所以可以应对突发流量。在下面代码中，有一个请求会直接请求5个令牌，但是由于此时令牌桶中有累积的令牌，足以快速响应。</span></p>
+            <p><span> </span><code>RateLimiter</code><span>在没有足够令牌发放时，采用滞后处理的方式，也就是前一个请求获取令牌所需等待的时间由下一次请求来承受，也就是代替前一个请求进行等待。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>public void testSmoothBursty3() {
+    RateLimiter r = RateLimiter.create(5);
+    while (true)
+    {
+      System.out.println(&quot;get 5 tokens: &quot; + r.acquire(5) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;end&quot;);
+      /**
+       * output:
+       * get 5 tokens: 0.0s
+       * get 1 tokens: 0.996766s 滞后效应，需要替前一个请求进行等待
+       * get 1 tokens: 0.194007s
+       * get 1 tokens: 0.196267s
+       * end
+       * get 5 tokens: 0.195756s
+       * get 1 tokens: 0.995625s 滞后效应，需要替前一个请求进行等待
+       * get 1 tokens: 0.194603s
+       * get 1 tokens: 0.196866s
+       */
+    }
+}
+</code></pre>
+            <h4><a name="header-n111" class="md-header-anchor md-print-anchor" href="af://n111"> </a><span>平滑预热限流</span></h4>
+            <p><span> </span><code>RateLimiter</code><span>的</span><code>SmoothWarmingUp</code><span>是带有预热期的平滑限流，它启动后会有一段预热期，逐步将分发频率提升到配置的速率。</span></p>
+            <p><span> 比如下面代码中的例子，创建一个平均分发令牌速率为2，预热期为3分钟。由于设置了预热时间是3秒，令牌桶一开始并不会0.5秒发一个令牌，而是形成一个平滑线性下降的坡度，频率越来越高，在3秒钟之内达到原本设置的频率，以后就以固定的频率输出。这种功能适合系统刚启动需要一点时间来“热身”的场景。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>public void testSmoothwarmingUp() {
+    RateLimiter r = RateLimiter.create(2, 3, TimeUnit.SECONDS);
+    while (true)
+    {
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;get 1 tokens: &quot; + r.acquire(1) + &quot;s&quot;);
+      System.out.println(&quot;end&quot;);
+      /**
+       * output:
+       * get 1 tokens: 0.0s
+       * get 1 tokens: 1.329289s
+       * get 1 tokens: 0.994375s
+       * get 1 tokens: 0.662888s  上边三次获取的时间相加正好为3秒
+       * end
+       * get 1 tokens: 0.49764s  正常速率0.5秒一个令牌
+       * get 1 tokens: 0.497828s
+       * get 1 tokens: 0.49449s
+       * get 1 tokens: 0.497522s
+       */
+    }
+}
+</code></pre>
+            <h3><a name="header-n115" class="md-header-anchor md-print-anchor" href="af://n115"> </a><span>源码分析</span></h3>
+            <p><span> 看完了</span><code>RateLimiter</code><span>的基本使用示例后，我们来学习一下它的实现原理。先了解一下几个比较重要的成员变量的含义。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>//SmoothRateLimiter.java
+//当前存储令牌数
+double storedPermits;
+//最大存储令牌数
+double maxPermits;
+//添加令牌时间间隔
+double stableIntervalMicros;
+/**
+ * 下一次请求可以获取令牌的起始时间
+ * 由于RateLimiter允许预消费，上次请求预消费令牌后
+ * 下次请求需要等待相应的时间到nextFreeTicketMicros时刻才可以获取令牌
+ */
+private long nextFreeTicketMicros = 0L;
+</code></pre>
+            <h4><a name="header-n118" class="md-header-anchor md-print-anchor" href="af://n118"> </a><span>平滑突发限流</span></h4>
+            <p><span> </span><code>RateLimiter</code><span>的原理就是每次调用</span><code>acquire</code><span>时用当前时间和</span><code>nextFreeTicketMicros</code><span>进行比较，根据二者的间隔和添加单位令牌的时间间隔</span><code>stableIntervalMicros</code><span>来刷新存储令牌数</span><code>storedPermits</code><span>。然后acquire会进行休眠，直到</span><code>nextFreeTicketMicros</code><span>。</span></p>
+            <p><span> </span><code>acquire</code><span>函数如下所示，它会调用</span><code>reserve</code><span>函数计算获取目标令牌数所需等待的时间，然后使用</span><code>SleepStopwatch</code><span>进行休眠，最后返回等待时间。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>public double acquire(int permits) {
+    // 计算获取令牌所需等待的时间
+    long microsToWait = reserve(permits);
+    // 进行线程sleep
+    stopwatch.sleepMicrosUninterruptibly(microsToWait);
+    return 1.0 * microsToWait / SECONDS.toMicros(1L);
+}
+final long reserve(int permits) {
+    checkPermits(permits);
+    // 由于涉及并发操作，所以使用synchronized进行并发操作
+    synchronized (mutex()) {
+      return reserveAndGetWaitLength(permits, stopwatch.readMicros());
+    }
+}
+final long reserveAndGetWaitLength(int permits, long nowMicros) {
+    // 计算从当前时间开始，能够获取到目标数量令牌时的时间
+    long momentAvailable = reserveEarliestAvailable(permits, nowMicros);
+    // 两个时间相减，获得需要等待的时间
+    return max(momentAvailable - nowMicros, 0);
+}
+</code></pre>
+            <p><span> </span><code>reserveEarliestAvailable</code><span>是刷新令牌数和下次获取令牌时间</span><code>nextFreeTicketMicros</code><span>的关键函数。它有三个步骤，一是调用</span><code>resync</code><span>函数增加令牌数，二是计算预支付令牌所需额外等待的时间，三是更新下次获取令牌时间</span><code>nextFreeTicketMicros</code><span>和存储令牌数</span><code>storedPermits</code><span>。</span></p>
+            <p><span> 这里涉及</span><code>RateLimiter</code><span>的一个特性，也就是可以预先支付令牌，并且所需等待的时间在下次获取令牌时再实际执行。详细的代码逻辑的解释请看注释。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>final long reserveEarliestAvailable(int requiredPermits, long nowMicros) {
+    // 刷新令牌数，相当于每次acquire时在根据时间进行令牌的刷新
+    resync(nowMicros);
+    long returnValue = nextFreeTicketMicros;
+    // 获取当前已有的令牌数和需要获取的目标令牌数进行比较，计算出可以目前即可得到的令牌数。
+    double storedPermitsToSpend = min(requiredPermits, this.storedPermits);
+    // freshPermits是需要预先支付的令牌，也就是目标令牌数减去目前即可得到的令牌数
+    double freshPermits = requiredPermits - storedPermitsToSpend;
+    // 因为会突然涌入大量请求，而现有令牌数又不够用，因此会预先支付一定的令牌数
+    // waitMicros即是产生预先支付令牌的数量时间，则将下次要添加令牌的时间应该计算时间加上watiMicros
+    long waitMicros = storedPermitsToWaitTime(this.storedPermits, storedPermitsToSpend)
+        + (long) (freshPermits * stableIntervalMicros);
+    // storedPermitsToWaitTime在SmoothWarmingUp和SmoothBuresty的实现不同，用于实现预热缓冲期
+    // SmoothBuresty的storedPermitsToWaitTime直接返回0，所以watiMicros就是预先支付的令牌所需等待的时间
+    try {
+      // 更新nextFreeTicketMicros,本次预先支付的令牌所需等待的时间让下一次请求来实际等待。
+      this.nextFreeTicketMicros = LongMath.checkedAdd(nextFreeTicketMicros, waitMicros);
+    } catch (ArithmeticException e) {
+      this.nextFreeTicketMicros = Long.MAX_VALUE;
+    }
+    // 更新令牌数，最低数量为0
+    this.storedPermits -= storedPermitsToSpend;
+    // 返回旧的nextFreeTicketMicros数值，无需为预支付的令牌多加等待时间。
+    return returnValue;
+}
+// SmoothBurest
+long storedPermitsToWaitTime(double storedPermits, double permitsToTake) {
+    return 0L;
+}
+</code></pre>
+            <p><span> </span><code>resync</code><span>函数用于增加存储令牌，核心逻辑就是</span><code>(nowMicros <span style='font-family:"Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif'>-</span> nextFreeTicketMicros) / stableIntervalMicros</code><span>。当前时间大于</span><code>nextFreeTicketMicros</code><span>时进行刷新，否则直接返回。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>void resync(long nowMicros) {
+    // 当前时间晚于nextFreeTicketMicros，所以刷新令牌和nextFreeTicketMicros
+    if (nowMicros &gt; nextFreeTicketMicros) {
+      // coolDownIntervalMicros函数获取每机秒生成一个令牌，SmoothWarmingUp和SmoothBuresty的实现不同
+      // SmoothBuresty的coolDownIntervalMicros直接返回stableIntervalMicros
+      // 当前时间减去要更新令牌的时间获取时间间隔，再除以添加令牌时间间隔获取这段时间内要添加的令牌数
+      storedPermits = min(maxPermits,
+          storedPermits
+            + (nowMicros - nextFreeTicketMicros) / coolDownIntervalMicros());
+      nextFreeTicketMicros = nowMicros;
+    }
+    // 如果当前时间早于nextFreeTicketMicros，则获取令牌的线程要一直等待到nextFreeTicketMicros,该线程获取令牌所需
+    // 额外等待的时间由下一次获取的线程来代替等待。
+}
+double coolDownIntervalMicros() {
+    return stableIntervalMicros;
+}
+</code></pre>
+            <p><span> 下面我们举个例子，让大家更好的理解</span><code>resync</code><span>和</span><code>reserveEarliestAvailable</code><span>函数的逻辑。</span></p>
+            <p><span> 比如</span><code>RateLimiter</code><span>的</span><code>stableIntervalMicros</code><span>为500，也就是1秒发两个令牌，storedPermits为0，nextFreeTicketMicros为155391849</span><code>57</code><span>48。线程一acquire(2)，当前时间为155391849</span><code>62</code><span>48，首先</span><code>resync</code><span>函数计算，(1553918496248 - 1553918495748)/500 = 1，所以当前可获取令牌数为1，但是由于可以预支付，所以nextFreeTicketMicros= nextFreeTicketMicro + 1 * 500 = 155391849</span><code>67</code><span>48。线程一无需等待。</span></p>
+            <p><span> 紧接着，线程二也来acquire(2)，首先</span><code>resync</code><span>函数发现当前时间早于</span><code>nextFreeTicketMicros</code><span>，所以无法增加令牌数，所以需要预支付2个令牌，nextFreeTicketMicros= nextFreeTicketMicro + 2 * 500 = 155391849</span><code>77</code><span>48。线程二需要等待155391849</span><code>67</code><span>48时刻，也就是线程一获取时计算的nextFreeTicketMicros时刻。同样的，线程三获取令牌时也需要等待到线程二计算的nextFreeTicketMicros时刻。</span></p>
+            <h4><a name="header-n130" class="md-header-anchor md-print-anchor" href="af://n130"> </a><span>平滑预热限流</span></h4>
+            <p><span> 上述就是平滑突发限流RateLimiter的实现，下面我们来看一下加上预热缓冲期的实现原理。</span></p>
+            <p><span> </span><code>SmoothWarmingUp</code><span>实现预热缓冲的关键在于其分发令牌的速率会随时间和令牌数而改变，速率会先慢后快。表现形式如下图所示，令牌刷新的时间间隔由长逐渐变短。等存储令牌数从maxPermits到达thresholdPermits时，发放令牌的时间价格也由coldInterval降低到了正常的stableInterval。</span></p>
+            <p><img src='https://ask.qcloudimg.com/http-save/2541794/f1ccw7bsef.png?imageView2/2/w/1620' alt='img' referrerPolicy='no-referrer' /><span>image.png</span></p>
+            <p><span> </span><code>SmoothWarmingUp</code><span>的相关代码如下所示，相关的逻辑都写在注释中。</span></p>
+            <pre><code class='language-javascript' lang='javascript'>// SmoothWarmingUp，等待时间就是计算上图中梯形或者正方形的面积。
+long storedPermitsToWaitTime(double storedPermits, double permitsToTake) {
+    /**
+    * 当前permits超出阈值的部分
+    */
+    double availablePermitsAboveThreshold = storedPermits - thresholdPermits;
+    long micros = 0;
+    /**
+    * 如果当前存储的令牌数超出thresholdPermits
+    */
+    if (availablePermitsAboveThreshold &gt; 0.0) {
+    /**
+     * 在阈值右侧并且需要被消耗的令牌数量
+     */
+    double permitsAboveThresholdToTake = min(availablePermitsAboveThreshold, permitsToTake);
+
+    /**
+        * 梯形的面积
+        *
+        * 高 * (顶 * 底) / 2
+        *
+        * 高是 permitsAboveThresholdToTake 也就是右侧需要消费的令牌数
+        * 底 较长 permitsToTime(availablePermitsAboveThreshold)
+        * 顶 较短 permitsToTime(availablePermitsAboveThreshold - permitsAboveThresholdToTake)
+        */
+    micros = (long) (permitsAboveThresholdToTake
+        * (permitsToTime(availablePermitsAboveThreshold)
+        + permitsToTime(availablePermitsAboveThreshold - permitsAboveThresholdToTake)) / 2.0);
+    /**
+        * 减去已经获取的在阈值右侧的令牌数
+        */
+    permitsToTake -= permitsAboveThresholdToTake;
+    }
+    /**
+    * 平稳时期的面积，正好是长乘宽
+    */
+    micros += (stableIntervalMicros * permitsToTake);
+    return micros;
+}
+
+double coolDownIntervalMicros() {
+    /**
+    * 每秒增加的令牌数为 warmup时间/maxPermits. 这样的话，在warmuptime时间内，就就增张的令牌数量
+    * 为 maxPermits
+    */
+    return warmupPeriodMicros / maxPermits;
+}
+</code></pre>
+            <h3><a name="header-n136" class="md-header-anchor md-print-anchor" href="af://n136"> </a><span>后记</span></h3>
+            <p><span>  </span><code>RateLimiter</code><span>只能用于单机的限流，如果想要集群限流，则需要引入</span><code>redis</code><span>或者阿里开源的</span><code>sentinel</code><span>中间件，请大家继续关注。</span></p>
+            <h3><a name="header-n138" class="md-header-anchor md-print-anchor" href="af://n138"> </a><span>参考</span></h3>
+            <ul>
+                <li><a href='https://jinnianshilongnian.iteye.com/blog/2305117' target='_blank' class='url'>https://jinnianshilongnian.iteye.com/blog/2305117</a></li>
+                <li><a href='https://segmentfault.com/a/1190000012875897' target='_blank' class='url'>https://segmentfault.com/a/1190000012875897</a></li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
