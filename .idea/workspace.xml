@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 大数据场景应用方法">
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 分布式系统接口幂等性">
+      <change afterPath="$PROJECT_DIR$/blog/19905ym/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
     </list>
@@ -21,10 +22,14 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/blog/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19905ym/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+            <state relative-caret-position="683">
+              <caret line="136" selection-start-line="136" selection-end-line="136" />
+              <folding>
+                <element signature="e#6874#6880#0" expanded="true" />
+                <element signature="e#6885#6891#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +77,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/19608lj/index.html" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/blog/19609fa/index.html" />
         <option value="$PROJECT_DIR$/blog/19609lg/index.html" />
@@ -122,7 +125,9 @@
         <option value="$PROJECT_DIR$/blog/19816fs/index.html" />
         <option value="$PROJECT_DIR$/blog/19818zj/index.html" />
         <option value="$PROJECT_DIR$/blog/19817wt/index.html" />
+        <option value="$PROJECT_DIR$/blog/19819dx/index.html" />
         <option value="$PROJECT_DIR$/blog/index.html" />
+        <option value="$PROJECT_DIR$/blog/19905ym/index.html" />
       </list>
     </option>
   </component>
@@ -135,10 +140,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="929" />
-    <option name="height" value="1089" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="930" />
+    <option name="height" value="1090" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -306,7 +311,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -372,6 +376,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -383,7 +388,7 @@
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564545235892" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19819dx" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/19905ym" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -395,11 +400,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\localrepository\dzg123.github.io\blog\19905ym" />
+      <recent name="D:\localrepository\dzg123.github.io\blog\19819dx" />
       <recent name="D:\localrepository\dzg123.github.io\blog\19817wt" />
       <recent name="D:\localrepository\dzg123.github.io\blog\19818zj" />
       <recent name="D:\localrepository\dzg123.github.io\blog" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19816fs" />
-      <recent name="E:\VCS\Git\dzg123.github.io\blog\19814qb" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -540,14 +545,8 @@
       <workItem from="1565751865437" duration="2622000" />
       <workItem from="1565948788592" duration="626000" />
       <workItem from="1566024865325" duration="892000" />
-      <workItem from="1566105612703" duration="2439000" />
-    </task>
-    <task id="LOCAL-00080" summary="blog">
-      <created>1556699947830</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1556699947830</updated>
+      <workItem from="1566105612703" duration="2633000" />
+      <workItem from="1567680242848" duration="1302000" />
     </task>
     <task id="LOCAL-00081" summary="blog">
       <created>1556775754445</created>
@@ -879,21 +878,30 @@
       <updated>1566025146174</updated>
     </task>
     <task id="LOCAL-00128" summary="add: 大数据场景应用方法">
+      <created>1567680225213</created>
       <option name="number" value="00128" />
       <option name="presentableId" value="LOCAL-00128" />
       <option name="project" value="LOCAL" />
+      <updated>1567680225213</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="add: 分布式系统接口幂等性">
+      <created>1566143103876</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1566143103876</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="170969000" />
+    <option name="totallyTimeSpent" value="172465000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1472" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.086280055" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14144272" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -977,7 +985,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="分布式ID生成器" />
     <MESSAGE value="移位运算" />
     <MESSAGE value="数据拆分" />
     <MESSAGE value="Linux" />
@@ -1002,23 +1009,10 @@
     <MESSAGE value="add:dynamic linking" />
     <MESSAGE value="add: 贪心分治回溯dp" />
     <MESSAGE value="add: 大数据场景应用方法" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: 大数据场景应用方法" />
+    <MESSAGE value="add: 分布式系统接口幂等性" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: 分布式系统接口幂等性" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19609lg/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="67" column="38" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19615sm/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="113" selection-start-line="113" selection-end-line="113" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19615zl/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="566">
@@ -1783,10 +1777,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19819dx/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="683">
+          <caret line="123" selection-start-line="123" selection-end-line="123" />
+          <folding>
+            <element signature="e#3527#3533#0" expanded="true" />
+            <element signature="e#3543#3549#0" expanded="true" />
+            <element signature="e#5755#5761#1" expanded="true" />
+            <element signature="e#6129#6135#1" expanded="true" />
+            <element signature="e#6489#6494#0" expanded="true" />
+            <element signature="e#6499#6504#0" expanded="true" />
+            <element signature="e#6518#6523#0" expanded="true" />
+            <element signature="e#6527#6532#0" expanded="true" />
+            <element signature="e#6548#6553#0" expanded="true" />
+            <element signature="e#6560#6565#0" expanded="true" />
+            <element signature="e#6582#6587#0" expanded="true" />
+            <element signature="e#6592#6597#0" expanded="true" />
+            <element signature="e#6835#6839#0" expanded="true" />
+            <element signature="e#6925#6930#0" expanded="true" />
+            <element signature="e#6937#6942#0" expanded="true" />
+            <element signature="e#7023#7027#0" expanded="true" />
+            <element signature="e#7153#7157#0" expanded="true" />
+            <element signature="e#7308#7313#0" expanded="true" />
+            <element signature="e#7320#7325#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/blog/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
+        <state relative-caret-position="329">
+          <caret line="95" column="78" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19905ym/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="683">
+          <caret line="136" selection-start-line="136" selection-end-line="136" />
+          <folding>
+            <element signature="e#6874#6880#0" expanded="true" />
+            <element signature="e#6885#6891#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
