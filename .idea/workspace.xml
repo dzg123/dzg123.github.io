@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 分布式系统接口幂等性" />
+    <list default="true" id="548338b2-288e-4afe-b700-79bb6da1589a" name="Default" comment="add: 分布式系统接口幂等性">
+      <change afterPath="$PROJECT_DIR$/blog/19924sf/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/index.html" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,9 +21,9 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/blog/19924sf/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-627" />
+            <state relative-caret-position="-798" />
           </provider>
         </entry>
       </file>
@@ -67,7 +70,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/blog/19609fa/index.html" />
         <option value="$PROJECT_DIR$/blog/19609lg/index.html" />
         <option value="$PROJECT_DIR$/blog/19615sm/index.html" />
@@ -116,8 +118,9 @@
         <option value="$PROJECT_DIR$/blog/19818zj/index.html" />
         <option value="$PROJECT_DIR$/blog/19817wt/index.html" />
         <option value="$PROJECT_DIR$/blog/19819dx/index.html" />
-        <option value="$PROJECT_DIR$/blog/index.html" />
         <option value="$PROJECT_DIR$/blog/19905ym/index.html" />
+        <option value="$PROJECT_DIR$/blog/19922yy/index.html" />
+        <option value="$PROJECT_DIR$/blog/index.html" />
       </list>
     </option>
   </component>
@@ -130,10 +133,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="y" value="-10" />
-    <option name="width" value="930" />
-    <option name="height" value="1090" />
+    <option name="x" value="676" />
+    <option name="width" value="697" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -301,8 +303,88 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19430xj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19502wt" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19623xj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19707bj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19727cc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19803jg" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19808jg" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19808jh" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19816fs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dzg123.github.io" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dzg123.github.io" type="462c0819:PsiDirectoryNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="19830mx" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
     </panes>
   </component>
@@ -327,11 +409,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19924sf" />
+      <recent name="E:\VCS\Git\dzg123.github.io\blog\19922yy" />
       <recent name="D:\localrepository\dzg123.github.io\blog\19905ym" />
       <recent name="D:\localrepository\dzg123.github.io\blog\19819dx" />
       <recent name="D:\localrepository\dzg123.github.io\blog\19817wt" />
-      <recent name="D:\localrepository\dzg123.github.io\blog\19818zj" />
-      <recent name="D:\localrepository\dzg123.github.io\blog" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -360,14 +442,12 @@
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="TestNG">
-      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <properties />
       <listeners />
@@ -474,13 +554,9 @@
       <workItem from="1566024865325" duration="892000" />
       <workItem from="1566105612703" duration="2633000" />
       <workItem from="1567680242848" duration="1600000" />
-    </task>
-    <task id="LOCAL-00081" summary="blog">
-      <created>1556775754445</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1556775754445</updated>
+      <workItem from="1568373751682" duration="592000" />
+      <workItem from="1568447804763" duration="590000" />
+      <workItem from="1569130883586" duration="2694000" />
     </task>
     <task id="LOCAL-00082" summary="blog">
       <created>1556887394279</created>
@@ -818,16 +894,23 @@
       <option name="project" value="LOCAL" />
       <updated>1566143103876</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="add: 平衡查找树之B-树、B+树介绍以及应用">
+      <created>1569134059767</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1569134059768</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172763000" />
+    <option name="totallyTimeSpent" value="177303000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1472" height="878" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14144272" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1580938" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -841,7 +924,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3253012" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.30983606" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50907713" side_tool="true" weight="0.30983606" />
       <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.32952183" />
       <window_info anchor="bottom" id="SonarLint" order="10" />
@@ -911,7 +994,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="移位运算" />
     <MESSAGE value="数据拆分" />
     <MESSAGE value="Linux" />
     <MESSAGE value="Wait/Notify" />
@@ -936,72 +1018,10 @@
     <MESSAGE value="add: 贪心分治回溯dp" />
     <MESSAGE value="add: 大数据场景应用方法" />
     <MESSAGE value="add: 分布式系统接口幂等性" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: 分布式系统接口幂等性" />
+    <MESSAGE value="add: 平衡查找树之B-树、B+树介绍以及应用" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: 平衡查找树之B-树、B+树介绍以及应用" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blog/19616fx/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="142" selection-start-line="142" selection-end-line="142" />
-          <folding>
-            <element signature="e#3801#3807#0" expanded="true" />
-            <element signature="e#3831#3837#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19618fx/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="300" column="53" selection-start-line="300" selection-start-column="53" selection-end-line="300" selection-end-column="53" />
-          <folding>
-            <element signature="e#4422#4428#1" expanded="true" />
-            <element signature="e#4528#4534#1" expanded="true" />
-            <element signature="e#4622#4628#1" expanded="true" />
-            <element signature="e#4743#4749#1" expanded="true" />
-            <element signature="e#4883#4889#1" expanded="true" />
-            <element signature="e#4909#4915#1" expanded="true" />
-            <element signature="e#4981#4987#1" expanded="true" />
-            <element signature="e#5089#5095#1" expanded="true" />
-            <element signature="e#5187#5193#1" expanded="true" />
-            <element signature="e#5494#5500#1" expanded="true" />
-            <element signature="e#5661#5667#1" expanded="true" />
-            <element signature="e#5787#5793#1" expanded="true" />
-            <element signature="e#6133#6139#1" expanded="true" />
-            <element signature="e#6509#6515#1" expanded="true" />
-            <element signature="e#6648#6654#1" expanded="true" />
-            <element signature="e#7050#7056#1" expanded="true" />
-            <element signature="e#7121#7127#1" expanded="true" />
-            <element signature="e#7213#7219#1" expanded="true" />
-            <element signature="e#7390#7396#1" expanded="true" />
-            <element signature="e#7480#7486#1" expanded="true" />
-            <element signature="e#7548#7554#1" expanded="true" />
-            <element signature="e#7691#7697#1" expanded="true" />
-            <element signature="e#7789#7795#1" expanded="true" />
-            <element signature="e#7975#7981#1" expanded="true" />
-            <element signature="e#8285#8291#1" expanded="true" />
-            <element signature="e#8565#8571#1" expanded="true" />
-            <element signature="e#8642#8648#1" expanded="true" />
-            <element signature="e#9613#9619#1" expanded="true" />
-            <element signature="e#10080#10086#1" expanded="true" />
-            <element signature="e#10227#10233#1" expanded="true" />
-            <element signature="e#10714#10720#1" expanded="true" />
-            <element signature="e#10893#10899#1" expanded="true" />
-            <element signature="e#12275#12281#1" expanded="true" />
-            <element signature="e#12346#12352#1" expanded="true" />
-            <element signature="e#12372#12378#1" expanded="true" />
-            <element signature="e#12700#12706#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blog/19620ys/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="103" selection-start-line="103" selection-end-line="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19621js/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="388">
@@ -1124,13 +1144,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="78" column="57" selection-start-line="78" selection-start-column="57" selection-end-line="78" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1580,13 +1593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/template.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="104" column="56" lean-forward="true" selection-start-line="104" selection-start-column="56" selection-end-line="104" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19808jh/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-37">
@@ -1721,13 +1727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="95" column="78" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/19905ym/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2717">
@@ -1742,6 +1741,75 @@
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-627" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19922yy/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="700">
+          <caret line="138" lean-forward="true" selection-start-line="138" selection-end-line="138" />
+          <folding>
+            <element signature="e#6709#6713#0" expanded="true" />
+            <element signature="e#11068#11073#0" expanded="true" />
+            <element signature="e#11158#11164#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/template.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="104" column="56" lean-forward="true" selection-start-line="104" selection-start-column="56" selection-end-line="104" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19830mx/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="283" selection-start-line="283" selection-end-line="283" />
+          <folding>
+            <element signature="e#7238#7244#1" expanded="true" />
+            <element signature="e#9869#9873#0" expanded="true" />
+            <element signature="e#9885#9889#0" expanded="true" />
+            <element signature="e#9890#9894#0" expanded="true" />
+            <element signature="e#9902#9906#0" expanded="true" />
+            <element signature="e#9964#9970#0" expanded="true" />
+            <element signature="e#9979#9985#0" expanded="true" />
+            <element signature="e#10015#10019#0" expanded="true" />
+            <element signature="e#10025#10029#0" expanded="true" />
+            <element signature="e#10049#10053#0" expanded="true" />
+            <element signature="e#10059#10063#0" expanded="true" />
+            <element signature="e#10215#10219#0" expanded="true" />
+            <element signature="e#10226#10230#0" expanded="true" />
+            <element signature="e#11504#11508#0" expanded="true" />
+            <element signature="e#11520#11524#0" expanded="true" />
+            <element signature="e#11525#11529#0" expanded="true" />
+            <element signature="e#11537#11541#0" expanded="true" />
+            <element signature="e#11599#11603#0" expanded="true" />
+            <element signature="e#11609#11613#0" expanded="true" />
+            <element signature="e#16062#16068#1" expanded="true" />
+            <element signature="e#16212#16216#0" expanded="true" />
+            <element signature="e#16963#16968#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="31" column="13" lean-forward="true" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="95" column="57" selection-start-line="95" selection-start-column="50" selection-end-line="95" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/19924sf/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-798" />
       </provider>
     </entry>
   </component>

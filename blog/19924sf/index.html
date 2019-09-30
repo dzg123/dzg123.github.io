@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">垃圾回收算法之三色标记算法</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-09-24</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Jvm</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>GC目前的问题是，会暂停、阻碍代码的运行，即stop the world。</span><strong><span>增量式GC</span></strong><span>处理的就是这个问题。将GC变得可一阶段一阶段进行。</span></p>
+            <p><span>分阶段运行的思路并不难，但具体要解决的问题其实是</span><strong><span>分阶段GC后，如何保证下次继续时，中断过程中引用关系的变化不会对GC造成影响</span></strong><span>。 </span></p>
+            <p><span>三色标记法是一个逻辑上的抽象，将对象分成</span><strong><span>白：未搜索，灰：正搜索，黑：已搜索。</span></strong><span> </span></p>
+            <p><span>在这里，和前面引用计数中提到的标色不一样，这里只是一个逻辑概念，在实现中并没有所谓的black, white。</span></p>
+            <p><span>mark_sweep按增量来排，可以分成三个阶段：</span><strong><span>根查找、标记、清除</span></strong></p>
+            <pre><code>incremental_gc() {
+  case $gc_phase
+    if GC_ROOT_SCAN
+      root_scan_phase()
+    if GC_MARK
+      incremental_mark_phase()
+    else
+      incremental_sweep_phase ()
+}
+
+root_scan_phase() {
+  for r : $root
+    mark(r)
+  $gc_phase = GC_MARK
+}
+
+mark(obj) {
+  if !obj.mark
+    obj.mark = true
+    push(obj, $mark_stack)         // 理解下，不分段的GC中，由于是用递归方式直接深度搜索到底，所以不需要这个stack，而这个搜索过程目前会中断了，因此需要这样一个数据结构来记录。
+}
+</code></pre>
+            <p><span>上面这mark，就逻辑上把根对象由白标记为灰了。</span></p>
+            <pre><code>incremental_mark_phase() {
+  for i : range 1..MARK_MAX          // 有个值，每次就处理这么多，可以有效防止stop the world
+    if !is_empty($mark_stack)          // 以下栈中有值就取，无值就扫root
+      obj = pop($mark_stack)
+      for child : children(obj)
+        mark(child)
+    else
+      for r : $root
+        mark(r)
+      while !is_empty($mark_stack)
+        obj = pop($mark_stack)
+        for child : children(obj)
+          mark(child)
+
+  $gc_phase = GC_SWEEP            // 直接进入下阶段
+  $sweeping = $head_start
+  return
+}
+
+// 清除就不说了，同样思路，设置个最大值，每次只处理这么多。因为是mark_sweep，所以只要将未标记的引入free_list即可！！！！
+
+</code></pre>
+            <p><span>到这里遇到了关键问题：如果在垃圾回收阶段中间有新的对象引入，或是由于对象的指向关系，使得原本应该mark到的活动对象漏掉了，怎么办？这里会出现因为此对象没有mark而被清除的问题。</span></p>
+            <p><span>新对象加入好说，对象的指向变化导致没有mark到，是这种情况：</span></p>
+            <p><img src='https://images2015.cnblogs.com/blog/793763/201704/793763-20170403114524753-949136137.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span>上图，C原先是应该被B递归搜索标记的。但在GC休息时，B不再指向C，C反而被A指向了。这个C在本轮就会被回收掉。</span></p>
+            <p><span>这个问题是三色与mark之间的对应关系没有对应好导致。</span></p>
+            <p><span>现在入mark_stack栈且mark与灰对应，搜索完成后，mark的是黑。而垃圾回收的依据，是mark过的对象，黑。而白，一定是非mark过，一定会被回收，但这里，白不应该被回收。因此，这个C对象的白色是错误的，要处理。</span></p>
+            <pre><code>wirte_barrier(obj, field, newobj) {
+  if newobj.mark == FALSE
+    newobj.mark = true                    // 这里，因为本身write_barrier是一个赋值操作，因此此对象天生就被mark也算正常
+    push(newobj, $mark_stack)         // 这个动作，就强行标记为灰了
+
+  field = newobj
+}
+</code></pre>
+            <p><span>处理后，新引用的对象也是mark状态，是这样的：</span></p>
+            <p><img src='https://images2015.cnblogs.com/blog/793763/201704/793763-20170403114546175-1093835208.png' alt='img' referrerPolicy='no-referrer' /></p>
+            <p><span> </span></p>
+            <p><span>最后，如果新分配对象时，mark阶段已经完了，正在sweep，怎么处理？很简单，只要判断分配的对象在sweeping指针的前面还是后面。如果在前面已经sweep过的区域，直接忽略；如果在后面，简单mark下就可以。</span></p>
+            <p><strong><span>优点：</span></strong></p>
+            <ol>
+                <li><strong><span>不会长时间停</span></strong></li>
+
+            </ol>
+            <p><strong><span>缺点：</span></strong></p>
+            <ol>
+                <li><strong><span>write_barrier略有开销</span></strong></li>
+                <li><strong><span>上面write_barrier会将对象强行制灰，也就是强行标记，是不大精确的，会造成当前轮次的垃圾残留。</span></strong></li>
+
+            </ol>
+            <p><span>对缺点2：</span></p>
+            <p><span>场景是，write_barrier后，是对的。但再次回头，比如A又指向B了，那C这个垃圾在本轮就发现不了。</span></p>
+            <p>&nbsp;</p>
+            <p><strong><span>改良型（steele）的write_barrier</span></strong></p>
+            <pre><code>mark(obj) {
+  if !obj.mark
+    push(obj, $mark_stack)   // 和上面对表，少了mark = true
+}
+
+// 上面减少了mark的工作，将mark稳定到出栈处。这样可以引出下面的write_barrier
+// 这里，灰色已经不再是mark过，而是入过栈。反而，黑色才是mark过。
+write_barrier(obj, filed, newobj) {
+  if $gc_phase == GC_MARK &amp;&amp; obj.mark &amp;&amp; !newobj.mark      // 逻辑也很清晰，不再一棍子将新加入的认为是非垃圾，而是认为“需要check是否垃圾”。如何check，就是将引用它的对象回滚成灰。
+    obj.mark = false
+    push(obj, $mark_stack)
+
+  field = newobj
+}
+</code></pre>
+            <p>&nbsp;</p>
+            <p><span>即：</span></p>
+            <p><img src='https://images2015.cnblogs.com/blog/793763/201704/793763-20170403114613597-1708595745.png' alt='img' referrerPolicy='no-referrer' /><span> </span></p>
+            <p><span>还有基于快照思想的一种write_barrier的思路：</span></p>
+            <p><span>在write_barrier中入mark_stack栈的不是新对象，而是旧对象！这样，对于之前的对象的引用仍然存在，就不会丢对象。那么mark阶段中新生成的对象怎么处理？它直接将其mark，过于保守。</span></p>
+            <p><span>转自：</span><a href='https://www.cnblogs.com/qqmomery/p/6661574.html?utm_source=tuicool&utm_medium=referral' target='_blank' class='url'>https://www.cnblogs.com/qqmomery/p/6661574.html?utm_source=tuicool&utm_medium=referral</a></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
