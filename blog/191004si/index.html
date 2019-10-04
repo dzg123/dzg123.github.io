@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">CPU的缓存一致性协议MESI</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-10-04</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">volatile</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p><span>在多核CPU中，内存中的数据会在多个核心中存在数据副本，某一个核心发生修改操作，就产生了数据不一致的问题，而一致性协议正是用于保证多个CPU cache之间缓存共享数据的一致性。</span></p>
+            <h3><a name="header-n88" class="md-header-anchor md-print-anchor" href="af://n88"> </a><span>cache的写操作</span></h3>
+            <p><strong><span>write through 写通</span></strong></p>
+            <p><span>每次CPU修改cache中的内容会立即更新到内存，也就意味着每次CPU写共享数据，会导致总线事务，因此这种方式常常会引起总线事务的竞争，虽然后高的一致性但是效率非常低。</span></p>
+            <p><strong><span>write back 写回</span></strong></p>
+            <p><span>每次CPU修改了cache中的数据，不会立即更新到内存，而是等到cache line在某一个必须或合适的实际才会更新到内存。</span></p>
+            <p><strong><span>写失效</span></strong>
+                <span>当一个CPU修改了数据，如果其他CPU有该数据，则通知其为无效；</span></p>
+            <p><strong><span>写更新</span></strong>
+                <span>当一个CPU修改了数据，如果其他CPU有该数据，则通知其更新；</span></p>
+            <h3><a name="header-n95" class="md-header-anchor md-print-anchor" href="af://n95"> </a><span>cache line</span></h3>
+            <p><img src='https://img-blog.csdnimg.cn/20190720092620418.png' alt='在这里插入图片描述' referrerPolicy='no-referrer' />
+                <span>cache line是cache与内存数据交换的最小单位，根据操作系统一般是32或64byte，在MESI协议中</span><strong><span>状态</span></strong><span> 可以是M、E、S、I，</span><strong><span>地址</span></strong><span>则是cache line中映射的内存地址，</span><strong><span>数据</span></strong><span>则是从内存中读取的数据。</span></p>
+            <p><strong><span>工作方式</span></strong></p>
+            <p><span>当CPU从cache中读取数据时候，会比较地址是否相同，如果相同则检查cache line的状态，再决定该数据是否有效，无效则从主存中获取数据，或根据一致性协议发生一次cache-to-cache的数据推送。</span></p>
+            <p><strong><span>工作效率</span></strong></p>
+            <p><span>当CPU能够从cache中拿到有效数据的时候，消耗几个CPU cycle，如果发生cache miss也就是缓存中没有数据需要从主存中读取，则会消耗几十上百个CPU cycle。</span></p>
+            <h3><a name="header-n101" class="md-header-anchor md-print-anchor" href="af://n101"> </a><span>状态介绍</span></h3>
+            <p><span>MESI协议将cache line的状态分为modify、exclusive、shared、invalid分别是修改、独占、共享、失效</span></p>
+            <figure><table>
+                <thead>
+                <tr><th><span>状态</span></th><th><span>描述</span></th></tr></thead>
+                <tbody><tr><td><strong><span>M(modify)</span></strong></td><td><span>当前CPU刚修改完数据的状态，当前CPU拥有最新数据，其他CPU拥有失效数据，而且和主存数据不一致</span></td></tr><tr><td><strong><span>E(exclusive)</span></strong></td><td><span>只有当前CPU中有数据，其他CPU中没有改数据，当前CPU的数据和主存的数据是一致的</span></td></tr><tr><td><strong><span>S(shared)</span></strong></td><td><span>当前CPU和其他CPU中都有共同的数据，并且和主存中的数据一致；</span></td></tr><tr><td><strong><span>I(invalid)</span></strong></td><td><span>当前CPU中的数据失效，数据应该从主存中获取，其他CPU中可能有数据也可能无数据；当前CPU中的数据和主存中的数据被认为不一致。</span></td></tr></tbody>
+            </table></figure>
+            <p><span>M和E状态下的Cache Line数据是独有的，不同点在于M状态的数据时dirty和内存的不一致，E状态下数据和内存是一致的；</span></p>
+            <h3><a name="header-n120" class="md-header-anchor md-print-anchor" href="af://n120"> </a><span>MESI协议状态迁移</span></h3>
+            <p><span>在MESI协议中，每个Cache控制器不仅知道自己的读写操作，而且也监听其他Cache的读写操作，每个Cache line所处的状态根据本核和其他核的读写操作在4个状态之间进行迁移。</span></p>
+            <p><span>分为以下四个操作：</span></p>
+            <ul>
+                <li><span>读本cache LocalRead；</span></li>
+                <li><span>写本cache LocalWrite；</span></li>
+                <li><span>读其他cache Remote Read；</span></li>
+                <li><span>写其他cache Remote Write；</span>
+                    <img src='https://img-blog.csdnimg.cn/20190720103134708.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21hc2hhb2thbmcxMzE0,size_16,color_FFFFFF,t_70' alt='在这里插入图片描述' referrerPolicy='no-referrer' /></li>
+
+            </ul>
+            <h3><a name="header-n132" class="md-header-anchor md-print-anchor" href="af://n132"> </a><span>内存屏障</span></h3>
+            <p><span>编译器和CPU可以保证输出结果一样的情况下对指令重排序，使性能得到优化，插入一个内存屏障，相当于告诉CPU和编译器限于这个命令的必须先执行，后于这个命令的必须后执行。</span></p>
+            <p><span>内存屏障的另一个作用是强制更新一次不同CPU的缓存，这意味着如果你对一个volatile字段进行写操作，你必须知道：</span></p>
+            <ol>
+                <li><span>一旦你完成写入，任何访问这个字段的线程将会得到最新的值;</span></li>
+                <li><span>在你写入之前，会保证所有之前发生的事已经发生，并且任何更新过的数据值也是可见的，因为内存屏障会把之前的写入值都刷新到缓存。</span></li>
+
+            </ol>
+            <h3><a name="header-n140" class="md-header-anchor md-print-anchor" href="af://n140"> </a><span>Volatile是如何保证可见性的？</span></h3>
+            <p><span>加入volatile关键字时，会多出一个lock前缀指令，lock前缀指令实际上相当于一个</span><strong><span>内存屏障</span></strong><span>，它有三个功能：</span></p>
+            <ul>
+                <li><span>确保指令重排序时不会把其后面的指令重排到内存屏障之前的位置，也不会把前面的指令排到内存屏障后面，即在执行到内存屏障这句指令时，前面的操作已经全部完成；</span></li>
+                <li><span>将当前处理器缓存行的数据立即写回系统内存（由volatile先行发生原则保证）；</span></li>
+                <li><span>这个写回内存的操作会引起在其他CPU里缓存了该内存地址的数据无效。写回操作时要经过总线传播数据，而每个处理器通过嗅探在总线上传播的数据来检查自己缓存的值是不是过期了，当处理器发现自己缓存行对应的内存地址被修改，就会将当前处理器的缓存行设置为无效状态，当处理器要对这个值进行修改的时候，会强制重新从系统内存里把数据读到处理器缓存(也是由volatile先行发生原则保证)；</span></li>
+
+            </ul>
+            <p><strong><span>缓存一致性协议有多种，但是日常处理的大多数计算机设备都属于”嗅探（snooping）”协议，它的基本思想是：所有内存的传输都发生在一条共享的总线上，而所有的处理器都能看到这条总线：缓存本身是独立的，但是内存是共享资源，所有的内存访问都要经过仲裁（同一个指令周期中，只有一个CPU缓存可以读写内存）。CPU缓存不仅仅在做内存传输的时候才与总线打交道，而是不停在嗅探总线上发生的数据交换，跟踪其他缓存在做什么。所以当一个缓存代表它所属的处理器去读写内存时，其它处理器都会得到通知，它们以此来使自己的缓存保持同步。只要某个处理器一写内存，其它处理器马上知道这块内存在它们的缓存段中已失效。</span></strong></p>
+            <p><span>** 反复思考IA-32手册对lock指令作用的这几段描述，可以得出lock指令的几个作用：</span>
+                <span>1、锁总线，其它CPU对内存的读写请求都会被阻塞，直到锁释放，不过实际后来的处理器都采用锁缓存替代锁总线，因为锁总线的开销比较大，锁总线期间其他CPU没法访问内存</span>
+                <span>2、lock后的写操作会回写已修改的数据，同时让其它CPU相关缓存行失效，从而重新从主存中加载最新的数据</span>
+                <span>3、不是内存屏障却能完成类似内存屏障的功能，阻止屏障两遍的指令重排序</span>
+                <span>由于效率问题，实际后来的处理器都采用锁缓存来替代锁总线，这种场景下多缓存的数据一致是通过缓存一致性协议来保证的 **</span></p>
+            <h3><a name="header-n151" class="md-header-anchor md-print-anchor" href="af://n151"> </a><span>问题</span></h3>
+            <p><strong><span>既然CPU有了MESI协议可以保证cache的一致性，那么为什么还需要volatile这个关键词来保证可见性(内存屏障)？或者是只有加了volatile的变量在多核cpu执行的时候才会触发缓存一致性协议？</span></strong></p>
+            <p><span>两个解释结论：</span></p>
+            <ol>
+                <li><span>多核情况下，所有的cpu操作都会涉及缓存一致性的校验，只不过该协议是弱一致性，不能保证一个线程修改变量后，其他线程立马可见，也就是说虽然其他CPU状态已经置为无效，但是当前CPU可能将数据修改之后又去做其他事情，没有来得及将修改后的变量刷新回主存，而如果此时其他CPU需要使用该变量，则又会从主存中读取到旧的值。而volatile则可以保证可见性，即立即刷新回主存，修改操作和写回操作必须是一个原子操作；</span></li>
+                <li><span>正常情况下，系统操作并不会进行缓存一致性的校验，只有变量被volatile修饰了，该变量所在的缓存行才被赋予缓存一致性的校验功能。</span></li>
+
+            </ol>
+            <h3><a name="header-n159" class="md-header-anchor md-print-anchor" href="af://n159"> </a><span>volatile的使用场景</span></h3>
+            <ol>
+                <li><span>状态标志(开关模式)</span></li>
+                <li><span>双重检查锁定</span></li>
+                <li><span>需要利用顺序性</span></li>
+
+            </ol>
+            <h3><a name="header-n167" class="md-header-anchor md-print-anchor" href="af://n167"> </a><span>volatile和synchronized的区别</span></h3>
+            <p><strong><span>使用上的区别</span></strong>
+                <span>volatile只能修饰变量，synchronized只能修饰方法和语句块；</span></p>
+            <p><strong><span>对原子性的保证</span></strong>
+                <span>synchronized可以保证原子性，volatile不能保证原子性；</span></p>
+            <p><strong><span>对可见性的保证</span></strong>
+                <span>都可以保证可见性，但实现原理不同，volatile对变量加了lock，synchronized使用monitorEnter和monitorExit；</span></p>
+            <p><strong><span>对有序性的保证</span></strong>
+                <span>都可以保证有序性，但是synchronized并发退化到串行；</span></p>
+            <p><strong><span>其他</span></strong>
+                <span>synchronized引起阻塞；</span>
+                <span>volatile不会引起阻塞；</span></p>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
