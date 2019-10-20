@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">操作系统笔记之Linux I/O读写方式</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2019-10-20</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">OS</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <p>Linux 提供了<strong>轮询</strong>、<strong>I/O 中断</strong>以及 <strong>DMA 传输</strong>这 3 种磁盘与主存之间的数据传输机制。其中轮询方式是基于死循环对 I/O 端口进行不断检测。I/O 中断方式是指当数据到达时，磁盘主动向 CPU 发起中断请求，由 CPU 自身负责数据的传输过程。DMA 传输则在 I/O 中断的基础上引入了 DMA 磁盘控制器，由 DMA 磁盘控制器负责数据的传输，降低了 I/O 中断操作对 CPU 资源的大量消耗。</p>
+            <p><strong>I/O 中断原理</strong></p>
+            <p>在 DMA 技术出现之前，应用程序与磁盘之间的 I/O 操作都是通过 CPU 的中断完成的。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/MOwlO0INfQqPyiatZNzvHTW5LPtW2oV8rRSYnOpicziaQ1I9pVEtPlTmfoty7wN77FnibmJ0KlU23QJf6exia1uGGsg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>每次用户进程读取磁盘数据时，都需要 CPU 中断，然后发起 I/O 请求等待数据读取和拷贝完成，每次的 I/O 中断都导致 CPU 的上下文切换：</p>
+            <ul>
+                <li>用户进程向 CPU 发起 read 系统调用读取数据，由用户态切换为内核态，然后一直阻塞等待数据的返回。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 在接收到指令以后对磁盘发起 I/O 请求，将磁盘数据先放入磁盘控制器缓冲区。</li>
+
+            </ul>
+            <ul>
+                <li>数据准备完成以后，磁盘向 CPU 发起 I/O 中断。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 收到 I/O 中断以后将磁盘缓冲区中的数据拷贝到内核缓冲区，然后再从内核缓冲区拷贝到用户缓冲区。</li>
+
+            </ul>
+            <ul>
+                <li>用户进程由内核态切换回用户态，解除阻塞状态，然后等待 CPU 的下一个执行时间钟。</li>
+
+            </ul>
+            <p><strong>DMA 传输原理</strong></p>
+            <p>DMA 的全称叫直接内存存取（Direct Memory Access），是一种允许外围设备（硬件子系统）直接访问系统主内存的机制。</p>
+            <p>也就是说，基于 DMA 访问方式，系统主内存于硬盘或网卡之间的数据传输可以绕开 CPU 的全程调度。</p>
+            <p>目前大多数的硬件设备，包括磁盘控制器、网卡、显卡以及声卡等都支持 DMA 技术。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/MOwlO0INfQqPyiatZNzvHTW5LPtW2oV8rtEsHSMG3SZqN9bwJP7VSCl9waBEg0R6LeZJn3PdrAiatXXeqjpzHolw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>整个数据传输操作在一个 DMA 控制器的控制下进行的。CPU 除了在数据传输开始和结束时做一点处理外（开始和结束时候要做中断处理），在传输过程中 CPU 可以继续进行其他的工作。</p>
+            <p>这样在大部分时间里，<strong>CPU 计算和 I/O 操作都处于并行操作</strong>，使整个计算机系统的效率大大提高。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/MOwlO0INfQqPyiatZNzvHTW5LPtW2oV8ricSib9GIeFSgK8xsSduZ7VLg2FBuUMGpFpQhK31fre91GvJERib0nQlOg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>有了 DMA 磁盘控制器接管数据读写请求以后，CPU 从繁重的 I/O 操作中解脱，数据读取操作的流程如下：</p>
+            <ul>
+                <li>用户进程向 CPU 发起 read 系统调用读取数据，由用户态切换为内核态，然后一直阻塞等待数据的返回。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 在接收到指令以后对 DMA 磁盘控制器发起调度指令。</li>
+
+            </ul>
+            <ul>
+                <li>DMA 磁盘控制器对磁盘发起 I/O 请求，将磁盘数据先放入磁盘控制器缓冲区，CPU 全程不参与此过程。</li>
+
+            </ul>
+            <ul>
+                <li>数据读取完成后，DMA 磁盘控制器会接受到磁盘的通知，将数据从磁盘控制器缓冲区拷贝到内核缓冲区。</li>
+
+            </ul>
+            <ul>
+                <li>DMA 磁盘控制器向 CPU 发出数据读完的信号，由 CPU 负责将数据从内核缓冲区拷贝到用户缓冲区。</li>
+
+            </ul>
+            <ul>
+                <li>用户进程由内核态切换回用户态，解除阻塞状态，然后等待 CPU 的下一个执行时间钟。</li>
+
+            </ul>
+            <p>&nbsp;</p>
+            <p><strong>传统 I/O 方式</strong></p>
+            <p>为了更好的理解零拷贝解决的问题，我们首先了解一下传统 I/O 方式存在的问题。</p>
+            <p>在 Linux 系统中，传统的访问方式是通过 write() 和 read() 两个系统调用实现的，通过 read() 函数读取文件到到缓存区中，然后通过 write() 方法把缓存中的数据输出到网络端口。</p>
+            <p>伪代码如下：</p>
+            <pre><code>read(file_fd, tmp_buf, len);
+write(socket_fd, tmp_buf, len);
+</code></pre>
+            <p>下图分别对应传统 I/O 操作的数据读写流程，整个过程涉及 2 次 CPU 拷贝、2 次 DMA 拷贝，总共 4 次拷贝，以及 4 次上下文切换。</p>
+            <p><img src='https://mmbiz.qpic.cn/mmbiz_png/MOwlO0INfQqPyiatZNzvHTW5LPtW2oV8r87a0NFHiaD2iaEOUtEl134BAEP7rLppdhnZ335GYaBL6pKib0nmfbygwQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1' alt='img' referrerPolicy='no-referrer' /></p>
+            <p>&nbsp;</p>
+            <p>下面简单地阐述一下相关的概念：</p>
+            <ul>
+                <li><strong>上下文切换：</strong>当用户程序向内核发起系统调用时，CPU 将用户进程从用户态切换到内核态；当系统调用返回时，CPU 将用户进程从内核态切换回用户态。</li>
+
+            </ul>
+            <ul>
+                <li><strong>CPU 拷贝：</strong>由 CPU 直接处理数据的传送，数据拷贝时会一直占用 CPU 的资源。</li>
+
+            </ul>
+            <ul>
+                <li><strong>DMA 拷贝：</strong>由 CPU 向DMA磁盘控制器下达指令，让 DMA 控制器来处理数据的传送，数据传送完毕再把信息反馈给 CPU，从而减轻了 CPU 资源的占有率。</li>
+
+            </ul>
+            <p><strong>传统读操作</strong></p>
+            <p>当应用程序执行 read 系统调用读取一块数据的时候，如果这块数据已经存在于用户进程的页内存中，就直接从内存中读取数据。</p>
+            <p>如果数据不存在，则先将数据从磁盘加载数据到内核空间的读缓存（read buffer）中，再从读缓存拷贝到用户进程的页内存中。</p>
+            <pre><code>read(file_fd, tmp_buf, len);
+</code></pre>
+            <p>基于传统的 I/O 读取方式，read 系统调用会触发 2 次上下文切换，1 次 DMA 拷贝和 1 次 CPU 拷贝。</p>
+            <p>发起数据读取的流程如下：</p>
+            <ul>
+                <li>用户进程通过 read() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 将读缓冲区（read buffer）中的数据拷贝到用户空间（user space）的用户缓冲区（user buffer）。</li>
+
+            </ul>
+            <ul>
+                <li>上下文从内核态（kernel space）切换回用户态（user space），read 调用执行返回。</li>
+
+            </ul>
+            <p><strong>传统写操作</strong></p>
+            <p>当应用程序准备好数据，执行 write 系统调用发送网络数据时，先将数据从用户空间的页缓存拷贝到内核空间的网络缓冲区（socket buffer）中，然后再将写缓存中的数据拷贝到网卡设备完成数据发送。</p>
+            <pre><code>write(socket_fd, tmp_buf, len);
+</code></pre>
+            <p>基于传统的 I/O 写入方式，write() 系统调用会触发 2 次上下文切换，1 次 CPU 拷贝和 1 次 DMA 拷贝。</p>
+            <p>用户程序发送网络数据的流程如下：</p>
+            <ul>
+                <li>用户进程通过 write() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 将用户缓冲区（user buffer）中的数据拷贝到内核空间（kernel space）的网络缓冲区（socket buffer）。</li>
+
+            </ul>
+            <ul>
+                <li>CPU 利用 DMA 控制器将数据从网络缓冲区（socket buffer）拷贝到网卡进行数据传输。</li>
+
+            </ul>
+            <ul>
+                <li>上下文从内核态（kernel space）切换回用户态（user space），write 系统调用执行返回。</li>
+
+            </ul>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
