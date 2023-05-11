@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                            target="_blank">Github</a></li></ul></span><br>
+
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">IOC容器之Bean的生命周期</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2018-09-12</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">spring</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+            <body
+            <div id='write'  class=''><p><span>自OpenAI发布了chatgpt模型后，犹如平地一声雷，让整个技术圈都在思考如何把AI的能力运用到自身的业务&amp;产品中，来帮助用户获得更好的产品体验和产能提效。本文旨在从直营企划及时性定义出发-探索AIGC能力可落地方案，让AI来赋能业务。</span></p><h3 id='从前场趋势商机切入'><span>从前场趋势商机切入</span></h3><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304834447-a5d9a7f1-6e5c-47b6-ad16-bf10af009604.png" referrerpolicy="no-referrer" alt="img"></p><p><span>从上述的一些前场的热搜榜/热点词中我们可以发现一些共性的商机机会：</span></p><ul><li><p><span>明星的同款穿搭</span></p></li><li><p><span>爆火影视的周边</span></p></li><li><p><span>天气气候引发的人群刚需/忧患意识</span></p></li><li><p><span>。。。</span></p></li></ul><p><span>但这些能带来单量的商机在直营侧的探知是完全不够的，本文基于此展开分析。</span></p><h3 id='商机变现链路分析'><span>商机变现链路分析</span></h3><h4 id='关注商机企划）覆盖及时性的必要性'><span>关注商机（企划）覆盖及时性的必要性</span></h4><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304834304-37577fb8-e591-4f3c-ab20-d63b42ee2ed8.png" referrerpolicy="no-referrer" alt="img"></p><p><span>从上图可以看出，商机变现链路可能非常短&amp;高效、成熟用户在匹配趋势热点到有购物需求到完成下单仅需要几十分钟～几小时，热点机会带来的订单增益可能稍纵即逝，因此对于企划侧来讲关注企划覆盖商机及时性变成至关重要。</span></p><p><span>    </span><strong><span>因此，本文主要是探索借助AI能力和前场趋势热点将商机在一些行业/类目域中快速落地变现，通过算法工程化+AI快速生成机会创意企划招商，丰富供给、抓住机会，真正做好供给满足度。</span></strong></p><h3 id='stable-diffusion生态圈简单介绍'><span>Stable Diffusion生态圈简单介绍</span></h3><p><span>在正式介绍落地方案前先简单给大家普及一下后续会用到的基于Stable Diffusion展开的开源框架&amp;模型&amp;技术。</span></p><h5 id='stable-diffusion'><span>Stable Diffusion</span></h5><p><span>Stable Diffusion作为在AIGC领域大放异彩的开源框架，想必大家都不陌生。 在我看来Stable Diffusion 并不是一个单一模型，而是由多个部分和模型一起构成的系统，它充分结合当前在图像处理领域、计算机视觉模型等被广泛使用的模型，比如Transformer、CLIP等等，快速实现多风格的文生图、图生图能力。这边就不过多展开了，我们都可以在内网一些文章上看到。</span></p><h6 id='原理'><span>原理</span></h6><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304836702-f3d344c3-837e-45b6-8824-73408c13c330.png" referrerpolicy="no-referrer" alt="img"></p><p><span>Stable Diffusion是基于发表在CVPR 2022上的一篇论文《High-Resolution Image Synthesis with Latent Diffusion Models》实现的，对具体的原理感兴趣的同学可以参考以下几篇文章，写的都很不错：</span></p><p><a href='https://zhuanlan.zhihu.com/p/563543020'><span>如何通俗理解扩散模型？</span></a></p><p><a href='https://zhuanlan.zhihu.com/p/583124756'><span>Stable Diffusion原理解读</span></a></p><p><a href='https://www.ithome.com/0/668/981.htm'><span>ay Alammar 再发新作：超高质量图解 Stable Diffusion ，看完彻底搞懂「图像生成」原理 - IT之家</span></a></p><p><a href='https://blog.csdn.net/qq_45752541/article/details/129082742' target='_blank' class='url'>https://blog.csdn.net/qq_45752541/article/details/129082742</a></p><h6 id='什么是prompt'><span>什么是prompt？</span></h6><p><span>在AI领域中，“prompt”通常指的是一种输入文本，用于引导或启动语言模型的生成过程。它通常是一段简短的文本片段，可以是问题、任务描述、提示等。这个文本片段可以激发模型的思考和创造性地生成语言，从而生成符合输入条件的输出文本。在自然语言处理中， prompt 是指用来提示模型生成句子或文本的前缀。在 GPT-3 等大型预训练模型中，prompt 可以直接影响模型生成的结果。通过巧妙设计 prompt，可以引导模型生成特定主题、情感、风格等的文本。</span><span>																		</span><span>                                                                                                                                                                                                                                                                --</span><strong><span>来自chatgpt</span></strong></p><p><span>业界有一个说法：prompt是AI炼丹过程中的咒语，我觉得非常贴合。</span></p><h6 id='模型'><span>模型</span></h6><p><span>模型也被称为checkpoint文件，是预先训练的稳定扩散权重模型，旨在生成一般或特定类型的图像。</span></p><p><span>模型能够生成什么样的图像取决于用于训练它们的数据。举个例子，如果训练数据中从未出现过猫，模型将无法生成一只猫的图像。同样，如果只使用猫的图像来训练模型，模型将只能生成猫的图像。</span></p><ul><li><p><strong><span>Fine-tuning models</span></strong></p></li></ul><p><span>Fine-tuning是机器学习中的常用微调技术。它会对在大数据集上训练过的模型进行微调，以便在少量的数据集上进行更多训练。</span></p><p><span>微调模型就是在少量的数据集上微调模型，可以让基础模型学习该数据集的特定特征和模式，从而生成类似于该数据集的图像。同时由于模型最初是在大数据集上训练的，因此它仍然保持基础模型的通用性和泛化能力。</span></p><p><span>我的理解来看Fine-tuning的目标是在定制和通用性之间取得平衡，以便微调后的模型可以生成既特定于少数据集又适用于更广泛的数据集范围的图像。</span></p><ul><li><p><strong><span>为什么需要微调模型？</span></strong></p></li></ul><p><span>stable diffusion的确在生成图片上让人很惊艳，但它不是万能的。举个例子，我们可以输入prompt关键词“动漫”让stable diffusion在提示中生成动漫风格的图像，但如果要生成某个子风格的动漫图像（最近比较🔥的二次元人物：makima）可能会非常困难。因此我们可以使用该子风格（makima）的图像输入对模型进行微调生成微调模型，而不是通过调整prompt来实现。另外，stable diffusion可能难以生成高度逼真或具有精细细节的图像。在这些情况下，往往需要依赖其他生成模型如GAN或VAE可能更有效。我们不能期望一个通用的大模型能够满足所有人的需求。相反，我们应该尝试构建适合自己领域的小模型。通过选择合适的数据集、算法和网络结构，快速训练出一个专门用于解决自己问题的小型模型。这个模型不需要太复杂，只需要满足自己的需求即可。这样可以提高模型的效率和准确度，并且减少训练时间和计算资源的消耗。因此根据具体的业务场景和所需输出，选择适当的生成模型非常重要。</span></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304837435-3d95b83e-eae3-470c-aa69-f4ce123ddb55.png" referrerpolicy="no-referrer" alt="img"></p><ul><li><p><strong><span>模型常用类型</span></strong></p></li></ul><figure class='table-figure'><table><thead><tr><th><span>类型</span></th><th><span>模型名称</span></th><th><span>说明</span></th><th><span>事例</span></th></tr></thead><tbody><tr><td><span>基础模型</span></td><td><span>Stable diffusion v1.4 </span><a href='https://huggingface.co/CompVis/stable-diffusion-v-1-4-original' target='_blank' class='url'>https://huggingface.co/CompVis/stable-diffusion-v-1-4-original</a></td><td><span>v1.4模型是由Stability AI于2022年8月发布的，被认为是第一个开源可用的稳定扩散模型。你可以把v1.4看作是一个通用的模型。大多数情况下，直接使用它就足够了，除非你真的很挑剔某些样式。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304836295-097822c7-4ee3-4c7e-85be-b363b5742556.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>Stable diffusion v1.5 </span><a href='https://huggingface.co/runwayml/stable-diffusion-v1-5' target='_blank' class='url'>https://huggingface.co/runwayml/stable-diffusion-v1-5</a></td><td><span>v1.5是Runway公司于2022年10月底发布的，官方文档没有过多的描述这个版本的一些新特性，总的来说画面构成差别不大，差距在图片的色阶对比度和光源渲染。1.5总体比1.4光源效果平滑合理很多</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304837710-ad2bb11b-a756-484e-a431-07eaef8a1672.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>Openjourney</span><a href='https://huggingface.co/prompthero/openjourney' target='_blank' class='url'>https://huggingface.co/prompthero/openjourney</a></td><td><span>Openjourney是基于</span><a href='https://www.midjourney.com/'><span>Mid Journey v4</span></a><span>引擎生成的图片作为训练集衍生出的微调模型，它有不同的美学风格，是一个很好的通用模型。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304838705-a4789ed5-fcc7-4d5f-9ca3-f5fc7f3ba144.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>Anything v3</span><a href='https://huggingface.co/Linaqruf/anything-v3.0' target='_blank' class='url'>https://huggingface.co/Linaqruf/anything-v3.0</a></td><td><span>Anything V3可生成高质量的动漫风格图像。我们可以在文本提示中使用danbooru标签（如1girl，white hair）。 适用于将名人塑造成动漫风格，然后与插画元素无缝融合。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304838972-d6a52d9d-9782-4e36-9744-0af6749e5e94.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>微调模型（Fine-tuned models）</span></td><td><span>ChilloutMix </span><a href='https://civitai.com/models/6424/chilloutmix' target='_blank' class='url'>https://civitai.com/models/6424/chilloutmix</a></td><td><span>用于生成亚洲女性的微调模型，类似于F222</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304839279-01b63d84-9a19-40a8-8fdf-945d3f4a543e.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>Waifu-diffusion </span></td><td><span>日本动漫风</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304839717-48e8df1c-2d85-4ee9-ba93-fe476e165887.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>Robo Diffusion</span></td><td><span>机器人风</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304840121-bfeb5425-2db1-47b9-88df-18c55971248c.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>Mo-di-diffusion</span></td><td><span>迪士尼风</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304841021-a4171866-533c-4b71-8132-29ef2d61351f.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr><tr><td><span>Inkpunk Diffusion</span></td><td><span>插画风</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304854900-6ec4e0f4-3e3d-4ecb-854c-1b57fb6f72c5.png" referrerpolicy="no-referrer" alt="img"></td><td>&nbsp;</td></tr></tbody></table></figure><p><span>大家可以在</span><a href='https://huggingface.co/models'><span>huggingface</span></a><span>搜索到大量开源的数据集和模型非常多，只需要记得这些都是SD模型的微调版本即可，这些不同版本的StableDiffusion模型都是基于相同的算法和原理，并且都可以用于生成高质量的图像、音频、视频等数据。具体选择哪个版本取决于我们实际的应用场景和具体需求。</span></p><h6 id='controlnet'><span>ControlNet</span></h6><p><span>由于生成的姿势是随机的、无法控制，所以stable diffusion引入了 ControlNet 插件 ——用来实现骨骼绑定、精准控线、线稿上色、依据深度图结构透视精准重绘等。正常情况下我们想要控制人物的姿势是十分困难的，并且姿势随机，而ControlNet解决了这个问题。它集成了一些专业的预训练模型，非常强大而多功能，可以与任何扩散模型一起使用。</span></p><p><strong><span>可用的模型以及说明*</span></strong><span>*：**</span></p><figure class='table-figure'><table><thead><tr><th><strong><span>模型名称</span></strong></th><th><strong><span>说明</span></strong></th><th><strong><span>案例</span></strong></th></tr></thead><tbody><tr><td><span>OpenPose</span></td><td><span>检测</span><strong><span>人类的关键点，如头部、肩膀、手等的位置</span></strong><span>。它对于复制人类姿势很有用，但不包括其他细节，如服装、发型和背景。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304852778-856f73d3-f180-4677-a714-851f0a4d9ea8.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>Canny</span></td><td><span>是一个通用的、老派的边缘检测器。</span><strong><span>它可以提取图像的轮廓</span></strong><span>。它对于保留原始图像的构图非常有用。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304854239-c07f34ff-8044-4af9-bc8f-f3dc5c64f412.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>M-LSD Lines</span></td><td><span>它适用于提取具有直边轮廓的内部设计、建筑物、街景、相框和纸张边缘。</span></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304853180-d2d171e3-df50-4006-b989-60a0dcfc2be8.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>HED</span></td><td><span>擅长像实际人一样生成轮廓。</span><strong><span>HED适用于重新着色和重新风格化图像。</span></strong></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304854236-34dc9bb5-fa87-4656-a555-17797e64b0f7.png" referrerpolicy="no-referrer" alt="img"></td></tr><tr><td><span>User Scribbles</span></td><td><strong><span>把你涂鸦的东西变成一张图片</span></strong></td><td><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304855058-ed12220b-13fd-413b-ad4a-82720ccff0ca.png" referrerpolicy="no-referrer" alt="img"></td></tr></tbody></table></figure><h6 id='dreambooth-个人模型与风格化'><span>DreamBooth 个人模型与风格化</span></h6><p><span>融合个人模型是指将训练后的个人风格和特点融入到 AI 绘画模型中，使其生成的画作更贴近个人风格和需求，提高生成画作的个性化和定制化。</span></p><p><span>诸如在 Stable Diffusion 中，我们可以用自己的头像结合 DreamBooth 等工具训练，以得到一个融合自己风格的模型。在二次元世界里，最常被使用的是 &quot;个人头像&quot;，以用于生成动漫或者 idol</span></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304855479-2cf33b0e-bf44-4d76-8663-bb688b0ee18a.png" referrerpolicy="no-referrer" alt="img"></p><h6 id='主要调校参数'><span>主要调校参数</span></h6><figure class='table-figure'><table><thead><tr><th><strong><span>参数名称</span></strong></th><th><strong><span>作用</span></strong></th></tr></thead><tbody><tr><td><span>CFG Scale</span></td><td><span>Classifier Free Guidance scale 图像与提示符的一致程度，</span><strong><span>控制模型听话的程度。 值越高，越遵守prompt，*</span></strong><span>*越低的值产生越有创意的结果</span><strong></strong><span>。**</span></td></tr><tr><td><span>Seed</span></td><td><span>种子数，只要中子数一样，参数一致、模型一样图像就能重新被复原</span></td></tr><tr><td><span>Sampling steps</span></td><td><span>随着steps的增加，图片的质量会提升，一般20质量就已经足够。</span></td></tr><tr><td><span>Batch size</span></td><td><span>每次图片生成的数量，一般来说会单次生成多张图片，然后从中选取一张最好的。</span></td></tr><tr><td><span>Restore faces</span></td><td><span>面部修复，它是一个后置处理方法，在生成图片后调整面部区域。</span></td></tr><tr><td><span>denoising strength</span></td><td><span>噪声强度，在生成图片的时候，噪声强度越大，生成的内容越随机。</span></td></tr></tbody></table></figure><h3 id='前置商机最终落地整体流程'><strong><span>前置商机最终落地整体流程</span></strong></h3><h5 id='开源技术底座'><span>开源技术底座</span></h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304855552-7a1a69a9-00e2-4a68-bbfd-05d55ada1506.png" referrerpolicy="no-referrer" alt="img"></p><h5 id='方案设计大图'><span>方案设计大图</span></h5><p><span>方案主要分成预训练细分市场fine-tuning模型产出，以及结合前场商机关键词Prompt、微调模型的最终图片产出两个环节。通过本地部署stable diffusion webAPI服务，通过nodeJS微后端反向代理乐高的http请求，将训练产出的图片上传到OSS，最终简单串起整个链路。</span></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304855840-20fb4c3f-8097-44ef-a917-4eb664babfd9.png" referrerpolicy="no-referrer" alt="img"></p><h5 id='商机聚类归因'><span>商机聚类归因</span></h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304856162-13747729-cf21-49f4-9ae0-885fe884882c.png" referrerpolicy="no-referrer" alt="img"></p><figure class='table-figure'><table><thead><tr><th><span>商机聚类归因&amp;挂载</span></th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead><tbody><tr><td><span>前场趋势热搜词</span></td><td><span>拟合机会热点词</span></td><td><span>挂靠行业</span></td><td><span>挂靠叶子类目</span></td><td><span>挂靠品类词</span></td><td><span>挂靠SPU</span></td><td><span>挂靠置性度</span></td></tr><tr><td><span>淄博烧烤</span></td><td><span>淄博烧烤卷饼</span></td><td><span>大快消</span></td><td><span>粮油调味/速食/干货/烘焙 &gt; 面点/西式速食 &gt; 面点类速食 &gt; 手抓饼/葱油饼/煎饼/卷饼</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>0.9</span></td></tr><tr><td><span>淄博烧烤烤炉</span></td><td><span>大百货</span></td><td><span>厨房/烹饪用具/烧烤/烘焙用具/烧烤炉</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>0.8</span></td><td>&nbsp;</td></tr><tr><td><span>灌篮高手大电影</span></td><td><span>灌篮高手球衣</span></td><td><span>大服饰</span></td><td><span>运动/瑜伽/健身/球迷用品/篮球/篮球服</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>1</span></td></tr><tr><td><span>灌篮高手t恤</span></td><td><span>大服饰</span></td><td><span>男装/t恤</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>0.9</span></td><td>&nbsp;</td></tr><tr><td><span>赵露思</span></td><td><span>赵露思同款连衣裙</span></td><td><span>大服饰</span></td><td><span>女装/女士精品/连衣裙</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>0.9</span></td></tr><tr><td><span>朱一龙</span></td><td><span>朱一龙同款衬衫</span></td><td><span>大服饰</span></td><td><span>男装 &gt; 衬衫</span></td><td><span>xxx</span></td><td><span>xxx</span></td><td><span>0.9</span></td></tr></tbody></table></figure><p><span>通过将前场捕捉到的趋势商机拟合挂靠到不同的叶子类目/品类词/SPU下，我们可以通过一些类似置性度的方式快速筛选出可以大概率可以有较好的订单转化的机会。</span></p><h5 id='预训练流程fine-tuning模型集维护）'><span>预训练流程（Fine-tuning模型集维护）</span></h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304856360-41c6b4bd-f9a0-4cba-8151-52f48a6f8aa1.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304857162-d79e19a7-2e23-4668-b926-8f6f0c2b8114.png" referrerpolicy="no-referrer" alt="img"></p><p><strong><span>商机挂载细分领域的预训练fine-tuning模型图</span></strong></p><ul><li><p><span>初始化图片数据集获取策略：</span></p></li><li><p><span>爬取竞对市场对应叶子类目/spu/细分市场下的白牌爆品主图（分敌有/无的情况）</span></p></li><li><p><span>算法/设计输入一些归一化的对应图片</span></p></li></ul><p><span>对这些图片进行归一化、同质化处理后，预训练出挂载到细分领域的fine-tuning模型，用于后续正式产出商机企划图片。</span></p><h5 id='训练流程fine-tuning模型应用）'><span>训练流程（Fine-tuning模型应用）</span></h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304857169-791a4602-a3fd-45fa-ac4c-58e5a40a3756.png" referrerpolicy="no-referrer" alt="img"></p><h6 id='chatgpt泛化提示词'><span>chatgpt泛化提示词</span></h6><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang="plain"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="plain"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 9px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">prompt是用来指导AI绘画模型创作图像的。它们包含了图像的各种细节，如人物的外观、背景、颜色和光线效果，以及图像的主题和风格。prompt的格式经常包含括号内的加权数字，用于指定某些细节的重要性或强调。例如，"(masterpiece:1.5)"表示作品质量是非常重要的，多个括号也有类似作用。</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Stable Diffusion是一款利用深度学习的文生图模型，支持通过使用提示词来产生新的图像，描述要包含或省略的元素。 我在这里引入StableDiffusion算法中的Prompt概念，又被称为提示符。 这里的Prompt通常可以用来描述图像，他由普通常见的单词构成，最好是可以在数据集来源站点找到的著名标签（比如仿照例子，并不局限于我给你的单词，给出一套详细描述“一件印有灌篮高手动漫图案的t恤””的prompt，直接开始给出prompt不需要用自然语言描述，注意要有权重)。</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">下面的prompt是用来指导AI绘画模型创作图像的。它们包含了图像的各种细节，如人物的外观、背景、颜色和光线效果，以及图像的主题和风格。这些prompt的格式经常包含括号内的加权数字，用于指定某些细节的重要性或强调。例如，"(masterpiece:1.5)"表示作品质量是非常重要的，多个括号也有类似作用。此外，如果使用中括号，如"(blue hair:1)"</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">结合上述prompt和对应权重的描述，按要求以下json中value的要求给出答案，并将用给出答案替换掉value中的值，不要有任何额外的解释</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  "key": "%s",</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  "basicPrompt":"%s",</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  "extendPrompt":"结合以上的key和basicPrompt扩展推荐你觉得更有利描述该图片的更多英文提示词prompt，直接开始给出prompt不需要用自然语言描述，多项之间用英文逗号分开，至少要写7项，每项不超过4个单词，注意要英文，注意每个prompt都要有带小括号的权重",</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;  "negativePrompt":"结合以上的key和basicPrompt扩展推荐一些限制生成的图片脱离key和basicPrompt描述的内容的英文提示词prompt，多项之间用英文逗号分开，至少要写7项，每项不超过4个单词，注意要英文，不需要权重",</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  "title": "结合以上的key和prompt，总结一个中文标题，需要有电商商品标题的氛围，并且表达出产品的特点&amp;优势，要求5~15个字之间"</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: transparent; top: 682px;"></div><div class="CodeMirror-gutters" style="display: none; height: 682px;"></div></div></div></pre><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304857980-5afa721c-85bb-4437-b032-102129dad312.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304858253-415b0616-29f5-4003-87ff-6fdf1d340616.png" referrerpolicy="no-referrer" alt="img"></p><h6 id='模型权重控制'><span>模型权重控制</span></h6><p><span>这边拿Anything-V3.0和Cyberpunk Anime Diffusion两个模型做举例，前者对于生成超高质量的二次元动漫角色非常拿手，后者则是擅长赛博（Cyberpunk）动漫人物及场景的绘制，但由于后者训练集质量不够好人物很容易画崩，因此透过模型权重控制能将两者优点结合(其实缺点也会结合)，再透过提示词、反向提示词的调校，就能生成超棒的赛博动漫角色，精致又能维持科技感之角色特征和画风。</span></p><h5 id='ai模特生成'><span>AI模特生成</span></h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304858067-84d766a9-bf2c-4b74-b3d2-fec536f16c48.png" referrerpolicy="no-referrer" alt="img"></p><p><span>结合ControlNet姿态控制、基于蒙版的inpaint/outpaint我们可以轻松实现比如</span><strong><span>同一个模特的变装、或者同一件衣服的不同模特、不同姿势的试穿</span></strong><span>，这极大的解放了生产力。</span></p><h4 id='showcase展示'><strong><span>showcase展示</span></strong></h4><ul><li><p><span>大牌平替</span></p></li></ul><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304858680-5d1b5ad1-5aac-4f0c-8a13-77393422d61a.png" referrerpolicy="no-referrer" alt="img"></p><ul><li><p><span>页面图</span></p></li></ul><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304859218-fac01221-9efc-4bc3-973a-a68ac396c30a.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304860947-e71128a3-cae5-4b1e-8806-34393947c2b0.png" referrerpolicy="no-referrer" alt="img"></p><ul><li><p><span>趋势卖点融合</span></p></li></ul><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304859766-6fe8ff98-5191-47d2-8c63-0d91a29c0802.png" referrerpolicy="no-referrer" alt="img"></p><ul><li><p><span>页面图</span></p></li></ul><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304862596-c3a0d555-75a2-4788-a9f8-b8966b0edd11.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304863392-a1137b84-c795-432c-a594-0a3fd9fdba74.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304863549-f5ea97f8-a4e0-44e5-98af-7a6a34494c8f.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2023/png/260681/1682304863990-87d24350-6ba8-4cdc-b641-965db298151d.png" referrerpolicy="no-referrer" alt="img"></p><h5 id='总结'><span>总结</span></h5><p><span>AIGC这种模式虽然可以不需要真人模特就能快速生成模特穿搭图，但非常容易造成货不对版的情况，直接投放到前场还是会有风险，但对于我们做机会性、创意性、丰富性企划来说是ok的，面向商家、内部小二，在某些行业里以点带面地借用AIGC/算法的能力，快速、自动化地创建出一条商机变现的招商招品链路，也是一种很好的探索落地方式。最终本质上还是让商家明白我们直营目前到底需要怎么样的品，他只要匹配提报上来就很容易卖爆，为供给满足度增添一份力量。</span></p><p><span>Thanks^-^</span></p><p><span>By dzg</span></p></div></div>
+</body>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
