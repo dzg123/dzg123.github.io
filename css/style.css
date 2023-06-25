@@ -336,7 +336,7 @@ a {-webkit-tap-highlight-color:transparent;}
 .content .h2,.content h2,.content h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: #eee
+    /* color: #eee */
 }
 
 .content .h2,.content h2 {
