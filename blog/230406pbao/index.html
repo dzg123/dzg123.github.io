@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">maven排包</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2023-04-06</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">Git</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+ <div id='write'  class=''><h1 id='前言'><span>前言</span></h1><p><span>总结一下我的排包过程，希望能够给和我遇到同样问题的小伙伴一些帮助。</span></p><h1 id='常见包冲突错误'><span>常见包冲突错误</span></h1><p><span>我们的项目在引入一个二方包或者对该二方包进行升级时，常常在编译阶段、启动阶段和运行阶段这三个阶段分别会遇到一些问题。</span></p><h2 id='编译阶段'><span>编译阶段</span></h2><p><span>编译阶段的问题是最容易发现和解决的，因为这时在开发者电脑本地上就可以直接通过maven的编译指令对项目进行编译，编译过程中如果有问题就会通过日志输出，我们开发人员就可以根据日志很方便的解决问题。</span></p><p><span>【注意】maven有一定缓存能力，我就踩了这样一个坑，项目在我本地编译（执行指令：mvn compile）是能通过的，但是提交到预发环境部署时，就编译失败了。原因就是我们在本地编译时maven已经将所用到的依赖都打包到target目录下了，如果我们删除了某个依赖，mvn并不会立即在target目录下删除其相关文件。执行mvn clean命令就可以将tagget目录下的所有文件删除。因此如果我们修改了pom.xml，在本地编译时要执行mvn clean compile命令。</span></p><h2 id='启动和运行阶段'><span>启动和运行阶段</span></h2><p><span>启动阶段的包版本冲突引发的问题常见的有以下几种，运行阶段才发现的问题是最棘手的，因为项目启动过程没有问题，可能上线后观察期也发现不了问题，只有当项目运行时，执行到某段代码，这时才可能把问题暴露出来，所以这种情况就很可能会造成线上故障。</span></p><h3 id='1classnotfoundexception'><span>1、ClassNotFoundException</span></h3><p><span>当动态加载Class的时候找不到类会抛出该异常。</span></p><p><span>一般在执行Class.forName()、ClassLoader.loadClass()或ClassLoader.findSystemClass()的时候抛出。</span></p><h3 id='2noclassdeffounderror'><span>2、NoClassDefFoundError</span></h3><p><span>当编译成功以后执行过程中Class找不到导致抛出该错误，由JVM的运行时系统抛出。</span></p><p><span>JVM或者ClassLoader实例尝试加载类的时候，找不到类的定义而发生，通常在</span><strong><span>import</span></strong><span>和</span><strong><span>new</span></strong><span>一个类的时候触发。</span></p><h3 id='3nosuchmethoderror'><span>3、NoSuchMethodError</span></h3><p><span>该错误与NoClassDefFoundError类似，都是在调用该方法时找不到。</span></p><h3 id='4循环依赖导致stackoverflow'><span>4、循环依赖导致StackOverFlow</span></h3><p><span>最常见的循环依赖就是几个日志实现的二方包。</span></p><h3 id='5功能失效'><span>5、功能失效</span></h3><p><span>原因一：高版本的功能在低版本中没有；</span></p><p><span>原因二：该二方包将异常吞掉，没有抛出来，程序虽然中间执行又问题，但是依然能够向下执行。</span></p><h1 id='maven自动引包原理'><span>Maven自动引包原理</span></h1><p><span>我们的项目在编译打包时，最终某个包只会引入某一个版本的，在没有任务干预的情况下，具体引入哪个版本的包是由maven的自动引包策略决定的。</span></p><p><span>当依赖冲突时，maven会采取最短路径优先策略、第一声明优先策略和dependency复写策略等引包策略。</span></p><h2 id='最短路径优先策略'><span>最短路径优先策略</span></h2><p><span>当导入的两个依赖中都直接或间接依赖某依赖时，maven将获取依赖链最短的那个。</span></p><p><span>例如项目X中同时导入A和B两个依赖，同时A依赖C，C依赖D(1.0.0)，B依赖D(2.0.0)，括号内为该包的版本，</span></p><p><span>即X-&gt;A-&gt;C-&gt;D(1.0.0)，X-&gt;B-&gt;D(2.0.0)。可以看到D(2.0.0)的依赖链更短，系统在编译时将加载D(2.0.0)。</span></p><h2 id='最先声明优先策略'><span>最先声明优先策略</span></h2><p><span>当两个不同版本的包的依赖链长度一样时，将加载最先声明的包。</span></p><p><span>例如X-&gt;A-&gt;D(1.0.0)和X-&gt;B-&gt;D(2.0.0)，在pox.xml中的配置如下</span></p><p>&lt;dependency&gt;</p><p><span>   </span><groupId><span>A</span></groupId></p><p><span>   </span><artifactId><span>A</span></artifactId></p><p><span>   </span><version><span>1.0.0</span></version></p><p></dependency></p><p>&lt;dependency&gt;</p><p><span>   </span><groupId><span>B</span></groupId></p><p><span>   </span><artifactId><span>B</span></artifactId></p><p><span>   </span><version><span>1.0.0</span></version></p><p></dependency></p><p><span>A依赖在前，系统最终将加载D(1.0.0)。</span></p><h2 id='dependency复写策略'><span>dependency复写策略</span></h2><p><span>如果某包显式的pom.xml中写了两次，那么后面写的一次将覆盖掉前面的内容。</span></p><p><span>例如，配置如下</span></p><p>&lt;dependency&gt;</p><p><span>   </span><groupId><span>A</span></groupId></p><p><span>   </span><artifactId><span>A</span></artifactId></p><p><span>   </span><version><span>1.0.0</span></version></p><p></dependency></p><p>&lt;dependency&gt;</p><p><span>   </span><groupId><span>A</span></groupId></p><p><span>   </span><artifactId><span>A</span></artifactId></p><p><span>   </span><version><span>2.0.0</span></version></p><p></dependency></p><p><span>系统在编译打包时将加载A(2.0.0)。</span></p><h1 id='排包工具'><span>排包工具</span></h1><p><span>因为maven按照其排包引包策略引入的包可能不是我们业务逻辑想要的那个包，所以这时我们需要在对maven的引包排包结果进行纠正。首先我们先看一下一些常用的排包工具。</span></p><h2 id='1maven-helper插件'><span>1、maven helper插件</span></h2><p><span>可以通过idea的maven helper插件查看项目导入的包和有冲突的包。</span></p><p><span>安装：</span></p><p><span>使用：</span></p><p><span>打开pox.xml，然后点击文件下方的Dependency Analyzer。选择Conflicts即可看到冲突的包了。</span></p><h1 id='常见冲突包'><span>常见冲突包</span></h1><h2 id='1日志包冲突'><span>1、日志包冲突</span></h2><p><span>日志包冲突非常容易发生，而且容易造成线上日志打不出来的问题。</span></p><p><span>我们常用的日志框架主要有以下几种：</span></p><figure class='table-figure'><table><thead><tr><th><span>框架</span></th><th><span>描述</span></th></tr></thead><tbody><tr><td><span>JUL</span></td><td><span>是JDK自带的，功能简单，并没有广泛使用</span></td></tr><tr><td><span>Log4j</span></td><td><span>设计较好，使用广泛</span></td></tr><tr><td><span>Conmons Loggings</span></td><td><span>简称JCL，JCL仅是一个Facade，只提供Log API，不提供实现，实现可以用JUL或Log4j作为Implementation。</span></td></tr><tr><td><span>Slf4j/Logback</span></td><td><span>Slf4j作为Facade定义接口API，Logback是Implementation。性能比之前日志框架有了更大提升。</span></td></tr><tr><td><span>Log4j2</span></td><td><span>性能相比Log4j有了更大提升，并做了Facade/Implementation分离，分为log4j-api和log4j-core。</span></td></tr></tbody></table></figure><p><span>发展到最后，主流的日志框架都采用了Facade/Implementation分离的模式，这时为了能够实现不同框架的Facade和Implementation能够交叉使用，出现了很多桥接器，比如log4j-slf4j-impl就实现了Slf4j（Facade）和log4j-core（Implementation）的桥接。</span></p><p><span>在众多的桥接器出现后，当多个包共存时导致依赖冲突。主要冲突分为三类：Implementation 和Facade之间缺少桥接器；Implementation 和Facade之间存在多个桥接器，无法确定选哪个；多个桥接器导入后导致循环依赖，比如log4j-over-slf4j和slf4j-log4j12，jul-to-slf4j与slf4j-jdk14二者共存都会会造成循环依赖。</span></p><p><span>我们的日志包相关包的Implementation包到导入依赖时，建议scope都设置为provided，做负责任程序员，不给下游添麻烦。</span></p><h1 id='引包排包总结'><span>引包排包总结</span></h1><h2 id='1引包排除'><span>1、引包排除</span></h2><p><span>在引包时，直接排除。</span></p><p><span> </span>&lt;dependency&gt;</p><p><span>    </span><groupId><span>com.aa.bb</span></groupId></p><p><span>    </span><artifactId><span>xxx-yyy</span></artifactId></p><p><span>    </span><version><span>${xxx-yyy.version}</span></version></p><p><span>    </span><exclusions></p><p><span>        </span><exclusion></p><p><span>            </span><artifactId><span>cc</span></artifactId></p><p><span>            </span><groupId><span>com.cc.dd</span></groupId></p><p><span>        </span></exclusion></p><p><span>    </span></exclusions></p><p></dependency></p><h2 id='2主动指定版本'><span>2、主动指定版本</span></h2><p><span>项目代码中使用的二方包/三方包，要主动的在pom.xml中添加dependency，而不是借助于引入导入的依赖的间接依赖。主动倒入依赖，并在导入二方包时exclusion *。</span></p><h2 id='3删除无用依赖'><span>3、删除无用依赖</span></h2><p><span>如果是提供给别人依赖的Jar包，尽可能不要传递依赖不必要的Jar包，</span></p><p><span>使用mvn dependency:analyze-only命令用于检测那些声明了但是没被使用的依赖，删除无用依赖，不把麻烦向外传递。</span></p><h2 id='4使用scope限制范围'><span>4、使用scope限制范围</span></h2><p><span>dependency的 </span><scope><span>是用来限制dependency的作用范围的, 影响maven项目在各个生命周期时导入的package的状态。</span></p><p>&lt;dependency&gt;<span> </span></p><p><span>      </span><groupId><span>aa.xxx</span></groupId><span>  </span></p><p><span>      </span><artifactId><span>aa-bb</span></artifactId><span>  </span></p><p><span>      </span><version><span>1.x.x</span></version><span>  </span></p><p><span>      </span><scope><span>provided</span></scope><span> </span></p><p></dependency><span>  </span></p><p><span>scope的值目前有六个，scope的默认值是compile。</span></p><figure class='table-figure'><table><thead><tr><th><span>scope值</span></th><th><span>作用</span></th></tr></thead><tbody><tr><td><span>compile</span></td><td><span>该依赖在编译和打包时都会被加进来，该包会传递到被依赖的项目中</span></td></tr><tr><td><span>provided</span></td><td><span>在编译和测试的时候有效，在执行（mvn package）进行打包时不会加入。同时没有传递性，使用这个时，不会将包打入本项目中，只是依赖过来。 </span></td></tr><tr><td><span>runtime</span></td><td><span>表示dependency不作用在编译时，但会作用在运行和测试时。</span></td></tr><tr><td><span>test</span></td><td><span>表示dependency作用在测试时，不作用在运行时。</span></td></tr><tr><td><span>system</span></td><td><span>跟provided 相似，但是在系统中要以外部JAR包的形式提供，maven不会在repository查找它。使用方式如下：</span>&lt;dependency&gt;<groupId><span>org.open</span></groupId><artifactId><span>open-core</span></artifactId><version><span>1.5</span></version><scope><span>system</span></scope><systemPath><span>${basedir}/WebContent/WEB-INF/lib/open-core.jar</span></systemPath></dependency></td></tr><tr><td><span>import</span></td><td><span>maven2.9之后引入，可以实现依赖上的多重继承。这个功能可以将依赖配置复杂的pom文件拆分成多个独立的pom文件。这样处理可以使得maven的pom配置更加简洁，同时可以复用这些pom依赖。</span></td></tr></tbody></table></figure></div></div>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
