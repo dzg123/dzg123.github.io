@@ -1060,6 +1060,7 @@ article .content h2:before {
 
 article .content img,article .content video {
     max-width: 100%;
+    width: 500px;
     height: auto;
     display: block;
     margin: auto
@@ -1620,6 +1621,6 @@ pre code {
     }
 }
 
-img {
+/* img {
     width: 500px;
-}
+} */
