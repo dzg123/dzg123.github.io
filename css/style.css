@@ -1621,9 +1621,9 @@ pre code {
     }
 }
 
-/* img {
+img {
     width: 500px;
-} */
+}
 
 table img {
     width: 200px !important; /* 设置宽度，并覆盖原有样式 */
