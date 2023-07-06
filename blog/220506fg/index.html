@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="generator" content="Hugo 0.51">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34">
+    <meta name="sogou_site_verification" content="E8uWFBcf4a">
+    <meta name="author" content="dzg">
+    <meta name="keywords" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content=" dzg">
+    <title>blog | dzg</title>
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/lib/highlight.min.js">
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script>
+        document.addEventListener("error", function (e) {
+            var elem = e.target;
+            if (elem.tagName.toLowerCase() == 'img') {
+                elem.style.display = 'none'
+            }
+        }, true);
+    </script>
+    
+</head>
+<body>
+<div id="header-post">
+    <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#"
+                                                                              onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                                              style="display:none;"><i
+        class="fa fa-chevron-up fa-lg"></i></a> <span
+        id="menu"><span id="nav"><ul><li><a href="/">主页</a></li><li><a href="/blog/">博客</a></li><li><a
+        href="/about/">关于我</a></li><li><a href="http://github.com/dzg123"
+                                          target="_blank">Github</a></li></ul></span><br>
+
+</span>
+</div>
+<div class="content index width mx-auto px3 my3">
+    <section id="wrapper" class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+            <header>
+                <h1 class="posttitle" itemprop="name headline">记一次没有保留现场的fullgc排除</h1>
+                <div class="meta">
+                    <div class="postdate">
+                        <time datetime="2018-10-20" itemprop="datePublished">2022-08-25</time>
+                    </div>
+                    <div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span
+                            id="busuanzi_value_page_pv">0</span></span></div>
+                    <div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/spring">fullgc</a></div>
+                    <div class="article-tag-box"></div>
+                </div>
+            </header>
+            <!--markdown-->
+      <div id='write'  class=''><h3 id='起因'><span>起因</span></h3><p><span>12点00分在核心应用告警群竞价系统的单台机器出现fullgc告警，我看到后于12点10分接手，此时fullgc情况已经消失，因此第一时间无法通过dump内存保留现场，只能排查监控和机器日志来间接定位问题，下面是具体排查流程</span></p><h3 id='sunfire监控排查'><span>sunfire监控排查</span></h3><h4 id='基础监控'><span>基础监控</span></h4><p><span>应用基础监控</span></p><h5 id='cpu利用率网络流量'><span>cpu利用率&amp;网络流量</span></h5><p><span>考虑到有几个原因：</span></p><ol><li><p><span>外部hsf访问流量激增</span></p></li><li><p><span>metaq瞬间流量</span></p></li><li><p><span>定时任务调度</span></p></li><li><p><span>db访问有慢sql或大批量查询</span></p></li><li><p><span>。。。</span></p></li></ol><p><span>因此转向中间件监控排查</span></p><h4 id='中间件监控'><span>中间件监控</span></h4><h5 id='jvm监控'><span>JVM监控</span></h5><ul><li><p><span>内存&amp;gc情况分析</span></p></li></ul><figure class='table-figure'><table><thead><tr><th><span>时间</span></th><th><span>GC情况</span></th><th><span>Eden区</span></th><th><span>Survivor区</span></th><th><span>Old区</span></th><th><span>分析</span></th></tr></thead><tbody><tr><td><span>11:58</span></td><td><span>ygc:2次fgc:0次</span></td><td><span>1243M</span></td><td><span>17.9M</span></td><td><span>525M</span></td><td>&nbsp;</td></tr><tr><td><span>11:59</span></td><td><span>ygc:12次fgc:10次</span></td><td><span>979M</span></td><td><span>17M</span></td><td><span>525M</span></td><td><span>此时ygc次数陡增，且出现频繁fgc（似乎不太合理，后续会说明）</span></td></tr><tr><td><span>12:00</span></td><td><span>ygc:9次fgc:12次</span></td><td><span>5M</span></td><td><span>0M</span></td><td><span>1821M</span></td><td><span>eden区和s区几乎被完全清空，old出现大亮内存占用，出现大量ygc和fgc</span></td></tr><tr><td><span>12:01</span></td><td><span>ygc:9次fgc:12次</span></td><td><span>16.5M</span></td><td><span>0M</span></td><td><span>1929M(超过老年代80%阈值)</span></td><td><span>fgc无法释放old区大对象，导致一直fgc</span></td></tr><tr><td><span>12:02</span></td><td><span>ygc:22次fgc:0次</span></td><td><span>70M</span></td><td><span>0M</span></td><td><span>1278M</span></td><td><span>成功释放掉大对象，gc情况恢复</span></td></tr></tbody></table></figure><h5 id='hsf监控'><span>HSF监控</span></h5><p><span>hsf qps水位正常，但rt有增幅，大概率是fgc导致</span></p><h5 id='metaq监控'><span>MetaQ监控</span></h5><ul><li><p><span>qps</span></p></li></ul><ul><li><p><span>rt</span></p></li></ul><p><span>metaQ消费&amp;发送水位/rt无异常</span></p><h5 id='tddl监控'><span>TDDL监控</span></h5><ul><li><p><span>qps</span></p></li></ul><ul><li><p><span>rt</span></p></li></ul><ul><li><p><span>慢sql监控</span></p></li></ul><p><span>通过上述我们可以看出在12点开始的确有一个抖峰出现大量查询，但没有慢sql情况</span></p><h5 id='初步结论'><span>初步结论</span></h5><ol><li><p><del><span>外部hsf访问流量激增导致</span></del></p></li><li><p><del><span>metaq瞬间流量导致</span></del></p></li><li><p><span>定时任务调度(重点排查是否有异常定时任务)</span></p></li><li><p><span>db访问有</span><del><span>慢sql</span></del><span>或大批量查询</span></p></li></ol><h4 id='sls日志排查'><span>SLS日志排查</span></h4><h5 id='业务日志'><span>业务日志</span></h5><ul><li><p><strong><span>定时器相关日志</span></strong></p></li></ul><ol><li><p><span>趋势品自动审核定时器</span></p></li></ol><ol><li><p><span>官补业务画像定时器BidCreatePortraitSkuDimJob更新子任务GbBidPortraitCheckAndUpdateProcessor</span></p></li><li><p><strong><span>首坑画像产出主任务日志BidCreatePortraitItemDimJob</span></strong></p></li></ol><p><span>可以发现画像生成时会捞取上游算法同步到mysql表中的数据量进行子任务分发，首坑画像数据源已经到了将近30万（该表包含33个字段，就算一个对象占用2kb内存，30万也有600M内存占用显然非常容易gc），同时在代码发现该大对象的引用（大list，大Map等）一直在主任务分发调用链路里，显然无法被gc，同时查询下线子任务构造日志可以发现大对象被回收时间也是对的上的（该子任务分发逻辑大约跑了将近2分钟，由于大对象无法被gc掉导致频繁fullgc），显然本次fullgc告警和这个逻辑脱不了干系</span></p><p>&nbsp;</p><h5 id='gc日志'><span>gc日志</span></h5><ul><li><p><span>12:00:08开始fgc,无法正常回收内存</span></p></li></ul><ul><li><p><span>12:03:06 gc恢复正常</span></p></li></ul><h5 id='基于日志的时间线串连'><span>基于日志的时间线串连</span></h5><p><img src="https://pic.imgdb.cn/item/64a65a211ddac507cc8bd87a.png" referrerpolicy="no-referrer" alt="image-20230706135609114"></p><p><span>可以看出业务/gc的发生和恢复情况是match上的</span></p><h4 id='代码分析'><span>代码分析</span></h4><p><img src="https://pic.imgdb.cn/item/64a65ac01ddac507cc8d18e1.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://pic.imgdb.cn/item/64a65ac11ddac507cc8d1b29.png" referrerpolicy="no-referrer" alt="img"></p><p><img src="https://pic.imgdb.cn/item/64a65ac01ddac507cc8d1a0b.png" referrerpolicy="no-referrer" alt="img"></p><p>&nbsp;</p><h4 id='疑问'><span>疑问</span></h4><ul><li><p><strong><span>sunfire fgc时间为何有点对不上</span></strong></p></li></ul><p><span>理论上这个大内存的驻留明显是关键凶手，但从sunfire 监控我们可知fullGc是从11:59分开始，而画像定时器逻辑是12:00才开始运行在这台机器上的，这一分钟的偏差令我在动车快要开的时候很纠结这是什么情况（在58-59分并未发现其他异常日志）。。。而我的动车在1点多就要开了，只能先打车去高铁站，等上了高铁后我在sunfire平台上查询了是不是有可能采集的时间会有偏差的case，发现有不少类似的疑问，显然sunfire通过alimetrics接口采集的数据不是非常准确，准确的数据应该还是通过鹰眼系统来看：</span></p><p><span>通过这张图完美可以很明显的看到随着画像定时任务不断向jvm申请大内存（线程池并发获取对象速度很快），导致触发频繁ygc，这部分原先在eden/s0区的几百M内存仍被引用的对象过大ygc无法被转移到s1区直接进入old区以及部分对象通过年龄很快达到阈值（默认15（2+2+2+11 &gt; 15））后进入老年代（这也说明了eden区的内存几乎变700M-&gt;18M的原因）,同时后续的大对象也进入老年代，导致触发fullgc，但这些大对象被引用时间过长一直无法被gc掉，最终这两分钟内jvm频繁fullgc</span></p><ul><li><p><strong><span>为何之前没有暴露这个fgc问题？</span></strong></p></li></ul><p><span>11.05</span></p><p><img src="https://pic.imgdb.cn/item/64a65b6c1ddac507cc8f1520.png" referrerpolicy="no-referrer" alt="img"></p><p><span>11.03</span></p><p><img src="https://pic.imgdb.cn/item/64a65b871ddac507cc8f4870.png" referrerpolicy="no-referrer" alt="img"></p><p><span>本质上前几次也是在临界点了，在主任务执行时eden区和old区有明显增幅，只是在触发ygc/fgc时我们的大对象已经没有引用就能被回收恢复正常</span></p><h4 id='结论'><span>结论</span></h4><ul><li><p><strong><span>优化画像定时器循环取数逻辑后发布，明天手动执行，dump上下文以及观察jvm情况</span></strong></p></li><li><p><span>同时也发现随着定时任务申请的大对象被回收后我们老年代的内存占用仍然很高，通过上面的分析我们可以知道之前有几百M可能已经没有引用的对象进入了老年代，但此后系统一直没有fgc（eden区能够cover住对象申请），导致老年代这些对象一直没被释放，最终在2点07分的一次fgc后这些垃圾内存也被瞬间释放了。。。</span></p></li></ul><h4 id='117更新'><span>11.7更新</span></h4><p><span>今日于上午11:06分开始执行定时任务（主任务ip：33.44.193.44），11点09分执行了dump操作（这里会触发一次fgc），于11点16分完成各个子任务构造并分发</span></p><h5 id='dump文件'><span>dump文件</span></h5><p><span>优化后可以明显看出创建了大量的整形数组对象(保留堆占用17M)，从大对象数组到整形对象数组的优化显然极大缓解了jvm内存的压力，说明优化是OK的</span></p><h5 id='jvm监控水位'><span> jvm监控水位</span></h5><ul><li><p><span>gc情况</span></p></li></ul><p><span>本次fgc是dump触发，gc情况正常</span></p><ul><li><p><span>堆内存</span></p></li></ul><p><span>内存水位正常</span></p><p>&nbsp;</p><h4 id='119日更新'><span>11.9日更新</span></h4><p><span>跑任务之前old区内存使用率较高，一次fullgc后恢复正常</span></p></div></div>
+
+        </article>
+        <script src="/js/av-min.js"></script>
+        <script src="/js/Valine.min.js"></script>
+        <div class="blog-post-comments"></div>
+        <script>new Valine({
+            el: '.blog-post-comments',
+            app_id: '4pa6G5f3p9sLCmmqRgPTN8Qg-gzGzoHsz',
+            app_key: 'xlVmYRcq8N3Feir3eh5SXUuu',
+            placeholder: '说点什么?',
+            avatar: 'robohash',
+            notify: true,
+            verify: true
+        });</script>
+    </section>
+</div>
+<footer id="footer">
+    <div class="footer-left">Email © shzzjut@163.com
+    </div>
+    <div class="footer-right">
+        <nav>
+            <ul>
+                <li><a href="/">主页</a></li>
+                <li><a href="/blog/">博客</a></li>
+                <li><a href="/about/">关于我</a></li>
+                <li><a href="http://github.com/dzg123" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/typed.js"></script>
+<script src="/js/main.js"></script>
+<script async src=""></script>
+<script>(function () {
+    var imgArr = document.getElementsByTagName("img");
+    for (var i = 0; i < imgArr.length; i++) {
+        if (imgArr[i].width > 600) {
+            var radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].width = 600;
+            imgArr[i].height = 600 / radio;
+        }
+        if (imgArr[i].height > 400) {
+             radio = imgArr[i].width / imgArr[i].height;
+            imgArr[i].height = 400;
+            imgArr[i].width = 400 * radio;
+        }
+    }
+    var ga = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-129382678-1';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(ga, s);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129382678-1');
+})()</script>
+<script>(function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js?t=1540207086409')
+            .then(function () {
+                console.log('ServiceWorker Register Successfully.')
+            })
+            .catch(function (e) {
+                console.error(e)
+            });
+    }
+</script>
+</body>
+</html>
