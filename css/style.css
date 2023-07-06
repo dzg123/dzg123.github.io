@@ -1619,3 +1619,7 @@ pre code {
         display: none;
     }
 }
+
+img {
+    width: 500px;
+}
