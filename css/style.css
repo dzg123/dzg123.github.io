@@ -1624,3 +1624,8 @@ pre code {
 /* img {
     width: 500px;
 } */
+
+table img {
+    width: 200px; /* 设置宽度 */
+  }
+  
